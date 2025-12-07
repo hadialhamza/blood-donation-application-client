@@ -3,6 +3,7 @@ import React from "react";
 const HomePage = () => {
   return (
     <div>
+      <title>Blood Line | Home</title>
       <div className="hero bg-base-200 min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img

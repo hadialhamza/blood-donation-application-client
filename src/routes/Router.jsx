@@ -8,10 +8,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    errorElement: <h1>404</h1>,
     children: [
       {
-        index: true,
+        path: "/",
         element: <HomePage />,
       },
       {
@@ -23,5 +22,9 @@ export const router = createBrowserRouter([
         element: <Register />,
       },
     ],
+  },
+  {
+    path: "dashboard",
+    children: [],
   },
 ]);
