@@ -3,6 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/home/HomePage";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +11,7 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: "/",
+        index: true,
         element: <HomePage />,
       },
       {
@@ -25,6 +26,22 @@ export const router = createBrowserRouter([
   },
   {
     path: "dashboard",
-    children: [],
+    element: <DashboardLayout />,
+    children: [
+      {
+        // Default Dashboard route
+        index: true,
+        element: <div>Welcome to Dashboard Statistics</div>,
+      },
+      {
+        path: "profile",
+        element: <div>Profile Page Placeholder</div>,
+      },
+      {
+        path: "create-donation-request",
+        element: <div>Create Request Form Placeholder</div>,
+      },
+      // real components one here
+    ],
   },
 ]);

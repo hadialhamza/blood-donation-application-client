@@ -7,7 +7,7 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 
 const Login = () => {
-  const { signIn, loading } = useAuth();
+  const { signIn, loading, setLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -22,15 +22,17 @@ const Login = () => {
     const { email, password } = data;
 
     try {
-      // 1. Sign In User
+      // Sign In User
       await signIn(email, password);
 
-      // 2. Success Feedback & Redirect
+      // Success Feedback & Redirect
       toast.success("Login Successful");
       navigate(from, { replace: true });
     } catch (err) {
       console.log(err);
       toast.error(err.message || "Login Failed");
+    } finally {
+      setLoading(false);
     }
   };
 
