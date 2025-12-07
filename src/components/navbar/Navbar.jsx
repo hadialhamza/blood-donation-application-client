@@ -3,9 +3,11 @@ import Container from "../container/Container";
 import { Link } from "react-router";
 
 import { useAuth } from "../../hooks/useAuth";
+import { TbTruckLoading } from "react-icons/tb";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth();
+  const { loading, user, logOut } = useAuth();
   return (
     <div className="sticky top-0 glass shadow-sm z-50">
       <Container>
@@ -38,7 +40,7 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <a>Item 1</a>
+                  <Link to="dashboard">Dashboard</Link>
                 </li>
                 <li>
                   <a>Parent</a>
@@ -63,7 +65,7 @@ const Navbar = () => {
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal px-1">
               <li>
-                <a>Item 1</a>
+                <Link to="dashboard">Dashboard</Link>
               </li>
               <li>
                 <details>
@@ -97,7 +99,9 @@ const Navbar = () => {
               {/* moon icon */}
               <FaMoon className="swap-on h-5 w-5 fill-current" />
             </label>
-            {user ? (
+            {loading ? (
+              <AiOutlineLoading className="animate-spin" />
+            ) : user ? (
               <div className="flex gap-2 items-center">
                 <div
                   className="tooltip tooltip-bottom"

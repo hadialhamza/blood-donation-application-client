@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Container from "../../components/container/Container";
-import { uploadImage } from "../../utils";
+import { uploadImage } from "../../utils/uploadImage";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -55,8 +55,8 @@ const Register = () => {
       setLoading(true);
 
       // 1. Upload Image to ImgBB
-      const imageData = await uploadImage(imageFile);
-      const imageUrl = imageData?.data?.display_url;
+      const imageUrl = await uploadImage(imageFile);
+      // const imageUrl = imageData?.data?.display_url;
       console.log(imageUrl);
 
       // 2. Create User in Firebase
