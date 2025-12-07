@@ -2,7 +2,10 @@ import { FaMoon, FaRegSun } from "react-icons/fa";
 import Container from "../container/Container";
 import { Link } from "react-router";
 
+import { useAuth } from "../../hooks/useAuth";
+
 const Navbar = () => {
+  const { user, logOut } = useAuth();
   return (
     <div className="sticky top-0 glass shadow-sm z-50">
       <Container>
@@ -94,9 +97,30 @@ const Navbar = () => {
               {/* moon icon */}
               <FaMoon className="swap-on h-5 w-5 fill-current" />
             </label>
-            <Link to="/login" className="btn btn-primary">
-              Login
-            </Link>
+            {user ? (
+              <div className="flex gap-2 items-center">
+                <div
+                  className="tooltip tooltip-bottom"
+                  data-tip={user.displayName}
+                >
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-base-content/20">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={user.photoURL}
+                      referrerPolicy="no-referrer"
+                      alt={user.displayName}
+                    />
+                  </div>
+                </div>
+                <button onClick={logOut} className="btn btn-neutral">
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link to="/login" className="btn btn-primary">
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </Container>
