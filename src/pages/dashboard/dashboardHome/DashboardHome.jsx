@@ -23,7 +23,7 @@ const DashboardHome = () => {
   // 1. DATA FETCHING FOR ADMIN / VOLUNTEER
   const { data: stats = {}, isLoading: isStatsLoading } = useQuery({
     queryKey: ["admin-stats"],
-    enabled: !isRoleLoading && (role === "admin" || role === "volunteer"),
+    enabled: !isRoleLoading && role === "admin",
     queryFn: async () => {
       const res = await axiosSecure.get("/admin-stats");
       return res.data;
@@ -67,7 +67,7 @@ const DashboardHome = () => {
   if (
     isRoleLoading ||
     (role === "donor" && isRequestsLoading) ||
-    ((role === "admin" || role === "volunteer") && isStatsLoading)
+    (role === "admin" && isStatsLoading)
   ) {
     return (
       <div className="flex justify-center mt-20">
@@ -83,7 +83,7 @@ const DashboardHome = () => {
       {/* ==============================================================
                 VIEW: ADMIN & VOLUNTEER
              */}
-      {(role === "admin" || role === "volunteer") && (
+      {role === "admin" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Total Users */}
           <div className="stat bg-base-100 shadow-xl rounded-2xl border-l-4 border-blue-500">
@@ -91,7 +91,7 @@ const DashboardHome = () => {
               <FaUsers />
             </div>
             <div className="stat-title">Total Users</div>
-            <div className="stat-value text-blue-500">{stats.totalUsers}</div>
+            <div className="stat-value text-blue-500">{stats.users}</div>
             <div className="stat-desc">Donors, Volunteers, Admins</div>
           </div>
 
@@ -101,7 +101,7 @@ const DashboardHome = () => {
               <FaDollarSign />
             </div>
             <div className="stat-title">Total Funding</div>
-            <div className="stat-value text-green-500">${stats.totalFunds}</div>
+            <div className="stat-value text-green-500">${stats.revenue}</div>
             <div className="stat-desc">Donations collected</div>
           </div>
 
@@ -111,7 +111,7 @@ const DashboardHome = () => {
               <FaTint />
             </div>
             <div className="stat-title">Blood Requests</div>
-            <div className="stat-value text-red-500">{stats.totalRequests}</div>
+            <div className="stat-value text-red-500">{stats.bloodRequests}</div>
             <div className="stat-desc">All time requests</div>
           </div>
         </div>
@@ -156,15 +156,14 @@ const DashboardHome = () => {
                         </td>
                         <td>
                           <span
-                            className={`badge ${
-                              req.status === "pending"
-                                ? "badge-warning"
-                                : req.status === "inprogress"
+                            className={`badge ${req.status === "pending"
+                              ? "badge-warning"
+                              : req.status === "inprogress"
                                 ? "badge-info"
                                 : req.status === "done"
-                                ? "badge-success"
-                                : "badge-error"
-                            } text-white`}
+                                  ? "badge-success"
+                                  : "badge-error"
+                              } text-white`}
                           >
                             {req.status}
                           </span>
