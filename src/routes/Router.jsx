@@ -12,6 +12,7 @@ import DonationRequestDetails from "../pages/dashboard/donationRequest/DonationR
 import AdminHome from "../pages/dashboard/adminHomePage/AdminHome";
 import AllUsers from "../pages/dashboard/allUsers/AllUsers";
 import AllDonationRequests from "../pages/dashboard/allDonationRequests/AllDonationRequests";
+import Search from "../pages/Search/Search";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
     ],
   },
