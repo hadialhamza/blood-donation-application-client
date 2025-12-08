@@ -11,6 +11,7 @@ import UpdateDonationRequest from "../pages/dashboard/donationRequest/UpdateDona
 import DonationRequestDetails from "../pages/dashboard/donationRequest/DonationRequestDetails";
 import AdminHome from "../pages/dashboard/adminHomePage/AdminHome";
 import AllUsers from "../pages/dashboard/allUsers/AllUsers";
+import AllDonationRequests from "../pages/dashboard/allDonationRequests/AllDonationRequests";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "donation-request-details/:id",
         element: <DonationRequestDetails />, // i have to make this a private route later.
+      },
+      {
+        path: "all-blood-donation-request",
+        element: <AllDonationRequests />,
       },
     ],
   },

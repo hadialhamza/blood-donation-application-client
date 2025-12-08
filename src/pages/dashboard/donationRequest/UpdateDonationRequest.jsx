@@ -16,7 +16,7 @@ const UpdateDonationRequest = () => {
   // State for location dropdowns
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
-  const [setRequestData] = useState(null);
+  const [requestData, setRequestData] = useState(null);
 
   const { register, handleSubmit, setValue, control } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
