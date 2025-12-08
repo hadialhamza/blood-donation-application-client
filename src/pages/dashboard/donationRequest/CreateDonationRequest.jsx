@@ -2,37 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import useAxios from "../../../hooks/useAxios";
+// import useAxios from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import useLocations from "../../../hooks/useLocations";
 
 const CreateDonationRequest = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const api = useAxios();
+  // const api = useAxios();
   const navigate = useNavigate();
 
   // Location State
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
+  const { districts, upazilas } = useLocations();
 
   const { register, handleSubmit, control } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
 
-  // Fetch Districts/Upazilas
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      try {
-        const { data: districtData } = await api.get("/districts");
-        setDistricts(districtData[0]?.data);
-        const { data: upazilaData } = await api.get("/upazilas");
-        setUpazilas(upazilaData[0]?.data);
-      } catch (error) {
-        console.error("Failed to fetch location data", error);
-      }
-    };
-    fetchLocationData();
-  }, [api]);
+
 
   // Filter Upazilas
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);

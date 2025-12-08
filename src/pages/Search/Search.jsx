@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useAxios from "../../hooks/useAxios";
 import { TbFidgetSpinner } from "react-icons/tb";
+import useLocations from "../../hooks/useLocations";
 
 const Search = () => {
   const axiosPublic = useAxios();
@@ -10,26 +11,13 @@ const Search = () => {
   const [hasSearched, setHasSearched] = useState(false); // To toggle "No data found" message
 
   // Location State
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
+  // Location State
+  const { districts, upazilas } = useLocations();
 
   const { register, handleSubmit, watch } = useForm();
   const selectedDistrict = watch("district");
 
-  // 1. Fetch Location Data
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      try {
-        const districtsRes = await axiosPublic.get("/districts");
-        setDistricts(districtsRes.data[0]?.data);
-        const upazilasRes = await axiosPublic.get("/upazilas");
-        setUpazilas(upazilasRes.data[0]?.data);
-      } catch (error) {
-        console.error("Failed to fetch location data", error);
-      }
-    };
-    fetchLocationData();
-  }, [axiosPublic]);
+
 
   // Filter Upazilas
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
@@ -7,12 +7,12 @@ import Container from "../../components/container/Container";
 import { uploadImage } from "../../utils/uploadImage";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
+import useLocations from "../../hooks/useLocations";
 
 const Register = () => {
   const { createUser, updateUser, loading, setLoading } = useAuth();
   const navigate = useNavigate();
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
+  const { districts, upazilas } = useLocations();
 
   // React Hook Form
   const {
@@ -26,16 +26,7 @@ const Register = () => {
   const selectedDistrict = useWatch({ control, name: "district" });
   const password = useWatch({ control, name: "password" });
 
-  // Fetch Districts & Upazilas from Database
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/districts")
-      .then((res) => setDistricts(res?.data[0]?.data));
 
-    axios
-      .get("http://localhost:5000/upazilas")
-      .then((res) => setUpazilas(res?.data[0]?.data));
-  }, []);
 
   // Filter Upazilas based on selected District
   const currentDistrict = districts.find(

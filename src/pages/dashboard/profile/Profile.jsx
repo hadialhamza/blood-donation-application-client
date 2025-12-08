@@ -6,17 +6,17 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { uploadImage } from "../../../utils/uploadImage";
-import useAxios from "../../../hooks/useAxios";
+// import useAxios from "../../../hooks/useAxios";
+import useLocations from "../../../hooks/useLocations";
 
 const Profile = () => {
-  const api = useAxios();
+  // const api = useAxios();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [isEditing, setIsEditing] = useState(false);
 
   // State for Districts/Upazilas
-  const [districts, setDistricts] = useState([]);
-  const [upazilas, setUpazilas] = useState([]);
+  const { districts, upazilas } = useLocations();
 
   // 1. Fetch User Data from MongoDB
   const {
@@ -32,20 +32,7 @@ const Profile = () => {
     },
   });
 
-  // 2. Fetch Location Data
-  useEffect(() => {
-    const fetchLocationData = async () => {
-      try {
-        const { data: districtData } = await api.get("/districts");
-        setDistricts(districtData[0]?.data);
-        const { data: upazilaData } = await api.get("/upazilas");
-        setUpazilas(upazilaData[0]?.data);
-      } catch (error) {
-        console.error("Failed to fetch location data", error);
-      }
-    };
-    fetchLocationData();
-  }, [api]);
+
 
   const { register, handleSubmit, setValue, control } = useForm();
 
