@@ -6,6 +6,9 @@ import Register from "../pages/register/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Profile from "../pages/dashboard/profile/Profile";
 import CreateDonationRequest from "../pages/dashboard/donationRequest/CreateDonationRequest";
+import MyDonationRequests from "../pages/dashboard/donationRequest/MyDonationRequests";
+import UpdateDonationRequest from "../pages/dashboard/donationRequest/UpdateDonationRequest";
+import DonationRequestDetails from "../pages/dashboard/donationRequest/DonationRequestDetails";
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +46,18 @@ export const router = createBrowserRouter([
         path: "create-donation-request",
         element: <CreateDonationRequest />,
       },
-      // real components one here
+      {
+        path: "my-donation-requests",
+        element: <MyDonationRequests />,
+      },
+      {
+        path: "update-request/:id",
+        element: <UpdateDonationRequest />,
+      },
+      {
+        path: "donation-request-details/:id",
+        element: <DonationRequestDetails />, // i have to make this a private route later.
+      },
     ],
   },
 ]);
