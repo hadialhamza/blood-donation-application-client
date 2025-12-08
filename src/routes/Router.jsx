@@ -9,6 +9,8 @@ import CreateDonationRequest from "../pages/dashboard/donationRequest/CreateDona
 import MyDonationRequests from "../pages/dashboard/donationRequest/MyDonationRequests";
 import UpdateDonationRequest from "../pages/dashboard/donationRequest/UpdateDonationRequest";
 import DonationRequestDetails from "../pages/dashboard/donationRequest/DonationRequestDetails";
+import AdminHome from "../pages/dashboard/adminHomePage/AdminHome";
+import AllUsers from "../pages/dashboard/allUsers/AllUsers";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +40,16 @@ export const router = createBrowserRouter([
         index: true,
         element: <div>Welcome to Dashboard Statistics</div>,
       },
+      {
+        index: true,
+        path: "admin-home",
+        element: <AdminHome />,
+      },
+      {
+        path: "all-users",
+        element: <AllUsers />,
+      },
+
       {
         path: "profile",
         element: <Profile />,

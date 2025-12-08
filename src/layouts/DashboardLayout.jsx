@@ -46,7 +46,7 @@ const DashboardLayout = () => {
       {role === "admin" && (
         <>
           <li>
-            <NavLink to="/dashboard">
+            <NavLink to="/dashboard/admin-home">
               <FaHome /> Admin Home
             </NavLink>
           </li>
