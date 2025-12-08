@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from "react-router"; // Ensure using react-router-dom
 import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/home/HomePage";
 import Login from "../pages/login/Login";
@@ -13,8 +13,17 @@ import AdminHome from "../pages/dashboard/adminHomePage/AdminHome";
 import AllUsers from "../pages/dashboard/allUsers/AllUsers";
 import AllDonationRequests from "../pages/dashboard/allDonationRequests/AllDonationRequests";
 import Search from "../pages/Search/Search";
+import PublicDonationRequests from "../pages/publicDonationRequests/PublicDonationRequests";
+import Blog from "../pages/blog/Blog";
+import BlogDetails from "../pages/blog/BlogDetails";
+import Funding from "../pages/funding/Funding";
+import PrivateRoute from "./PrivateRoute";
+import DashboardHome from "../pages/dashboard/dashboardHome/DashboardHome";
+import ContentManagement from "../pages/dashboard/contentManagement/ContentManagement";
+import AddBlog from "../pages/dashboard/contentManagement/AddBlog";
 
 export const router = createBrowserRouter([
+  // MAIN LAYOUT
   {
     path: "/",
     element: <MainLayout />,
@@ -35,26 +44,56 @@ export const router = createBrowserRouter([
         path: "search",
         element: <Search />,
       },
-    ],
-  },
-  {
-    path: "dashboard",
-    element: <DashboardLayout />,
-    children: [
       {
-        // Default Dashboard route
-        index: true,
-        element: <div>Welcome to Dashboard Statistics</div>,
+        path: "public-donation-requests",
+        element: <PublicDonationRequests />,
       },
       {
-        index: true,
+        path: "blog",
+        element: <Blog />,
+      },
+      {
+        path: "blog/:id",
+        element: <BlogDetails />,
+      },
+      {
+        path: "funding",
+        element: (
+          <PrivateRoute>
+            <Funding />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "donation-request-details/:id",
+        element: (
+          <PrivateRoute>
+            <DonationRequestDetails />
+          </PrivateRoute>
+        ),
+      },
+    ],
+  },
+
+  // DASHBOARD LAYOUT (Sidebar)
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        index: true, // This makes it the default page at /dashboard
+        element: <DashboardHome />,
+      },
+      {
         path: "admin-home",
         element: <AdminHome />,
       },
-      {
-        path: "all-users",
-        element: <AllUsers />,
-      },
+      // You might want a separate default for donors, e.g.:
+      // { path: "donor-home", element: <DonorHome /> }
 
       {
         path: "profile",
@@ -73,12 +112,20 @@ export const router = createBrowserRouter([
         element: <UpdateDonationRequest />,
       },
       {
-        path: "donation-request-details/:id",
-        element: <DonationRequestDetails />, // i have to make this a private route later.
+        path: "all-users",
+        element: <AllUsers />,
       },
       {
         path: "all-blood-donation-request",
         element: <AllDonationRequests />,
+      },
+      {
+        path: "content-management",
+        element: <ContentManagement />,
+      },
+      {
+        path: "add-blog",
+        element: <AddBlog />,
       },
     ],
   },
