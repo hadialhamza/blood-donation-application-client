@@ -14,7 +14,7 @@ const CreateDonationRequest = () => {
   const navigate = useNavigate();
 
   // Location State
-  const { districts, upazilas } = useLocations();
+  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
   const { register, handleSubmit, control } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
@@ -69,6 +69,14 @@ const CreateDonationRequest = () => {
       }
     }
   };
+
+  if (isLocationsLoading) {
+    return (
+      <div className="flex justify-center mt-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">

@@ -174,7 +174,7 @@ const MyDonationRequests = () => {
                       Delete
                     </button>
                     <Link
-                      to={`/dashboard/donation-request-details/${req._id}`}
+                      to={`/donation-request-details/${req._id}`}
                       className="btn btn-sm btn-ghost"
                     >
                       View

@@ -16,7 +16,8 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   // State for Districts/Upazilas
-  const { districts, upazilas } = useLocations();
+  // State for Districts/Upazilas
+  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
   // 1. Fetch User Data from MongoDB
   const {
@@ -84,7 +85,7 @@ const Profile = () => {
     }
   };
 
-  if (isLoading)
+  if (isLoading || isLocationsLoading)
     return (
       <div className="flex justify-center mt-20">
         <TbFidgetSpinner className="animate-spin text-4xl" />

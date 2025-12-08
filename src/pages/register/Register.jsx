@@ -1,18 +1,19 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import axios from "axios";
 import toast from "react-hot-toast";
 import Container from "../../components/container/Container";
 import { uploadImage } from "../../utils/uploadImage";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 import useLocations from "../../hooks/useLocations";
+import useAxios from "../../hooks/useAxios";
 
 const Register = () => {
+  const api = useAxios();
   const { createUser, updateUser, loading, setLoading } = useAuth();
   const navigate = useNavigate();
-  const { districts, upazilas } = useLocations();
+  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
   // React Hook Form
   const {
@@ -25,8 +26,6 @@ const Register = () => {
   // Watch the district field to filter upazilas
   const selectedDistrict = useWatch({ control, name: "district" });
   const password = useWatch({ control, name: "password" });
-
-
 
   // Filter Upazilas based on selected District
   const currentDistrict = districts.find(
@@ -66,10 +65,7 @@ const Register = () => {
         avatar: imageUrl,
       };
 
-      const dbResponse = await axios.post(
-        "http://localhost:5000/users",
-        userInfo
-      );
+      const dbResponse = await api.post("users", userInfo);
 
       if (dbResponse.data.insertedId) {
         toast.success("Registration Successful!");
@@ -82,6 +78,15 @@ const Register = () => {
       setLoading(false);
     }
   };
+
+
+  if (isLocationsLoading) {
+    return (
+      <div className="flex justify-center mt-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <Container>

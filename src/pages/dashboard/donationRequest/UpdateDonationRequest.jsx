@@ -15,7 +15,7 @@ const UpdateDonationRequest = () => {
   const navigate = useNavigate();
 
   // State for location dropdowns
-  const { districts, upazilas } = useLocations();
+  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
   const [requestData, setRequestData] = useState(null);
 
   const { register, handleSubmit, setValue, control } = useForm();
@@ -71,6 +71,15 @@ const UpdateDonationRequest = () => {
       Swal.fire("Error", "Failed to update request", "error");
     }
   };
+
+
+  if (isLocationsLoading || !requestData) {
+    return (
+      <div className="flex justify-center mt-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">

@@ -20,6 +20,7 @@ const useLocations = () => {
       const res = await api.get("/upazilas");
       return res.data?.[0]?.data || [];
     },
+    enabled: districts.length > 0 && !isDistrictsLoading,
     staleTime: Infinity,
     gcTime: Infinity,
   });
@@ -27,7 +28,7 @@ const useLocations = () => {
   return {
     districts,
     upazilas,
-    isLoading: isDistrictsLoading || isUpazilasLoading,
+    isLoading: isDistrictsLoading || isUpazilasLoading || (districts.length > 0 && upazilas.length === 0),
   };
 };
 

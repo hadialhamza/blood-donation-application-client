@@ -12,7 +12,7 @@ const Search = () => {
 
   // Location State
   // Location State
-  const { districts, upazilas } = useLocations();
+  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
   const { register, handleSubmit, watch } = useForm();
   const selectedDistrict = watch("district");
@@ -45,6 +45,15 @@ const Search = () => {
       setLoading(false);
     }
   };
+
+
+  if (isLocationsLoading) {
+    return (
+      <div className="flex justify-center mt-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 pb-12 px-4 max-w-7xl mx-auto min-h-screen">

@@ -8,7 +8,7 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
-  const { logOut } = useAuth();
+  const { logOut, setLoading } = useAuth();
 
   // Request Interceptor: Add Token
   axiosSecure.interceptors.request.use(
@@ -33,6 +33,7 @@ const useAxiosSecure = () => {
       const status = error.response.status;
       if (status === 401 || status === 403) {
         await logOut();
+        setLoading(false);
         navigate("/login");
       }
       return Promise.reject(error);
