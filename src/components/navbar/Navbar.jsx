@@ -20,6 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetClose,
+  SheetDescription,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -55,7 +56,6 @@ const Navbar = () => {
       .catch((error) => console.log(error));
   };
 
-  // Define Links Array for cleaner code
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Donation Requests", path: "/public-donation-requests" },
@@ -67,12 +67,15 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-blur:bg-background/60">
       <Container>
         <div className="flex h-16 items-center">
-          {/* --- LEFT: LOGO + NAV --- */}
-          <div className="flex items-center gap-8">
+          {/* --- LEFT: LOGO --- */}
+          <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center space-x-2">
               <BloodLineLogo />
             </Link>
+          </div>
 
+          {/* --- RIGHT: NAV + ACTIONS --- */}
+          <div className="ml-auto flex items-center gap-6">
             {/* --- DESKTOP NAV --- */}
             <nav className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
@@ -91,7 +94,7 @@ const Navbar = () => {
                       {link.name}
                       <span
                         className={cn(
-                          "absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300",
+                          "absolute -bottom-1 left-0 h-0.5 bg-red-500 transition-all duration-300",
                           isActive ? "w-full" : "w-0 group-hover:w-full"
                         )}
                       ></span>
@@ -100,78 +103,80 @@ const Navbar = () => {
                 </NavLink>
               ))}
             </nav>
-          </div>
 
-          {/* --- RIGHT: ACTIONS --- */}
-          <div className="ml-auto flex items-center gap-2">
-            {/* Theme Toggle Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="rounded-full"
-            >
-              {theme === "night" ? (
-                <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />
-              ) : (
-                <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+            <div className="hidden md:block h-6 w-px bg-border" />
 
-            {/* Desktop: Auth Logic */}
-            <div className="hidden md:flex items-center gap-2">
-              {user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="relative h-10 w-10 rounded-full"
+            <div className="flex items-center gap-2">
+              {/* Theme Toggle Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="rounded-full"
+              >
+                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
+                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+
+              {/* Desktop: Auth Logic */}
+              <div className="hidden md:flex items-center gap-2">
+                {user ? (
+                  <DropdownMenu modal={false}>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="relative h-10 w-10 rounded-full"
+                      >
+                        <Avatar className="h-10 w-10 border border-border">
+                          <AvatarImage
+                            src={user?.photoURL}
+                            alt={user?.displayName || "User"}
+                          />
+                          <AvatarFallback>
+                            <User />
+                          </AvatarFallback>
+                        </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      className="w-56"
+                      align="end"
+                      forceMount
                     >
-                      <Avatar className="h-10 w-10 border border-border">
-                        <AvatarImage
-                          src={user?.photoURL}
-                          alt={user?.displayName || "User"}
-                        />
-                        <AvatarFallback>
-                          <User />
-                        </AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
-                          {user.displayName}
-                        </p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                          {user.email}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link to="/dashboard" className="cursor-pointer">
-                        <LayoutDashboard className="mr-2 h-4 w-4" />
-                        <span>Dashboard</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={handleLogOut}
-                      className="text-red-600 cursor-pointer focus:text-red-600"
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link to="/login">
-                  <Button size="sm">Login</Button>
-                </Link>
-              )}
+                      <DropdownMenuLabel className="font-normal border">
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {user.displayName}
+                          </p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user.email}
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link to="/dashboard" className="cursor-pointer">
+                          <LayoutDashboard className="mr-2 h-4 w-4" />
+                          <span>Dashboard</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={handleLogOut}
+                        className="text-red-600 cursor-pointer focus:text-red-600"
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Log out</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link to="/login">
+                    <Button size="sm">Login</Button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
           {/* --- MOBILE: SHEET MENU --- */}
@@ -188,6 +193,9 @@ const Navbar = () => {
                   <SheetTitle className="text-left flex items-center gap-2">
                     <BloodLineLogo />
                   </SheetTitle>
+                  <SheetDescription className="hidden">
+                    Mobile navigation menu
+                  </SheetDescription>
                 </SheetHeader>
 
                 <div className="flex flex-col space-y-4 py-8">

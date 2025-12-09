@@ -56,10 +56,10 @@ const Featured = () => {
               className="group relative overflow-hidden border-transparent bg-white/50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-zinc-900/50 dark:border-zinc-800"
             >
               {/* Decorative gradient blob on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-linear-to-br from-red-500/5 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
               <CardHeader className="relative pb-2">
-                <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-red-50 dark:bg-red-900/20 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-red-50 dark:bg-red-900/20 group-hover:bg-background group-hover:text-white transition-colors duration-300">
                   {/* Clone element to apply hover color logic easily if needed, or rely on group-hover in parent */}
                   <div className="transition-colors duration-300 group-hover:text-white">
                     {feature.icon}

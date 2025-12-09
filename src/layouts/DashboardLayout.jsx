@@ -12,7 +12,7 @@ import {
 import useRole from "../hooks/useRole";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
@@ -103,6 +103,8 @@ const DashboardLayout = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-6">
+              <SheetTitle className="hidden">Dashboard Menu</SheetTitle>
+              <SheetDescription className="hidden">Navigation options for dashboard</SheetDescription>
               <SidebarContent />
             </SheetContent>
           </Sheet>
