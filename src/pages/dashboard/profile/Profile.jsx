@@ -27,7 +27,7 @@ const Profile = () => {
     <div className="p-8 flex justify-center items-center min-h-[80vh]">
       <Card className="w-full max-w-3xl shadow-xl overflow-hidden">
         {/* Header Background */}
-        <div className="bg-gradient-to-r from-red-500 to-red-700 h-48 relative">
+        <div className="bg-linear-to-r from-red-500 to-red-700 h-48 relative">
           <div className="absolute -bottom-16 left-8">
             <Avatar className="h-32 w-32 border-4 border-white ring-offset-background">
               <AvatarImage src={dbUser.image || user?.photoURL} alt="Profile" />
@@ -47,7 +47,10 @@ const Profile = () => {
               </p>
             </div>
             <Link to="/dashboard/profile/update">
-              <Button variant="outline" className="gap-2 text-red-600 hover:text-red-700 border-red-200 hover:bg-red-50">
+              <Button
+                variant="outline"
+                className="gap-2 text-red-600 hover:text-red-700 border-red-200 hover:bg-red-50"
+              >
                 <FaEdit /> Edit Profile
               </Button>
             </Link>

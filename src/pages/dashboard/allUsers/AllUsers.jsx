@@ -80,10 +80,7 @@ const AllUsers = () => {
 
   // Handle Status Change (Block/Unblock)
   const handleStatusChange = (user, newStatus) => {
-    // Force focus to body to remove it from dropdown
     document.body.focus();
-
-    // Delay SweetAlert to allow Dropdown to close and focus to reset
     setTimeout(() => {
       Swal.fire({
         title: `Are you sure you want to ${newStatus} this user?`,
@@ -106,9 +103,7 @@ const AllUsers = () => {
 
   // Handle Role Change (Make Admin/Volunteer)
   const handleRoleChange = (user, newRole) => {
-    // Force focus to body to remove it from dropdown
     document.body.focus();
-
     setTimeout(() => {
       Swal.fire({
         title: `Make this user a ${newRole}?`,
@@ -217,6 +212,7 @@ const AllUsers = () => {
           </div>
         </div>
       </div>
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">All Users</h2>
         <div className="w-[180px]">
@@ -236,9 +232,10 @@ const AllUsers = () => {
         </div>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border-0 md:border">
         <Table>
-          <TableHeader>
+          {/* Hide Header on Mobile */}
+          <TableHeader className="hidden md:table-header-group">
             <TableRow>
               <TableHead>Avatar</TableHead>
               <TableHead>Name</TableHead>
@@ -250,27 +247,53 @@ const AllUsers = () => {
           </TableHeader>
           <TableBody>
             {paginatedUsers.map((user) => (
-              <TableRow key={user._id}>
-                <TableCell>
+              <TableRow
+                key={user._id}
+                // Mobile: Block (Card style), Desktop: Table Row
+                className="block md:table-row mb-6 md:mb-0 border rounded-lg md:border-b md:rounded-none shadow-sm md:shadow-none bg-card md:bg-transparent overflow-hidden"
+              >
+                {/* Avatar Cell */}
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Avatar</span>
                   <Avatar>
                     <AvatarImage src={user.avatar} alt={user.name} />
                     <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
                   </Avatar>
                 </TableCell>
-                <TableCell className="font-medium">{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
+
+                {/* Name Cell */}
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0 font-medium">
+                  <span className="font-bold md:hidden">Name</span>
+                  {user.name}
+                </TableCell>
+
+                {/* Email Cell */}
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Email</span>
+                  <span className="text-sm md:text-base break-all">
+                    {user.email}
+                  </span>
+                </TableCell>
+
+                {/* Role Cell */}
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Role</span>
                   <Badge className={getRoleBadgeColor(user.role)}>
                     {user.role}
                   </Badge>
                 </TableCell>
-                <TableCell>
+
+                {/* Status Cell */}
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Status</span>
                   <Badge className={getStatusBadgeColor(user.status)}>
                     {user.status}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-right">
-                  {/* Hide actions for the currently logged-in admin */}
+
+                {/* Actions Cell */}
+                <TableCell className="flex md:table-cell items-center justify-between md:justify-end px-4 py-2 md:px-4 md:py-4 text-right">
+                  <span className="font-bold md:hidden">Actions</span>
                   {currentUser?.email !== user.email && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -280,17 +303,6 @@ const AllUsers = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
-
-                        {/* Admin Actions */}
-                        {/* Logic: 
-                                - Admin himself: Hidden (handled by outer condition)
-                                - Other Admins: Block, Make Volunteer, Make Donor
-                                - Volunteer: Block, Make Admin, Make Donor
-                                - Donor: Block, Make Admin, Make Volunteer
-                            */}
-
-                        {/* Block/Unblock Action - Available for all others */}
                         {user.status === "active" ? (
                           <DropdownMenuItem
                             onClick={() => handleStatusChange(user, "blocked")}
@@ -316,10 +328,7 @@ const AllUsers = () => {
                               : "Donor"}
                           </DropdownMenuItem>
                         )}
-
                         <DropdownMenuSeparator />
-
-                        {/* Role Actions */}
                         {user.role === "admin" && (
                           <>
                             <DropdownMenuItem
@@ -336,7 +345,6 @@ const AllUsers = () => {
                             </DropdownMenuItem>
                           </>
                         )}
-
                         {user.role === "volunteer" && (
                           <>
                             <DropdownMenuItem
@@ -351,7 +359,6 @@ const AllUsers = () => {
                             </DropdownMenuItem>
                           </>
                         )}
-
                         {user.role === "donor" && (
                           <>
                             <DropdownMenuItem
