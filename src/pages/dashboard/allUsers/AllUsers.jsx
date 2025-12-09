@@ -2,16 +2,44 @@ import React, { useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-// import { FaUserShield, FaUserTie } from "react-icons/fa";
+import { MoreHorizontal } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const { data: users = [], refetch } = useQuery({
     queryKey: ["all-users", filterStatus],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/all-users?status=${filterStatus}`);
+      const query = filterStatus === "all" ? "" : `?status=${filterStatus}`;
+      const res = await axiosSecure.get(`/all-users${query}`);
       return res.data;
     },
   });
@@ -56,116 +84,126 @@ const AllUsers = () => {
     });
   };
 
+  const getRoleBadgeColor = (role) => {
+    switch (role) {
+      case "admin":
+        return "bg-purple-500 hover:bg-purple-600 border-transparent text-white";
+      case "volunteer":
+        return "bg-orange-500 hover:bg-orange-600 border-transparent text-white";
+      default:
+        return "bg-gray-500 hover:bg-gray-600 border-transparent text-white";
+    }
+  };
+
+  const getStatusBadgeColor = (status) => {
+    return status === "active"
+      ? "bg-green-500 hover:bg-green-600 border-transparent text-white"
+      : "bg-red-500 hover:bg-red-600 border-transparent text-white";
+  };
+
   return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">All Users</h2>
-        <select
-          className="select select-bordered"
-          onChange={(e) => setFilterStatus(e.target.value)}
-        >
-          <option value="">All Status</option>
-          <option value="active">Active</option>
-          <option value="blocked">Blocked</option>
-        </select>
+        <div className="w-[180px]">
+          <Select
+            value={filterStatus}
+            onValueChange={(value) => setFilterStatus(value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Filter by Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="blocked">Blocked</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table w-full border">
-          <thead className="bg-base-200">
-            <tr>
-              <th>Avatar</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Avatar</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {users.map((user) => (
-              <tr key={user._id}>
-                <td>
-                  <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                      <img src={user.avatar} alt="Avatar" />
-                    </div>
-                  </div>
-                </td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
-                  <span
-                    className={`badge ${
-                      user.role === "admin"
-                        ? "badge-primary"
-                        : user.role === "volunteer"
-                        ? "badge-secondary"
-                        : "badge-ghost"
-                    }`}
-                  >
+              <TableRow key={user._id}>
+                <TableCell>
+                  <Avatar>
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                </TableCell>
+                <TableCell className="font-medium">{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  <Badge className={getRoleBadgeColor(user.role)}>
                     {user.role}
-                  </span>
-                </td>
-                <td>
-                  <span
-                    className={`badge ${
-                      user.status === "active"
-                        ? "badge-success text-white"
-                        : "badge-error text-white"
-                    }`}
-                  >
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <Badge className={getStatusBadgeColor(user.status)}>
                     {user.status}
-                  </span>
-                </td>
-                <td>
-                  <div className="dropdown dropdown-left">
-                    <div
-                      tabIndex={0}
-                      role="button"
-                      className="btn btn-sm btn-ghost m-1"
-                    >
-                      ...
-                    </div>
-                    <ul
-                      tabIndex={0}
-                      className="dropdown-content z-1 menu p-2 shadow bg-base-100 rounded-box w-52"
-                    >
+                  </Badge>
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+
                       {/* Status Actions */}
                       {user.status === "active" ? (
-                        <li>
-                          <a
-                            onClick={() => handleStatusChange(user, "blocked")}
-                          >
-                            Block
-                          </a>
-                        </li>
+                        <DropdownMenuItem
+                          onClick={() => handleStatusChange(user, "blocked")}
+                          className="text-red-600 focus:text-red-600"
+                        >
+                          Block User
+                        </DropdownMenuItem>
                       ) : (
-                        <li>
-                          <a onClick={() => handleStatusChange(user, "active")}>
-                            Unblock
-                          </a>
-                        </li>
+                        <DropdownMenuItem
+                          onClick={() => handleStatusChange(user, "active")}
+                          className="text-green-600 focus:text-green-600"
+                        >
+                          Unblock User
+                        </DropdownMenuItem>
                       )}
 
+                      <DropdownMenuSeparator />
+
                       {/* Role Actions */}
-                      <li>
-                        <a onClick={() => handleRoleChange(user, "volunteer")}>
-                          Make Volunteer
-                        </a>
-                      </li>
-                      <li>
-                        <a onClick={() => handleRoleChange(user, "admin")}>
-                          Make Admin
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
+                      <DropdownMenuItem
+                        onClick={() => handleRoleChange(user, "volunteer")}
+                      >
+                        Make Volunteer
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleRoleChange(user, "admin")}
+                      >
+                        Make Admin
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

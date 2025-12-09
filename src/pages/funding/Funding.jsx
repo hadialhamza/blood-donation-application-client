@@ -8,6 +8,25 @@ import Swal from "sweetalert2";
 import { useSearchParams, useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 const Funding = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [amount, setAmount] = useState(10);
@@ -50,9 +69,6 @@ const Funding = () => {
     }
   }, [searchParams, axiosSecure, navigate, refetch]);
 
-  const openAppModal = () => setIsOpen(true);
-  const closeAppModal = () => setIsOpen(false);
-
   const handleDonate = async () => {
     try {
       const res = await axiosSecure.post("/create-checkout-session", {
@@ -77,67 +93,64 @@ const Funding = () => {
     <div className="pt-24 pb-12 px-4 max-w-7xl mx-auto min-h-screen">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold text-red-600">Funding</h2>
-        <button onClick={openAppModal} className="btn btn-primary">
-          Give Fund
-        </button>
+        <Button onClick={() => setIsOpen(true)}>Give Fund</Button>
       </div>
 
       {/* Funding Table */}
-      <div className="overflow-x-auto bg-base-100 shadow-xl rounded-xl">
-        <table className="table w-full">
-          {/* head */}
-          <thead className="bg-base-200">
-            <tr>
-              <th>Donor Name</th>
-              <th>Date</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Donor Name</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {funds.map((fund) => (
-              <tr key={fund._id}>
-                <td className="font-bold">{fund.name}</td>
-                <td>{new Date(fund.date).toLocaleDateString()}</td>
-                <td className="text-green-600 font-bold">${fund.amount}</td>
-              </tr>
+              <TableRow key={fund._id}>
+                <TableCell className="font-bold">{fund.name}</TableCell>
+                <TableCell>
+                  {new Date(fund.date).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-green-600 font-bold">
+                  ${fund.amount}
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {/* Modal - Simplified for Checkout */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-xl shadow-2xl w-96 relative">
-            <button
-              onClick={closeAppModal}
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-            >
-              ✕
-            </button>
-            <h3 className="text-lg font-bold mb-4">Donate Funding</h3>
-
-            <div className="form-control mb-6">
-              <label className="label">
-                <span className="label-text">Amount ($)</span>
-              </label>
-              <input
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Donate Funding</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="amount" className="text-right">
+                Amount ($)
+              </Label>
+              <Input
+                id="amount"
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(Number(e.target.value))}
                 min="1"
-                className="input input-bordered"
+                className="col-span-3"
               />
             </div>
-
-            <button onClick={handleDonate} className="btn btn-primary w-full">
-              Proceed to Pay ${amount}
-            </button>
           </div>
-        </div>
-      )}
+          <DialogFooter>
+            <Button onClick={handleDonate} className="w-full">
+              Proceed to Pay ${amount}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
-
 export default Funding;

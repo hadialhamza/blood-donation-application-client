@@ -6,6 +6,16 @@ import Container from "../../components/container/Container";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 const Login = () => {
   const { signIn, loading, setLoading } = useAuth();
   const navigate = useNavigate();
@@ -39,81 +49,85 @@ const Login = () => {
   return (
     <Container>
       <title>Blood Line | Login</title>
-      <div className="flex justify-center items-center min-h-screen bg-base-200">
-        <div className="card w-full max-w-sm shadow-2xl bg-base-100">
-          <div className="card-body">
-            <h2 className="text-3xl font-bold text-center mb-4">Login</h2>
-
+      <div className="flex justify-center items-center min-h-screen bg-slate-50 dark:bg-zinc-950">
+        <Card className="w-full max-w-sm shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold text-center">
+              Login
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Email */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
                   type="email"
                   placeholder="email@example.com"
-                  className="input input-bordered w-full"
                   {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-xs mt-1">
+                  <span className="text-red-500 text-xs">
                     {errors.email.message}
                   </span>
                 )}
               </div>
 
               {/* Password */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
-                <input
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
                   type="password"
                   placeholder="******"
-                  className="input input-bordered w-full"
                   {...register("password", {
                     required: "Password is required",
                   })}
                 />
                 {errors.password && (
-                  <span className="text-red-500 text-xs mt-1">
+                  <span className="text-red-500 text-xs">
                     {errors.password.message}
                   </span>
                 )}
-                <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
+                <div className="text-right">
+                  <a href="#" className="text-xs hover:underline text-muted-foreground">
                     Forgot password?
                   </a>
-                </label>
+                </div>
               </div>
 
               {/* Login Button */}
-              <div className="form-control mt-6">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-full"
-                  disabled={loading}
-                >
+              <div className="pt-4">
+                <Button className="w-full" type="submit" disabled={loading}>
                   {loading ? (
-                    <TbFidgetSpinner className="animate-spin text-2xl m-auto" />
+                    <TbFidgetSpinner className="animate-spin text-2xl" />
                   ) : (
                     "Login"
                   )}
-                </button>
+                </Button>
               </div>
             </form>
 
-            <div className="divider">OR</div>
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or
+                </span>
+              </div>
+            </div>
 
-            <p className="text-center text-sm">
+            <p className="text-center text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/register" className="link link-primary font-bold">
+              <Link to="/register" className="text-primary font-bold hover:underline">
                 Register
               </Link>
             </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </Container>
   );

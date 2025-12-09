@@ -15,6 +15,23 @@ import { useAuth } from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 const DashboardHome = () => {
   const { user } = useAuth();
   const [role, isRoleLoading] = useRole();
@@ -64,6 +81,21 @@ const DashboardHome = () => {
     });
   };
 
+  const statusBadgeColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-500 hover:bg-yellow-600 border-transparent text-white";
+      case "inprogress":
+        return "bg-blue-500 hover:bg-blue-600 border-transparent text-white";
+      case "done":
+        return "bg-green-500 hover:bg-green-600 border-transparent text-white";
+      case "canceled":
+        return "bg-red-500 hover:bg-red-600 border-transparent text-white";
+      default:
+        return "bg-gray-500 hover:bg-gray-600 border-transparent text-white";
+    }
+  };
+
   if (
     isRoleLoading ||
     (role === "donor" && isRequestsLoading) ||
@@ -77,8 +109,8 @@ const DashboardHome = () => {
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6">Welcome, {user?.displayName}!</h2>
+    <div className="p-6 space-y-8">
+      <h2 className="text-3xl font-bold">Welcome, {user?.displayName}!</h2>
 
       {/* ==============================================================
                 VIEW: ADMIN & VOLUNTEER
@@ -86,146 +118,168 @@ const DashboardHome = () => {
       {role === "admin" && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Total Users */}
-          <div className="stat bg-base-100 shadow-xl rounded-2xl border-l-4 border-blue-500">
-            <div className="stat-figure text-blue-500 text-3xl">
-              <FaUsers />
-            </div>
-            <div className="stat-title">Total Users</div>
-            <div className="stat-value text-blue-500">{stats.users}</div>
-            <div className="stat-desc">Donors, Volunteers, Admins</div>
-          </div>
+          <Card className="border-l-4 border-l-blue-500 shadow-md">
+            <CardContent className="flex items-center justify-between p-6">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Total Users
+                </p>
+                <div className="text-3xl font-bold text-blue-500">
+                  {stats.users}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Donors, Volunteers, Admins
+                </p>
+              </div>
+              <div className="text-blue-500 text-3xl opacity-20">
+                <FaUsers />
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Total Funding */}
-          <div className="stat bg-base-100 shadow-xl rounded-2xl border-l-4 border-green-500">
-            <div className="stat-figure text-green-500 text-3xl">
-              <FaDollarSign />
-            </div>
-            <div className="stat-title">Total Funding</div>
-            <div className="stat-value text-green-500">${stats.revenue}</div>
-            <div className="stat-desc">Donations collected</div>
-          </div>
+          <Card className="border-l-4 border-l-green-500 shadow-md">
+            <CardContent className="flex items-center justify-between p-6">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Total Funding
+                </p>
+                <div className="text-3xl font-bold text-green-500">
+                  ${stats.revenue}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Donations collected
+                </p>
+              </div>
+              <div className="text-green-500 text-3xl opacity-20">
+                <FaDollarSign />
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Total Requests */}
-          <div className="stat bg-base-100 shadow-xl rounded-2xl border-l-4 border-red-500">
-            <div className="stat-figure text-red-500 text-3xl">
-              <FaTint />
-            </div>
-            <div className="stat-title">Blood Requests</div>
-            <div className="stat-value text-red-500">{stats.bloodRequests}</div>
-            <div className="stat-desc">All time requests</div>
-          </div>
+          <Card className="border-l-4 border-l-red-500 shadow-md">
+            <CardContent className="flex items-center justify-between p-6">
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Blood Requests
+                </p>
+                <div className="text-3xl font-bold text-red-500">
+                  {stats.bloodRequests}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  All time requests
+                </p>
+              </div>
+              <div className="text-red-500 text-3xl opacity-20">
+                <FaTint />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       )}
 
       {/*  VIEW: DONOR */}
       {role === "donor" && (
-        <div>
+        <div className="space-y-4">
           {recentRequests.length > 0 ? (
             <>
-              <h3 className="text-xl font-bold mb-4">
-                Recent Donation Requests
-              </h3>
-              <div className="overflow-x-auto bg-base-100 shadow-xl rounded-lg">
-                <table className="table w-full">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th>Recipient Name</th>
-                      <th>Location</th>
-                      <th>Date & Time</th>
-                      <th>Blood Group</th>
-                      <th>Status</th>
-                      <th>Donor Info</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-bold">Recent Donation Requests</h3>
+                <Link to="/dashboard/my-donation-requests">
+                  <Button variant="outline">View All Requests</Button>
+                </Link>
+              </div>
+
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Recipient Name</TableHead>
+                      <TableHead>Location</TableHead>
+                      <TableHead>Date & Time</TableHead>
+                      <TableHead>Blood Group</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Donor Info</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {recentRequests.map((req) => (
-                      <tr key={req._id}>
-                        <td>{req.recipientName}</td>
-                        <td>
+                      <TableRow key={req._id}>
+                        <TableCell className="font-medium">
+                          {req.recipientName}
+                        </TableCell>
+                        <TableCell>
                           {req.recipientDistrict}, {req.recipientUpazila}
-                        </td>
-                        <td>
-                          {req.donationDate} <br />
-                          <span className="text-xs text-gray-500">
-                            {req.donationTime}
-                          </span>
-                        </td>
-                        <td className="font-bold text-red-600">
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col">
+                            <span>{req.donationDate}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {req.donationTime}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-bold text-red-600">
                           {req.bloodGroup}
-                        </td>
-                        <td>
-                          <span
-                            className={`badge ${req.status === "pending"
-                              ? "badge-warning"
-                              : req.status === "inprogress"
-                                ? "badge-info"
-                                : req.status === "done"
-                                  ? "badge-success"
-                                  : "badge-error"
-                              } text-white`}
-                          >
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={statusBadgeColor(req.status)}>
                             {req.status}
-                          </span>
-                        </td>
-                        <td>
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
                           {req.status === "inprogress" ? (
-                            <div>
-                              <p className="font-bold">{req.donorName}</p>
-                              <p className="text-xs">{req.donorEmail}</p>
+                            <div className="flex flex-col">
+                              <span className="font-bold">{req.donorName}</span>
+                              <span className="text-xs text-muted-foreground">
+                                {req.donorEmail}
+                              </span>
                             </div>
                           ) : (
                             "-"
                           )}
-                        </td>
-                        <td className="flex gap-2">
-                          <Link
-                            to={`/dashboard/update-request/${req._id}`}
-                            className="btn btn-sm btn-ghost text-blue-600"
-                          >
-                            <FaEdit />
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(req._id)}
-                            className="btn btn-sm btn-ghost text-red-600"
-                          >
-                            <FaTrash />
-                          </button>
-                          <Link
-                            to={`/donation-request-details/${req._id}`}
-                            className="btn btn-sm btn-ghost text-gray-600"
-                          >
-                            <FaEye />
-                          </Link>
-                        </td>
-                      </tr>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-2">
+                            <Link to={`/dashboard/update-request/${req._id}`}>
+                              <Button variant="ghost" size="icon" className="text-blue-600 hover:text-blue-700">
+                                <FaEdit />
+                              </Button>
+                            </Link>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => handleDelete(req._id)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <FaTrash />
+                            </Button>
+                            <Link to={`/donation-request-details/${req._id}`}>
+                              <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-800">
+                                <FaEye />
+                              </Button>
+                            </Link>
+                          </div>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* View My All Request Button */}
-              <div className="mt-6 text-center">
-                <Link
-                  to="/dashboard/my-donation-requests"
-                  className="btn btn-primary"
-                >
-                  View My All Requests
-                </Link>
+                  </TableBody>
+                </Table>
               </div>
             </>
           ) : (
-            <div className="text-center py-10 bg-base-100 shadow-xl rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-500">
-                You haven't made any donation requests yet.
-              </h3>
-              <Link
-                to="/dashboard/create-donation-request"
-                className="btn btn-primary mt-4"
-              >
-                Create Request
-              </Link>
-            </div>
+            <Card className="text-center py-10 shadow-sm">
+              <CardContent>
+                <h3 className="text-lg font-semibold text-muted-foreground mb-4">
+                  You haven't made any donation requests yet.
+                </h3>
+                <Link to="/dashboard/create-donation-request">
+                  <Button>Create Request</Button>
+                </Link>
+              </CardContent>
+            </Card>
           )}
         </div>
       )}

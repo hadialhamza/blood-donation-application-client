@@ -5,10 +5,29 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
 
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
+
 const MyDonationRequests = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [filterStatus, setFilterStatus] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -16,8 +35,10 @@ const MyDonationRequests = () => {
   const { data: requests = [], refetch } = useQuery({
     queryKey: ["my-donation-requests", user?.email, filterStatus],
     queryFn: async () => {
+      // If filterStatus is "all", don't pass status param or handle in backend
+      const query = filterStatus === "all" ? "" : `?status=${filterStatus}`;
       const res = await axiosSecure.get(
-        `/donation-requests/${user?.email}?status=${filterStatus}`
+        `/donation-requests/${user?.email}${query}`
       );
       return res.data;
     },
@@ -60,151 +81,165 @@ const MyDonationRequests = () => {
   const currentData = requests.slice(startIndex, startIndex + itemsPerPage);
   const totalPages = Math.ceil(requests.length / itemsPerPage);
 
+  const statusBadgeColor = (status) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-500 hover:bg-yellow-600 border-transparent text-white";
+      case "inprogress":
+        return "bg-blue-500 hover:bg-blue-600 border-transparent text-white";
+      case "done":
+        return "bg-green-500 hover:bg-green-600 border-transparent text-white";
+      case "canceled":
+        return "bg-red-500 hover:bg-red-600 border-transparent text-white";
+      default:
+        return "bg-gray-500 hover:bg-gray-600 border-transparent text-white";
+    }
+  };
+
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">My Donation Requests</h2>
 
         {/* Filter Dropdown */}
-        <select
-          className="select select-bordered"
-          onChange={(e) => setFilterStatus(e.target.value)}
-          value={filterStatus}
-        >
-          <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="inprogress">In Progress</option>
-          <option value="done">Done</option>
-          <option value="canceled">Canceled</option>
-        </select>
+        <div className="w-[180px]">
+          <Select
+            value={filterStatus}
+            onValueChange={(value) => setFilterStatus(value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Filter by Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="inprogress">In Progress</SelectItem>
+              <SelectItem value="done">Done</SelectItem>
+              <SelectItem value="canceled">Canceled</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="table w-full border">
-          <thead className="bg-base-200">
-            <tr>
-              <th>Recipient</th>
-              <th>Location</th>
-              <th>Date/Time</th>
-              <th>Blood Group</th>
-              <th>Status</th>
-              <th>Donor Info</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Recipient</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Date/Time</TableHead>
+              <TableHead>Blood Group</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Donor Info</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {currentData.length === 0 ? (
-              <tr>
-                <td colSpan="7" className="text-center">
+              <TableRow>
+                <TableCell colSpan={7} className="h-24 text-center">
                   No requests found.
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               currentData.map((req) => (
-                <tr key={req._id}>
-                  <td>{req.recipientName}</td>
-                  <td>
+                <TableRow key={req._id}>
+                  <TableCell className="font-medium">
+                    {req.recipientName}
+                  </TableCell>
+                  <TableCell>
                     {req.recipientDistrict}, {req.recipientUpazila}
-                  </td>
-                  <td>
-                    {req.donationDate} <br />
-                    <span className="text-xs text-gray-500">
-                      {req.donationTime}
-                    </span>
-                  </td>
-                  <td className="font-bold text-red-600">{req.bloodGroup}</td>
-                  <td>
-                    <div
-                      className={`badge ${
-                        req.status === "pending"
-                          ? "badge-warning"
-                          : req.status === "inprogress"
-                          ? "badge-info"
-                          : req.status === "done"
-                          ? "badge-success"
-                          : "badge-error"
-                      } text-white`}
-                    >
-                      {req.status}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col">
+                      <span>{req.donationDate}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {req.donationTime}
+                      </span>
                     </div>
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell className="font-bold text-red-600">
+                    {req.bloodGroup}
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={statusBadgeColor(req.status)}>
+                      {req.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
                     {req.status === "inprogress" ? (
-                      <div>
-                        <p className="font-bold">{req.donorName}</p>
-                        <p className="text-xs">{req.donorEmail}</p>
+                      <div className="flex flex-col">
+                        <span className="font-bold">{req.donorName}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {req.donorEmail}
+                        </span>
                       </div>
                     ) : (
                       "-"
                     )}
-                  </td>
-                  <td className="space-x-2">
-                    {/* Status Actions */}
-                    {req.status === "inprogress" && (
-                      <div className="flex flex-col gap-1 mb-2">
-                        <button
-                          onClick={() => handleStatusUpdate(req._id, "done")}
-                          className="btn btn-xs btn-success text-white"
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col space-y-2">
+                      {/* Status Actions */}
+                      {req.status === "inprogress" && (
+                        <div className="flex gap-2">
+                          <Button
+                            className="h-6 px-2 text-xs bg-green-600 hover:bg-green-700 text-white"
+                            onClick={() => handleStatusUpdate(req._id, "done")}
+                          >
+                            Done
+                          </Button>
+                          <Button
+                            className="h-6 px-2 text-xs bg-red-600 hover:bg-red-700 text-white"
+                            onClick={() => handleStatusUpdate(req._id, "canceled")}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      )}
+                      <div className="flex gap-2">
+                        <Link to={`/dashboard/update-request/${req._id}`}>
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </Link>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleDelete(req._id)}
                         >
-                          Done
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleStatusUpdate(req._id, "canceled")
-                          }
-                          className="btn btn-xs btn-error text-white"
-                        >
-                          Cancel
-                        </button>
+                          Delete
+                        </Button>
+                        <Link to={`/donation-request-details/${req._id}`}>
+                          <Button variant="ghost" size="sm">View</Button>
+                        </Link>
                       </div>
-                    )}
-
-                    {/* Standard Actions */}
-                    <Link
-                      to={`/dashboard/update-request/${req._id}`}
-                      className="btn btn-sm btn-ghost"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(req._id)}
-                      className="btn btn-sm btn-ghost text-red-500"
-                    >
-                      Delete
-                    </button>
-                    <Link
-                      to={`/donation-request-details/${req._id}`}
-                      className="btn btn-sm btn-ghost"
-                    >
-                      View
-                    </Link>
-                  </td>
-                </tr>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {/* Pagination Controls */}
       {requests.length > itemsPerPage && (
-        <div className="flex justify-center mt-6 btn-group">
-          <button
-            className="btn"
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <Button
+            variant="outline"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
           >
-            «
-          </button>
-          <button className="btn">Page {currentPage}</button>
-          <button
-            className="btn"
+            « Previous
+          </Button>
+          <span className="text-sm font-medium">Page {currentPage}</span>
+          <Button
+            variant="outline"
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
-            »
-          </button>
+            Next »
+          </Button>
         </div>
       )}
     </div>

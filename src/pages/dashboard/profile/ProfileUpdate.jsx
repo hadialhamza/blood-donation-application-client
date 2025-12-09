@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import { TbFidgetSpinner } from "react-icons/tb";
@@ -8,6 +8,24 @@ import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useLocations from "../../../hooks/useLocations";
 import { uploadImage } from "../../../utils/uploadImage";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfileUpdate = () => {
   const { user } = useAuth();
@@ -110,146 +128,151 @@ const ProfileUpdate = () => {
 
   return (
     <div className="p-8 flex justify-center">
-      <div className="card w-full max-w-2xl bg-base-100 shadow-xl border border-gray-100">
-        <div className="card-body">
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+      <Card className="w-full max-w-2xl shadow-xl border-gray-100">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-center text-gray-800">
             Update Profile
-          </h2>
-
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           <form
             onSubmit={handleSubmit(handleUpdate)}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="space-y-6"
           >
-            {/* Name */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Name</span>
-              </label>
-              <input
-                type="text"
-                className="input input-bordered w-full focus:input-error"
-                {...register("name", { required: true })}
-              />
-            </div>
-
-            {/* Email (Read Only) */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Email</span>
-              </label>
-              <input
-                type="email"
-                className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
-                readOnly
-                {...register("email")}
-              />
-            </div>
-
-            {/* Image Upload */}
-            <div className="form-control md:col-span-2">
-              <label className="label">
-                <span className="label-text font-semibold">Profile Picture</span>
-              </label>
-              <div className="flex gap-4 items-center">
-                <div className="avatar">
-                  <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img
-                      src={userData.image || userData.avatar || user?.photoURL}
-                      alt="Current"
-                    />
-                  </div>
-                </div>
-                <input
-                  type="file"
-                  className="file-input file-input-bordered file-input-error w-full"
-                  {...register("imageFile")}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Name */}
+              <div className="space-y-2">
+                <Label htmlFor="name" className="font-semibold">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  {...register("name", { required: true })}
                 />
               </div>
-            </div>
 
-            {/* District */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">District</span>
-              </label>
-              <select
-                className="select select-bordered w-full focus:select-error"
-                {...register("district", { required: true })}
-              >
-                <option disabled value="">
-                  Select District
-                </option>
-                {districts
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((d) => (
-                    <option key={d.id} value={d.name}>
-                      {d.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
+              {/* Email (Read Only) */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="font-semibold">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  className="bg-gray-100 dark:bg-gray-800 cursor-not-allowed"
+                  readOnly
+                  {...register("email")}
+                />
+              </div>
 
-            {/* Upazila */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Upazila</span>
-              </label>
-              <select
-                className="select select-bordered w-full focus:select-error"
-                {...register("upazila", { required: true })}
-              >
-                <option disabled value="">
-                  Select Upazila
-                </option>
-                {filteredUpazilas
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((u) => (
-                    <option key={u.id} value={u.name}>
-                      {u.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
+              {/* Image Upload */}
+              <div className="md:col-span-2 space-y-2">
+                <Label className="font-semibold">Profile Picture</Label>
+                <div className="flex gap-4 items-center">
+                  <Avatar className="h-16 w-16 border-2 border-primary">
+                    <AvatarImage src={userData.image || userData.avatar || user?.photoURL} />
+                    <AvatarFallback>{(userData.name || user?.displayName)?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <Input
+                    type="file"
+                    className="w-full"
+                    {...register("imageFile")}
+                  />
+                </div>
+              </div>
 
-            {/* Blood Group */}
-            <div className="form-control md:col-span-2">
-              <label className="label">
-                <span className="label-text font-semibold">Blood Group</span>
-              </label>
-              <select
-                className="select select-bordered w-full focus:select-error"
-                {...register("bloodGroup", { required: true })}
-              >
-                <option disabled value="">
-                  Select Blood Group
-                </option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-              </select>
-            </div>
+              {/* District */}
+              <div className="space-y-2">
+                <Label className="font-semibold">District</Label>
+                <Controller
+                  name="district"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select District" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {districts
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((d) => (
+                            <SelectItem key={d.id} value={d.name}>
+                              {d.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
 
-            <div className="form-control mt-6 md:col-span-2">
-              <button
-                type="submit"
-                className="btn btn-error text-white font-bold"
-                disabled={isUpdating}
-              >
-                {isUpdating ? (
-                  <TbFidgetSpinner className="animate-spin text-xl" />
-                ) : (
-                  "Save Changes"
-                )}
-              </button>
+              {/* Upazila */}
+              <div className="space-y-2">
+                <Label className="font-semibold">Upazila</Label>
+                <Controller
+                  name="upazila"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Upazila" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filteredUpazilas
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((u) => (
+                            <SelectItem key={u.id} value={u.name}>
+                              {u.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+
+              {/* Blood Group */}
+              <div className="md:col-span-2 space-y-2">
+                <Label className="font-semibold">Blood Group</Label>
+                <Controller
+                  name="bloodGroup"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Blood Group" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="A+">A+</SelectItem>
+                        <SelectItem value="A-">A-</SelectItem>
+                        <SelectItem value="B+">B+</SelectItem>
+                        <SelectItem value="B-">B-</SelectItem>
+                        <SelectItem value="AB+">AB+</SelectItem>
+                        <SelectItem value="AB-">AB-</SelectItem>
+                        <SelectItem value="O+">O+</SelectItem>
+                        <SelectItem value="O-">O-</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+
+              <div className="md:col-span-2 pt-4">
+                <Button
+                  type="submit"
+                  className="w-full font-bold bg-red-600 hover:bg-red-700"
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? (
+                    <TbFidgetSpinner className="animate-spin text-xl mr-2" />
+                  ) : null}
+                  {isUpdating ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
             </div>
           </form>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

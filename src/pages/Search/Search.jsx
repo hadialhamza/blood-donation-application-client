@@ -1,8 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import useAxios from "../../hooks/useAxios";
 import { TbFidgetSpinner } from "react-icons/tb";
 import useLocations from "../../hooks/useLocations";
+
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Search = () => {
   const axiosPublic = useAxios();
@@ -11,13 +24,10 @@ const Search = () => {
   const [hasSearched, setHasSearched] = useState(false); // To toggle "No data found" message
 
   // Location State
-  // Location State
   const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
-  const { register, handleSubmit, watch } = useForm();
-  const selectedDistrict = watch("district");
-
-
+  const { register, handleSubmit, control } = useForm();
+  const selectedDistrict = useWatch({ control, name: "district" });
 
   // Filter Upazilas
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);
@@ -46,11 +56,10 @@ const Search = () => {
     }
   };
 
-
   if (isLocationsLoading) {
     return (
       <div className="flex justify-center mt-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <TbFidgetSpinner className="animate-spin text-4xl text-red-600" />
       </div>
     );
   }
@@ -62,90 +71,102 @@ const Search = () => {
       </h2>
 
       {/* Search Form */}
-      <div className="bg-base-200 p-6 rounded-xl shadow-lg mb-10">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end"
-        >
-          {/* Blood Group */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-bold">Blood Group</span>
-            </label>
-            <select
-              className="select select-bordered w-full"
-              defaultValue=""
-              {...register("bloodGroup", { required: true })}
-            >
-              <option value="" disabled>
-                Select Group
-              </option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-            </select>
-          </div>
+      <Card className="mb-10 shadow-lg bg-slate-50 dark:bg-slate-900 border-none">
+        <CardContent className="p-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end"
+          >
+            {/* Blood Group */}
+            <div className="space-y-2">
+              <Label className="font-bold">Blood Group</Label>
+              <Controller
+                name="bloodGroup"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="A+">A+</SelectItem>
+                      <SelectItem value="A-">A-</SelectItem>
+                      <SelectItem value="B+">B+</SelectItem>
+                      <SelectItem value="B-">B-</SelectItem>
+                      <SelectItem value="AB+">AB+</SelectItem>
+                      <SelectItem value="AB-">AB-</SelectItem>
+                      <SelectItem value="O+">O+</SelectItem>
+                      <SelectItem value="O-">O-</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
 
-          {/* District */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-bold">District</span>
-            </label>
-            <select
-              className="select select-bordered w-full"
-              defaultValue=""
-              {...register("district", { required: true })}
-            >
-              <option value="" disabled>
-                Select District
-              </option>
-              {districts
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((d) => (
-                  <option key={d.id} value={d.name}>
-                    {d.name}
-                  </option>
-                ))}
-            </select>
-          </div>
+            {/* District */}
+            <div className="space-y-2">
+              <Label className="font-bold">District</Label>
+              <Controller
+                name="district"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select District" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {districts
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((d) => (
+                          <SelectItem key={d.id} value={d.name}>
+                            {d.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
 
-          {/* Upazila */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-bold">Upazila</span>
-            </label>
-            <select
-              className="select select-bordered w-full"
-              defaultValue=""
-              {...register("upazila", { required: true })}
-              disabled={!selectedDistrict}
-            >
-              <option value="" disabled>
-                Select Upazila
-              </option>
-              {filteredUpazilas
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((u) => (
-                  <option key={u.id} value={u.name}>
-                    {u.name}
-                  </option>
-                ))}
-            </select>
-          </div>
+            {/* Upazila */}
+            <div className="space-y-2">
+              <Label className="font-bold">Upazila</Label>
+              <Controller
+                name="upazila"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={!selectedDistrict}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={selectedDistrict ? "Select Upazila" : "Select District First"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {filteredUpazilas
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((u) => (
+                          <SelectItem key={u.id} value={u.name}>
+                            {u.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
 
-          {/* Search Button */}
-          <div className="form-control">
-            <button className="btn btn-primary text-white w-full">
+            {/* Search Button */}
+            <Button type="submit" className="w-full font-bold">
               Search
-            </button>
-          </div>
-        </form>
-      </div>
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
 
       {/* Results Section */}
       <div>
@@ -156,35 +177,34 @@ const Search = () => {
         ) : (
           <>
             {hasSearched && donors.length === 0 && (
-              <div className="text-center text-gray-500 text-xl">
+              <div className="text-center text-muted-foreground text-xl">
                 No donors found matching your criteria.
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {donors.map((donor) => (
-                <div
+                <Card
                   key={donor._id}
-                  className="card bg-base-100 shadow-xl border hover:border-red-400 transition"
+                  className="hover:border-red-400 transition duration-300"
                 >
-                  <div className="card-body flex-row gap-4 items-center">
-                    <div className="avatar">
-                      <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                        <img src={donor.avatar} alt={donor.name} />
-                      </div>
-                    </div>
+                  <CardContent className="p-6 flex flex-row gap-4 items-center">
+                    <Avatar className="h-16 w-16 border-2 border-red-100">
+                      <AvatarImage src={donor.avatar} alt={donor.name} />
+                      <AvatarFallback>{donor.name?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+
                     <div>
-                      <h2 className="card-title">{donor.name}</h2>
-                      <p className="text-sm text-gray-500">
+                      <h2 className="text-lg font-bold">{donor.name}</h2>
+                      <p className="text-sm text-muted-foreground">
                         {donor.district}, {donor.upazila}
                       </p>
-                      <div className="badge badge-error text-white font-bold mt-1">
+                      <Badge variant="destructive" className="mt-2 text-white font-bold">
                         {donor.bloodGroup}
-                      </div>
-                      {/* Note: Requirements don't explicitly say to show email/phone in search, usually for privacy it's hidden or shown on contact */}
+                      </Badge>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </>

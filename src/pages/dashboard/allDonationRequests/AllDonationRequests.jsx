@@ -4,13 +4,30 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
-import useRole from "../../../hooks/useRole"; // Your custom hook
+import useRole from "../../../hooks/useRole";
+
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AllDonationRequests = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [role] = useRole(); // Get current user role
-  const [filterStatus, setFilterStatus] = useState("");
+  const [role] = useRole();
+  const [filterStatus, setFilterStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
@@ -18,8 +35,9 @@ const AllDonationRequests = () => {
   const { data: requests = [], refetch } = useQuery({
     queryKey: ["all-requests", filterStatus],
     queryFn: async () => {
+      const query = filterStatus === "all" ? "" : `?status=${filterStatus}`;
       const res = await axiosSecure.get(
-        `/all-blood-donation-requests?status=${filterStatus}`
+        `/all-blood-donation-requests${query}`
       );
       return res.data;
     },
@@ -62,110 +80,134 @@ const AllDonationRequests = () => {
   const totalPages = Math.ceil(requests.length / itemsPerPage);
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">All Blood Donation Requests</h2>
 
         {/* Filter */}
-        <select
-          className="select select-bordered"
-          onChange={(e) => setFilterStatus(e.target.value)}
-          value={filterStatus}
-        >
-          <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="inprogress">In Progress</option>
-          <option value="done">Done</option>
-          <option value="canceled">Canceled</option>
-        </select>
+        <div className="w-[180px]">
+          <Select
+            value={filterStatus}
+            onValueChange={(value) => setFilterStatus(value)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Filter by Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="inprogress">In Progress</SelectItem>
+              <SelectItem value="done">Done</SelectItem>
+              <SelectItem value="canceled">Canceled</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table w-full border">
-          <thead className="bg-base-200">
-            <tr>
-              <th>Requester</th>
-              <th>Recipient</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Blood Group</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentData.map((req) => (
-              <tr key={req._id}>
-                <td>{req.requesterName}</td>
-                <td>{req.recipientName}</td>
-                <td>{req.recipientDistrict}</td>
-                <td>{req.donationDate}</td>
-                <td className="font-bold text-red-600">{req.bloodGroup}</td>
-                <td>
-                  {/* Status Dropdown for Admin/Volunteer */}
-                  <select
-                    className="select select-bordered select-xs"
-                    value={req.status}
-                    onChange={(e) =>
-                      handleStatusChange(req._id, e.target.value)
-                    }
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="inprogress">In Progress</option>
-                    <option value="done">Done</option>
-                    <option value="canceled">Canceled</option>
-                  </select>
-                </td>
-                <td className="flex gap-2">
-                  {/* Admin Only Actions */}
-                  {role === "admin" && (
-                    <>
-                      <Link
-                        to={`/dashboard/update-request/${req._id}`}
-                        className="btn btn-sm btn-info text-white"
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Requester</TableHead>
+              <TableHead>Recipient</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Blood Group</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {currentData.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="h-24 text-center">
+                  No requests found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              currentData.map((req) => (
+                <TableRow key={req._id}>
+                  <TableCell>{req.requesterName}</TableCell>
+                  <TableCell>{req.recipientName}</TableCell>
+                  <TableCell>{req.recipientDistrict}</TableCell>
+                  <TableCell>{req.donationDate}</TableCell>
+                  <TableCell className="font-bold text-red-600">
+                    {req.bloodGroup}
+                  </TableCell>
+                  <TableCell>
+                    {/* Status Dropdown for Admin/Volunteer */}
+                    <div className="w-[140px]">
+                      <Select
+                        value={req.status}
+                        onValueChange={(value) =>
+                          handleStatusChange(req._id, value)
+                        }
                       >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(req._id)}
-                        className="btn btn-sm btn-error text-white"
-                      >
-                        Delete
-                      </button>
-                    </>
-                  )}
+                        <SelectTrigger className="h-8">
+                          <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="inprogress">In Progress</SelectItem>
+                          <SelectItem value="done">Done</SelectItem>
+                          <SelectItem value="canceled">Canceled</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2 items-center">
+                      {/* Admin Only Actions */}
+                      {role === "admin" && (
+                        <>
+                          <Link to={`/dashboard/update-request/${req._id}`}>
+                            <Button size="sm" variant="outline" className="text-blue-600 hover:text-blue-700">
+                              Edit
+                            </Button>
+                          </Link>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDelete(req._id)}
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
 
-                  {/* Volunteer has no other actions, maybe View Details if needed */}
-                  {role === "volunteer" && (
-                    <span className="text-xs text-gray-500">
-                      Status Update Only
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                      {/* Volunteer has no other actions, maybe View Details if needed */}
+                      {role === "volunteer" && (
+                        <span className="text-xs text-muted-foreground">
+                          Status Update Only
+                        </span>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
 
       {/* Pagination Controls */}
       {requests.length > itemsPerPage && (
-        <div className="flex justify-center mt-6 btn-group">
-          <button
-            className="btn"
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <Button
+            variant="outline"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
           >
-            «
-          </button>
-          <button className="btn">Page {currentPage}</button>
-          <button
-            className="btn"
+            « Previous
+          </Button>
+          <span className="text-sm font-medium">Page {currentPage}</span>
+          <Button
+            variant="outline"
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
-            »
-          </button>
+            Next »
+          </Button>
         </div>
       )}
     </div>

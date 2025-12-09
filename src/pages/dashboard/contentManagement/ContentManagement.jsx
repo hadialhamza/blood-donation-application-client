@@ -5,6 +5,16 @@ import Swal from "sweetalert2";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
 const ContentManagement = () => {
   const axiosSecure = useAxiosSecure();
 
@@ -51,50 +61,61 @@ const ContentManagement = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Content Management</h2>
-        <Link to="/dashboard/add-blog" className="btn btn-primary text-white">
-          <FaPlus /> Add Blog
+        <Link to="/dashboard/add-blog">
+          <Button className="gap-2 bg-red-600 hover:bg-red-700">
+            <FaPlus /> Add Blog
+          </Button>
         </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.map((blog) => (
-          <div key={blog._id} className="card bg-base-100 shadow-xl border">
-            <figure className="h-48 overflow-hidden">
-              <img
-                src={blog.thumbnail}
-                alt="Thumbnail"
-                className="w-full h-full object-cover"
-              />
-            </figure>
-            <div className="card-body">
-              <h3 className="card-title text-lg">{blog.title}</h3>
-              <div className="flex justify-between items-center mt-4">
-                {/* Status Badge/Toggle */}
-                {blog.status === "draft" ? (
-                  <button
-                    onClick={() => handleStatusChange(blog._id, "published")}
-                    className="btn btn-xs btn-outline btn-warning"
-                  >
-                    Draft (Click to Publish)
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleStatusChange(blog._id, "draft")}
-                    className="btn btn-xs btn-success text-white"
-                  >
-                    Published
-                  </button>
-                )}
-
-                <button
-                  onClick={() => handleDelete(blog._id)}
-                  className="btn btn-sm btn-ghost text-red-500"
-                >
-                  <FaTrash />
-                </button>
+          <Card key={blog._id} className="shadow-md overflow-hidden flex flex-col justify-between">
+            <div>
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={blog.thumbnail}
+                  alt="Thumbnail"
+                  className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                />
               </div>
+              <CardContent className="p-4">
+                <CardTitle className="text-lg line-clamp-2">{blog.title}</CardTitle>
+              </CardContent>
             </div>
-          </div>
+
+            <CardFooter className="p-4 pt-0 flex justify-between items-center">
+              {/* Status Badge/Toggle */}
+              {blog.status === "draft" ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleStatusChange(blog._id, "published")}
+                  className="text-yellow-600 border-yellow-200 hover:bg-yellow-50"
+                >
+                  Draft (Click to Publish)
+                </Button>
+              ) : (
+                <Button
+                  variant="default" // Using default green-ish if I customized or just use a class
+                  size="sm"
+                  onClick={() => handleStatusChange(blog._id, "draft")}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Published
+                </Button>
+              )}
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleDelete(blog._id)}
+                className="text-red-500 hover:text-red-700 hover:bg-red-50"
+              >
+                <FaTrash />
+              </Button>
+            </CardFooter>
+          </Card>
         ))}
       </div>
     </div>

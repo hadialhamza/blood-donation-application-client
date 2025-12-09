@@ -1,16 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-// import useAxios from "../../../hooks/useAxios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 import useLocations from "../../../hooks/useLocations";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { TbFidgetSpinner } from "react-icons/tb";
+
 const CreateDonationRequest = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  // const api = useAxios();
   const navigate = useNavigate();
 
   // Location State
@@ -18,8 +35,6 @@ const CreateDonationRequest = () => {
 
   const { register, handleSubmit, control } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
-
-
 
   // Filter Upazilas
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);
@@ -73,190 +88,189 @@ const CreateDonationRequest = () => {
   if (isLocationsLoading) {
     return (
       <div className="flex justify-center mt-20">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <TbFidgetSpinner className="animate-spin text-4xl text-red-600" />
       </div>
     );
   }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-8 text-center">
-        Create Donation Request
-      </h2>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold text-center">
+            Create Donation Request
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Requester Info (Read Only) */}
+              <div className="space-y-2">
+                <Label>Requester Name</Label>
+                <Input
+                  type="text"
+                  value={user?.displayName || ""}
+                  readOnly
+                  className="bg-gray-100 dark:bg-gray-800"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Requester Email</Label>
+                <Input
+                  type="email"
+                  value={user?.email || ""}
+                  readOnly
+                  className="bg-gray-100 dark:bg-gray-800"
+                />
+              </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="card-body bg-base-100 shadow-xl rounded-xl"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Requester Info (Read Only) */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Requester Name</span>
-            </label>
-            <input
-              type="text"
-              value={user?.displayName}
-              readOnly
-              className="input input-bordered bg-gray-100"
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Requester Email</span>
-            </label>
-            <input
-              type="email"
-              value={user?.email}
-              readOnly
-              className="input input-bordered bg-gray-100"
-            />
-          </div>
+              {/* Recipient Name */}
+              <div className="space-y-2">
+                <Label htmlFor="recipientName">Recipient Name</Label>
+                <Input
+                  id="recipientName"
+                  placeholder="Recipient Name"
+                  {...register("recipientName", { required: true })}
+                />
+              </div>
 
-          {/* Recipient Name */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Recipient Name</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Recipient Name"
-              className="input input-bordered"
-              {...register("recipientName", { required: true })}
-            />
-          </div>
+              {/* Blood Group */}
+              <div className="space-y-2">
+                <Label>Blood Group</Label>
+                <Controller
+                  name="bloodGroup"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Group" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="A+">A+</SelectItem>
+                        <SelectItem value="A-">A-</SelectItem>
+                        <SelectItem value="B+">B+</SelectItem>
+                        <SelectItem value="B-">B-</SelectItem>
+                        <SelectItem value="AB+">AB+</SelectItem>
+                        <SelectItem value="AB-">AB-</SelectItem>
+                        <SelectItem value="O+">O+</SelectItem>
+                        <SelectItem value="O-">O-</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
 
-          {/* Blood Group */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Blood Group</span>
-            </label>
-            <select
-              className="select select-bordered"
-              defaultValue=""
-              {...register("bloodGroup", { required: true })}
-            >
-              <option value="" disabled>
-                Select Group
-              </option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-            </select>
-          </div>
+              {/* District */}
+              <div className="space-y-2">
+                <Label>Recipient District</Label>
+                <Controller
+                  name="district"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select District" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {districts
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((d) => (
+                            <SelectItem key={d.id} value={d.name}>
+                              {d.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
 
-          {/* District & Upazila */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Recipient District</span>
-            </label>
-            <select
-              className="select select-bordered"
-              defaultValue=""
-              {...register("district", { required: true })}
-            >
-              <option value="" disabled>
-                Select District
-              </option>
-              {districts
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((d) => (
-                  <option key={d.id} value={d.name}>
-                    {d.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Recipient Upazila</span>
-            </label>
-            <select
-              className="select select-bordered"
-              defaultValue=""
-              {...register("upazila", { required: true })}
-            >
-              <option value="" disabled>
-                Select Upazila
-              </option>
-              {filteredUpazilas
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((u) => (
-                  <option key={u.id} value={u.name}>
-                    {u.name}
-                  </option>
-                ))}
-            </select>
-          </div>
+              {/* Upazila */}
+              <div className="space-y-2">
+                <Label>Recipient Upazila</Label>
+                <Controller
+                  name="upazila"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={!selectedDistrict}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={selectedDistrict ? "Select Upazila" : "Select District First"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filteredUpazilas
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((u) => (
+                            <SelectItem key={u.id} value={u.name}>
+                              {u.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
 
-          {/* Hospital & Address */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Hospital Name</span>
-            </label>
-            <input
-              type="text"
-              placeholder="e.g. Dhaka Medical College"
-              className="input input-bordered"
-              {...register("hospitalName", { required: true })}
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Full Address</span>
-            </label>
-            <input
-              type="text"
-              placeholder="e.g. Ward 12, Room 404"
-              className="input input-bordered"
-              {...register("fullAddress", { required: true })}
-            />
-          </div>
+              {/* Hospital & Address */}
+              <div className="space-y-2">
+                <Label htmlFor="hospitalName">Hospital Name</Label>
+                <Input
+                  id="hospitalName"
+                  placeholder="e.g. Dhaka Medical College"
+                  {...register("hospitalName", { required: true })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="fullAddress">Full Address</Label>
+                <Input
+                  id="fullAddress"
+                  placeholder="e.g. Ward 12, Room 404"
+                  {...register("fullAddress", { required: true })}
+                />
+              </div>
 
-          {/* Date & Time */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Donation Date</span>
-            </label>
-            <input
-              type="date"
-              className="input input-bordered"
-              {...register("donationDate", { required: true })}
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Donation Time</span>
-            </label>
-            <input
-              type="time"
-              className="input input-bordered"
-              {...register("donationTime", { required: true })}
-            />
-          </div>
+              {/* Date & Time */}
+              <div className="space-y-2">
+                <Label htmlFor="donationDate">Donation Date</Label>
+                <Input
+                  id="donationDate"
+                  type="date"
+                  {...register("donationDate", { required: true })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="donationTime">Donation Time</Label>
+                <Input
+                  id="donationTime"
+                  type="time"
+                  {...register("donationTime", { required: true })}
+                />
+              </div>
 
-          {/* Request Message (Full Width) */}
-          <div className="form-control md:col-span-2">
-            <label className="label">
-              <span className="label-text">Request Message</span>
-            </label>
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="Why do you need blood?"
-              {...register("requestMessage", { required: true })}
-            ></textarea>
-          </div>
-        </div>
+              {/* Request Message (Full Width) */}
+              <div className="md:col-span-2 space-y-2">
+                <Label htmlFor="requestMessage">Request Message</Label>
+                <Textarea
+                  id="requestMessage"
+                  placeholder="Why do you need blood?"
+                  className="h-24"
+                  {...register("requestMessage", { required: true })}
+                />
+              </div>
+            </div>
 
-        <div className="form-control mt-6">
-          <button className="btn btn-primary">Request Donation</button>
-        </div>
-      </form>
+            <Button type="submit" className="w-full">
+              Request Donation
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

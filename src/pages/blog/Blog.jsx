@@ -4,6 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { TbFidgetSpinner } from "react-icons/tb";
 import useAxios from "../../hooks/useAxios";
 
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 const Blog = () => {
   // Public API call
   const api = useAxios();
@@ -30,31 +39,33 @@ const Blog = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {blogs.map((blog) => (
-          <div key={blog._id} className="card bg-base-100 shadow-xl">
-            <figure className="h-48 overflow-hidden">
-              <img
-                src={blog.thumbnail}
-                alt={blog.title}
-                className="w-full h-full object-cover hover:scale-105 transition"
-              />
-            </figure>
-            <div className="card-body">
-              <h3 className="card-title">{blog.title}</h3>
-              {/* Render simple preview or full HTML */}
-              <div
-                className="text-gray-500 line-clamp-3"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-              />
-              <div className="card-actions justify-end mt-4">
-                <Link
-                  to={`/blog/${blog._id}`}
-                  className="btn btn-primary btn-sm btn-outline"
-                >
-                  Read More
-                </Link>
+          <Card key={blog._id} className="shadow-lg hover:shadow-xl transition-shadow flex flex-col justify-between overflow-hidden">
+            <div>
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={blog.thumbnail}
+                  alt={blog.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
               </div>
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="text-xl line-clamp-2">{blog.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0">
+                <div
+                  className="text-muted-foreground line-clamp-3 text-sm"
+                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+              </CardContent>
             </div>
-          </div>
+            <CardFooter className="p-4 pt-0 flex justify-end">
+              <Link to={`/blog/${blog._id}`}>
+                <Button variant="outline" size="sm" className="border-red-600 text-red-600 hover:bg-red-50">
+                  Read More
+                </Button>
+              </Link>
+            </CardFooter>
+          </Card>
         ))}
       </div>
     </div>
