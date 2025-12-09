@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
-import Swal from "sweetalert2"; // or toast
+import Swal from "sweetalert2";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { uploadImage } from "../../../utils/uploadImage";
-// import useAxios from "../../../hooks/useAxios";
 import useLocations from "../../../hooks/useLocations";
 
 const Profile = () => {
-  // const api = useAxios();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [isEditing, setIsEditing] = useState(false);
-
-  // State for Districts/Upazilas
-  // State for Districts/Upazilas
   const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
   // 1. Fetch User Data from MongoDB

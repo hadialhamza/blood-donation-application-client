@@ -35,9 +35,7 @@ const Navbar = () => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/dashboard/create-donation-request">
-          Donation Requests
-        </NavLink>
+        <NavLink to="/public-donation-requests">Donation Requests</NavLink>
       </li>
       <li>
         <NavLink to="/blog">Blog</NavLink>
@@ -52,7 +50,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100/70 backdrop-blur-md shadow-sm fixed top-0 inset-x-0 z-50 max-w-7xl mx-auto rounded-b-lg border-b border-base-200/50">
+    <div className="navbar shadow-sm sticky top-0 z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -78,7 +76,7 @@ const Navbar = () => {
             {navOptions}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost h-auto hover:bg-transparent">
+        <Link to="/">
           <BloodLineLogo />
         </Link>
       </div>
