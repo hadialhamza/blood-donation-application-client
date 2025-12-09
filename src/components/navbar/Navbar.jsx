@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import BloodLineLogo from "../logo/BloodLineLogo";
 import { FaMoon, FaRegSun } from "react-icons/fa";
+import Container from "../container/Container";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -50,7 +51,9 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar shadow-sm sticky top-0 z-50">
+    <div className="shadow-sm sticky top-0 z-50 bg-base-100">
+      <Container>
+        <div className="navbar">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -128,6 +131,8 @@ const Navbar = () => {
           </Link>
         )}
       </div>
+    </div>
+      </Container>
     </div>
   );
 };

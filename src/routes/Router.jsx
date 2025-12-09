@@ -21,6 +21,7 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardHome from "../pages/dashboard/dashboardHome/DashboardHome";
 import ContentManagement from "../pages/dashboard/contentManagement/ContentManagement";
 import AddBlog from "../pages/dashboard/contentManagement/AddBlog";
+import ProfileUpdate from "../pages/dashboard/profile/ProfileUpdate";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />,
+      },
+      {
+        path: "profile/update",
+        element: <ProfileUpdate />,
       },
       {
         path: "create-donation-request",
