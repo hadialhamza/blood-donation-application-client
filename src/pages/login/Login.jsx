@@ -10,6 +10,7 @@ import { MdBloodtype } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import BloodLineLogo from "@/components/logo/BloodLineLogo";
 
 const Login = () => {
   const { signIn, loading, setLoading } = useAuth();
@@ -56,15 +57,8 @@ const Login = () => {
         <div className="w-full xl:w-1/2 p-8 lg:p-12 2xl:p-20 flex flex-col justify-center">
           <div className="max-w-[480px] mx-auto w-full">
             {/* Logo area */}
-            <div className="mb-8">
-              <Link to="/" className="inline-flex items-center gap-2">
-                <div className="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center text-white">
-                  <MdBloodtype className="text-2xl" />
-                </div>
-                <span className="text-2xl font-bold text-slate-900 dark:text-white">
-                  Blood Line
-                </span>
-              </Link>
+            <div className="mb-5">
+              <BloodLineLogo />
             </div>
 
             {/* Heading */}

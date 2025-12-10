@@ -11,23 +11,16 @@ import { FaEye, FaEyeSlash, FaQuoteRight, FaHeart } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import BloodLineLogo from "@/components/logo/BloodLineLogo";
 
 const Register = () => {
-  const api = useAxios();
   const { createUser, updateUser, loading, setLoading } = useAuth();
-  const navigate = useNavigate();
   const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const api = useAxios();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -36,11 +29,9 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  // Watch fields
   const selectedDistrict = useWatch({ control, name: "district" });
   const password = useWatch({ control, name: "password" });
 
-  // Filter Upazilas
   const currentDistrict = districts.find(
     (district) => district.name === selectedDistrict
   );
@@ -91,19 +82,19 @@ const Register = () => {
       {/* Left side content */}
       <div className="flex flex-col xl:flex-row w-full bg-white dark:bg-gray-900 rounded-3xl overflow-hidden max-w-[1400px] shadow-2xl border border-slate-100 dark:border-gray-800">
         <div className="hidden xl:block w-1/2 bg-red-600 dark:bg-red-900 relative overflow-hidden order-1 xl:order-1">
-          <div className="relative z-10 h-full flex flex-col justify-center p-12 lg:p-16 text-white">
+          <div className="relative z-10 h-full flex flex-col justify-center p-12 lg:p-16 text-white text-center">
             <FaQuoteRight className="absolute -top-6 -right-6 hidden lg:block text-white opacity-10 text-[10rem]" />
             <div className="mb-6">
               <h2 className="text-4xl lg:text-5xl font-semibold leading-tight">
                 Be the Hero <br /> in Someone's Story
               </h2>
             </div>
-            <div className="text-lg lg:text-xl opacity-90 mb-8 lg:mb-10 leading-relaxed max-w-lg">
+            <div className="text-lg lg:text-xl opacity-90 mb-8 lg:mb-10 leading-relaxed mx-auto max-w-lg">
               "Your single donation can save up to three lives. Join our
               community of heroes and make a difference today."
             </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 lg:p-8 relative border border-white/20 max-w-md shadow-lg">
-              <div className="flex items-center gap-4">
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 lg:p-8 relative border border-white/20 max-w-md mx-auto shadow-lg">
+              <div className="flex items-center justify-center gap-4 text-center">
                 <div className="h-12 w-12 lg:h-14 lg:w-14 bg-white rounded-full flex items-center justify-center text-xl font-bold text-red-600">
                   10k
                 </div>
@@ -118,7 +109,7 @@ const Register = () => {
                 "Signing up was the best decision I made this year. The feeling
                 of helping others is unmatched."
               </p>
-              <FaHeart className="absolute top-0 right-0 p-3 opacity-20 text-4xl" />
+              <FaHeart className="absolute top-0 right-0 p-3 opacity-50 text-4xl" />
             </div>
           </div>
         </div>

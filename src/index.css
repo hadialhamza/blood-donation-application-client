@@ -14,12 +14,35 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ef4444;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+
 .font-inter {
   font-family: "Inter", sans-serif;
   font-size: 1rem;
 }
 
-.font-poppins {
+.font-poppins,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Poppins", sans-serif;
 }
 
@@ -128,6 +151,40 @@ body {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  33% {
+    transform: translateY(-20px) translateX(10px);
+  }
+
+  66% {
+    transform: translateY(10px) translateX(-10px);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 20s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
 }
 
 @layer base {

@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import BloodLineLogo from "../logo/BloodLineLogo";
 import Container from "../container/Container";
 import { Moon, Sun, Menu, LogOut, LayoutDashboard, User } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,13 +28,22 @@ import toast from "react-hot-toast";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
-  // eslint-disable-next-line
   const location = useLocation();
 
-  // Theme logic for Tailwind dark mode
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const isHome = location.pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -64,19 +73,36 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-blur:bg-background/60">
+    <header
+      className={cn(
+        "top-0 z-50 w-full border-b transition-all duration-300",
+        isHome
+          ? "fixed border-transparent"
+          : "sticky bg-background/70 backdrop-blur-lg",
+        isHome && !isScrolled
+          ? "bg-transparent py-4"
+          : "bg-background/80 backdrop-blur shadow-sm border-border py-1"
+      )}
+    >
       <Container>
-        <div className="flex h-16 items-center">
-          {/* --- LEFT: LOGO --- */}
+        <div className="flex h-16 px-4 md:px-0 items-center">
+          {/* LOGO */}
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center space-x-2">
-              <BloodLineLogo />
+              <div
+                className={cn(
+                  isHome && !isScrolled
+                    ? "[&_span.font-normal]:text-white [&_.text-xs]:text-white/90"
+                    : ""
+                )}
+              >
+                <BloodLineLogo />
+              </div>
             </Link>
           </div>
 
-          {/* --- RIGHT: NAV + ACTIONS --- */}
-          <div className="ml-auto flex items-center gap-6">
-            {/* --- DESKTOP NAV --- */}
+          {/* --- DESKTOP NAV --- */}
+          <div className="ml-auto flex items-center gap-5">
             <nav className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <NavLink
@@ -85,7 +111,13 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     cn(
                       "relative group flex items-center text-sm font-medium uppercase transition-colors hover:text-primary",
-                      isActive ? "text-primary" : "text-muted-foreground"
+                      isActive
+                        ? isHome && !isScrolled
+                          ? "text-white hover:text-white"
+                          : "text-primary"
+                        : isHome && !isScrolled
+                        ? "text-white/80 hover:text-white"
+                        : "text-foreground/70"
                     )
                   }
                 >
@@ -104,15 +136,18 @@ const Navbar = () => {
               ))}
             </nav>
 
-            <div className="hidden md:block h-6 w-px bg-border" />
-
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-5">
               {/* Theme Toggle Button */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="rounded-full"
+                className={cn(
+                  "rounded-full transition-colors border border-border",
+                  isHome && !isScrolled
+                    ? "text-white hover:bg-white/20 hover:text-white"
+                    : "text-foreground border border-black/70 hover:bg-accent hover:text-accent-foreground"
+                )}
               >
                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
@@ -126,9 +161,19 @@ const Navbar = () => {
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
-                        className="relative h-10 w-10 rounded-full"
+                        className={cn(
+                          "relative h-10 w-10 rounded-full",
+                          isHome && !isScrolled ? "hover:bg-white/20" : ""
+                        )}
                       >
-                        <Avatar className="h-10 w-10 border border-border">
+                        <Avatar
+                          className={cn(
+                            "h-10 w-10 border",
+                            isHome && !isScrolled
+                              ? "border-white/50"
+                              : "border-border"
+                          )}
+                        >
                           <AvatarImage
                             src={user?.photoURL}
                             alt={user?.displayName || "User"}
@@ -180,62 +225,72 @@ const Navbar = () => {
             </div>
           </div>
           {/* --- MOBILE: SHEET MENU --- */}
-          <div className="md:hidden">
+          <div className="md:hidden pl-3">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    isHome && !isScrolled
+                      ? "text-white hover:bg-white/20 hover:text-white border rounded-full"
+                      : "border border-black/70 rounded-full"
+                  )}
+                >
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right">
+              <SheetContent side="right" className="w-[300px]">
                 <SheetHeader>
-                  <SheetTitle className="text-left flex items-center gap-2">
-                    <BloodLineLogo />
+                  <SheetTitle className="flex items-center justify-center mb-4">
+                    <div className="scale-110">
+                      <BloodLineLogo />
+                    </div>
                   </SheetTitle>
                   <SheetDescription className="hidden">
                     Mobile navigation menu
                   </SheetDescription>
                 </SheetHeader>
 
-                <div className="flex flex-col space-y-4 py-8">
+                <div className="flex flex-col space-y-6 py-6 pl-2 pr-6">
                   {/* Mobile Links */}
-                  <div className="flex flex-col space-y-2">
-                    {navLinks.map((link) => (
-                      <SheetClose asChild key={link.path}>
-                        <NavLink
-                          to={link.path}
-                          className={({ isActive }) =>
-                            cn(
-                              buttonVariants({
-                                variant: isActive ? "secondary" : "ghost",
-                                size: "lg",
-                              }),
-                              "w-full justify-start text-base"
-                            )
-                          }
-                        >
-                          {link.name}
-                        </NavLink>
-                      </SheetClose>
-                    ))}
+                  <div className="flex flex-col space-y-3 px-4">
+                    {navLinks.map((link) => {
+                      const isActive = location.pathname === link.path;
+                      return (
+                        <SheetClose asChild key={link.path}>
+                          <Link
+                            to={link.path}
+                            className={cn(
+                              "flex items-center w-full px-4 py-3 text-base font-medium rounded-r-full transition-all duration-300 ease-in-out hover:translate-x-2",
+                              isActive
+                                ? "bg-primary/10  border-l-4 border-red-600 shadow-sm"
+                                : "text-foreground/80 hover:bg-muted/50 hover:border-l-4 hover:border-red-600 border-transparent"
+                            )}
+                          >
+                            {link.name}
+                          </Link>
+                        </SheetClose>
+                      );
+                    })}
                   </div>
 
-                  <div className="h-px bg-border w-full" />
+                  <div className="h-px bg-border/50 w-full" />
 
                   {/* Mobile Auth Section */}
                   {user ? (
-                    <div className="flex flex-col space-y-3">
-                      <div className="flex items-center gap-3 px-2">
-                        <Avatar className="h-10 w-10">
+                    <div className="flex flex-col space-y-4 px-2">
+                      <div className="flex items-center gap-4 p-2 rounded-lg bg-muted/30">
+                        <Avatar className="h-12 w-12 border-2 border-background shadow-sm">
                           <AvatarImage src={user?.photoURL} />
                           <AvatarFallback>U</AvatarFallback>
                         </Avatar>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium">
+                        <div className="flex flex-col overflow-hidden">
+                          <span className="text-sm font-semibold truncate text-foreground">
                             {user.displayName}
                           </span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-xs text-muted-foreground truncate">
                             {user.email}
                           </span>
                         </div>
@@ -244,7 +299,7 @@ const Navbar = () => {
                         <Link to="/dashboard">
                           <Button
                             variant="outline"
-                            className="w-full justify-start gap-2"
+                            className="w-full justify-start gap-3 h-12 hover:border-red-500/50 hover:text-red-500 transition-colors"
                           >
                             <LayoutDashboard className="h-4 w-4" /> Dashboard
                           </Button>
