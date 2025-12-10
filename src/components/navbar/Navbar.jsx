@@ -25,9 +25,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth();
+  const { user, logOut, loading } = useAuth();
   const location = useLocation();
 
   const [theme, setTheme] = useState(
@@ -156,7 +157,9 @@ const Navbar = () => {
 
               {/* Desktop: Auth Logic */}
               <div className="hidden md:flex items-center gap-2">
-                {user ? (
+                {loading ? (
+                  <Skeleton className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700" />
+                ) : user ? (
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                       <Button
