@@ -34,10 +34,15 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/useAuth";
 
 const AdminHome = () => {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
+  // Fetch Admin Stats
   const { data: stats = {} } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: async () => {
@@ -45,6 +50,30 @@ const AdminHome = () => {
       return res.data;
     },
   });
+
+  // Fetch Current User/Admin Profile
+  const { data: adminProfile = {} } = useQuery({
+    queryKey: ["admin-profile", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/${user.email}`);
+      return res.data;
+    },
+  });
+
+  // ... (keeping chart data logic same)
+
+  // 1. Pie Chart Data
+  // ...
+
+  // (Rest of the chart logic - omitted for brevity in this replacement chunk, but I need to make sure I don't delete it. 
+  // Actually, I should use replace_file_content carefully. I will target the imports and the component start up to the return statement header.)
+
+  // Let's refine the replacement strategy. 
+  // I'll add imports first, then the component body profile query, then the header UI.
+  // It might be safer to do it in chunks or one big chunk if I'm fast.
+  // Let's do it in key chunks.
+
 
   // --- MOCK DATA FOR VISUALS ---
 
@@ -177,20 +206,46 @@ const AdminHome = () => {
 
   return (
     <div className="min-h-screen bg-background p-8 space-y-8 font-sans transition-colors duration-300">
-      {/* --- Header --- */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground">
-            Analytics Dashboard
-          </h2>
-          <p className="text-muted-foreground mt-1">
-            Overview of blood donations, users, and funding.
-          </p>
+      {/* --- Profile Header --- */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-card p-6 rounded-lg border border-border shadow-sm">
+        <div className="flex items-center gap-4">
+          <Avatar className="h-16 w-16 border-2 border-primary">
+            <AvatarImage src={adminProfile.avatar || user?.photoURL} alt={adminProfile.name || user?.displayName} />
+            <AvatarFallback className="text-lg font-bold">
+              {adminProfile.name?.charAt(0) || user?.displayName?.charAt(0) || "A"}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              Welcome, {adminProfile.name || user?.displayName}!
+            </h2>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <span className="text-sm text-muted-foreground mr-2">
+                {adminProfile.email || user?.email}
+              </span>
+              <Badge variant="outline" className="border-primary/50 text-foreground">
+                {adminProfile.role || "Admin"}
+              </Badge>
+              {adminProfile.bloodGroup && (
+                <Badge variant="destructive">
+                  <FaHeartbeat className="mr-1 h-3 w-3" />
+                  {adminProfile.bloodGroup}
+                </Badge>
+              )}
+              {adminProfile.status && (
+                <Badge variant={adminProfile.status === "active" ? "default" : "secondary"}>
+                  {adminProfile.status}
+                </Badge>
+              )}
+            </div>
+          </div>
         </div>
-        <Button variant="outline">
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          Pick a date
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline">
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {new Date().toLocaleDateString()}
+          </Button>
+        </div>
       </div>
 
       {/* --- Stat Cards --- */}

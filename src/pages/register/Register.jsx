@@ -1,23 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import Container from "../../components/container/Container";
 import { uploadImage } from "../../utils/uploadImage";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../hooks/useAuth";
 import useLocations from "../../hooks/useLocations";
 import useAxios from "../../hooks/useAxios";
-
+import { FaEye, FaEyeSlash, FaQuoteRight, FaHeart } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -25,14 +18,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import BloodLineLogo from "@/components/logo/BloodLineLogo";
 
 const Register = () => {
   const api = useAxios();
   const { createUser, updateUser, loading, setLoading } = useAuth();
   const navigate = useNavigate();
   const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
 
-  // React Hook Form
   const {
     register,
     handleSubmit,
@@ -40,11 +36,11 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  // Watch the district field to filter upazilas
+  // Watch fields
   const selectedDistrict = useWatch({ control, name: "district" });
   const password = useWatch({ control, name: "password" });
 
-  // Filter Upazilas based on selected District
+  // Filter Upazilas
   const currentDistrict = districts.find(
     (district) => district.name === selectedDistrict
   );
@@ -58,20 +54,10 @@ const Register = () => {
     const imageFile = image[0];
 
     try {
-      // Start Loading
       setLoading(true);
-
-      // 1. Upload Image to ImgBB
       const imageUrl = await uploadImage(imageFile);
-      console.log(imageUrl);
-
-      // 2. Create User in Firebase
       await createUser(email, password);
-
-      // 3. Update Firebase Profile
       await updateUser(name, imageUrl);
-
-      // 4. Save Full User Profile to MongoDB
       const userInfo = {
         name,
         email,
@@ -80,9 +66,7 @@ const Register = () => {
         upazila,
         avatar: imageUrl,
       };
-
       const dbResponse = await api.post("users", userInfo);
-
       if (dbResponse.data.insertedId) {
         toast.success("Registration Successful!");
         navigate("/");
@@ -94,33 +78,82 @@ const Register = () => {
       setLoading(false);
     }
   };
-
   if (isLocationsLoading) {
     return (
-      <div className="flex justify-center mt-20">
-        <TbFidgetSpinner className="animate-spin text-4xl text-red-600" />
+      <div className="min-h-screen flex justify-center items-center bg-slate-50 dark:bg-gray-950">
+        <TbFidgetSpinner className="animate-spin text-5xl text-red-600" />
       </div>
     );
   }
 
   return (
-    <Container>
-      <div className="flex justify-center items-center min-h-screen py-10 bg-slate-50 dark:bg-zinc-950">
-        <Card className="w-full max-w-lg shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-3xl font-bold text-center">
-              Create Account
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Name Field */}
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex justify-center items-center p-4 transition-colors duration-300">
+      {/* Left side content */}
+      <div className="flex flex-col xl:flex-row w-full bg-white dark:bg-gray-900 rounded-3xl overflow-hidden max-w-[1400px] shadow-2xl border border-slate-100 dark:border-gray-800">
+        <div className="hidden xl:block w-1/2 bg-red-600 dark:bg-red-900 relative overflow-hidden order-1 xl:order-1">
+          <div className="relative z-10 h-full flex flex-col justify-center p-12 lg:p-16 text-white">
+            <FaQuoteRight className="absolute -top-6 -right-6 hidden lg:block text-white opacity-10 text-[10rem]" />
+            <div className="mb-6">
+              <h2 className="text-4xl lg:text-5xl font-semibold leading-tight">
+                Be the Hero <br /> in Someone's Story
+              </h2>
+            </div>
+            <div className="text-lg lg:text-xl opacity-90 mb-8 lg:mb-10 leading-relaxed max-w-lg">
+              "Your single donation can save up to three lives. Join our
+              community of heroes and make a difference today."
+            </div>
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 lg:p-8 relative border border-white/20 max-w-md shadow-lg">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 lg:h-14 lg:w-14 bg-white rounded-full flex items-center justify-center text-xl font-bold text-red-600">
+                  10k
+                </div>
+                <div>
+                  <h4 className="text-lg lg:text-xl font-bold">
+                    Community Strong
+                  </h4>
+                  <p className="text-sm opacity-80">Active Donors Registered</p>
+                </div>
+              </div>
+              <p className="mt-4 lg:mt-6 text-base lg:text-lg leading-relaxed opacity-90 italic">
+                "Signing up was the best decision I made this year. The feeling
+                of helping others is unmatched."
+              </p>
+              <FaHeart className="absolute top-0 right-0 p-3 opacity-20 text-4xl" />
+            </div>
+          </div>
+        </div>
+        {/* Registration Form */}
+        <div className="w-full xl:w-1/2 p-8 lg:p-10 2xl:p-12 flex flex-col justify-center order-2 xl:order-2">
+          <div className="max-w-[480px] mx-auto w-full">
+            {/* Logo */}
+            <div className="mb-4">
+              <BloodLineLogo />
+            </div>
+
+            {/* Header */}
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+                Create Account
+              </h1>
+              <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">
+                Join our mission to connect donors and save lives.
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+              <div className="space-y-1">
+                <Label
+                  htmlFor="name"
+                  className="text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  Name
+                </Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Your Name"
+                  placeholder="Enter Your Name"
+                  className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500"
                   {...register("name", { required: "Name is required" })}
                 />
                 {errors.name && (
@@ -130,13 +163,19 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Email Field */}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+              {/* Email */}
+              <div className="space-y-1">
+                <Label
+                  htmlFor="email"
+                  className="text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="email@example.com"
+                  placeholder="Enter Your Email"
+                  className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500"
                   {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
@@ -146,14 +185,19 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Avatar Upload */}
-              <div className="space-y-2">
-                <Label htmlFor="image">Profile Picture</Label>
+              {/* Profile Picture */}
+              <div className="space-y-1">
+                <Label
+                  htmlFor="image"
+                  className="text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  Profile Picture
+                </Label>
                 <Input
                   id="image"
                   type="file"
                   accept="image/*"
-                  className="cursor-pointer file:cursor-pointer"
+                  className="h-10 pt-1.5 cursor-pointer border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 file:text-red-600"
                   {...register("image", { required: "Image is required" })}
                 />
                 {errors.image && (
@@ -163,42 +207,54 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Blood Group Selector */}
-              <div className="space-y-2">
-                <Label>Blood Group</Label>
-                <Controller
-                  control={control}
-                  name="bloodGroup"
-                  rules={{ required: "Blood Group is required" }}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Blood Group" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
-                          (bg) => (
+              {/* Blood Group, District & Upazila */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <Label className="text-slate-700 dark:text-slate-300 font-medium">
+                    Group
+                  </Label>
+                  <Controller
+                    control={control}
+                    name="bloodGroup"
+                    rules={{ required: "Group is required" }}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+                          <SelectValue placeholder="Blood Group" />{" "}
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[
+                            "A+",
+                            "A-",
+                            "B+",
+                            "B-",
+                            "AB+",
+                            "AB-",
+                            "O+",
+                            "O-",
+                          ].map((bg) => (
                             <SelectItem key={bg} value={bg}>
                               {bg}
                             </SelectItem>
-                          )
-                        )}
-                      </SelectContent>
-                    </Select>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.bloodGroup && (
+                    <span className="text-red-500 text-xs">
+                      {errors.bloodGroup.message}
+                    </span>
                   )}
-                />
-                {errors.bloodGroup && (
-                  <span className="text-red-500 text-xs">
-                    {errors.bloodGroup.message}
-                  </span>
-                )}
-              </div>
-
-              {/* District & Upazila Row */}
-              <div className="flex gap-4">
-                {/* District Selector */}
-                <div className="space-y-2 w-1/2">
-                  <Label>District</Label>
+                </div>
+                {/* District */}
+                <div className="space-y-1">
+                  <Label className="text-slate-700 dark:text-slate-300 font-medium">
+                    District
+                  </Label>
                   <Controller
                     control={control}
                     name="district"
@@ -208,8 +264,8 @@ const Register = () => {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select District" />
+                        <SelectTrigger className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+                          <SelectValue placeholder="Select District" />{" "}
                         </SelectTrigger>
                         <SelectContent className="max-h-[200px]">
                           {districts
@@ -230,9 +286,11 @@ const Register = () => {
                   )}
                 </div>
 
-                {/* Upazila Selector */}
-                <div className="space-y-2 w-1/2">
-                  <Label>Upazila</Label>
+                {/* Upazila */}
+                <div className="space-y-1">
+                  <Label className="text-slate-700 dark:text-slate-300 font-medium">
+                    Upazila
+                  </Label>
                   <Controller
                     control={control}
                     name="upazila"
@@ -243,8 +301,9 @@ const Register = () => {
                         defaultValue={field.value}
                         disabled={!selectedDistrict}
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select Upazila" />
+                        <SelectTrigger className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+                          <SelectValue placeholder="Select Upazila" />{" "}
+                          {/* Updated Placeholder */}
                         </SelectTrigger>
                         <SelectContent className="max-h-[200px]">
                           {filteredUpazilas
@@ -266,81 +325,116 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="******"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters",
-                    },
-                  })}
-                />
-                {errors.password && (
-                  <span className="text-red-500 text-xs">
-                    {errors.password.message}
-                  </span>
-                )}
+              {/* Password*/}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label
+                    htmlFor="password"
+                    className="text-slate-700 dark:text-slate-300 font-medium"
+                  >
+                    Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={isPasswordVisible ? "text" : "password"}
+                      placeholder="Enter Password (Min 6 chars)"
+                      className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500 pr-10"
+                      {...register("password", {
+                        required: "Password is required",
+                        minLength: {
+                          value: 6,
+                          message: "Password must be at least 6 characters",
+                        },
+                      })}
+                    />
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                      onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    >
+                      {isPasswordVisible ? (
+                        <FaEyeSlash className="h-4 w-4" />
+                      ) : (
+                        <FaEye className="h-4 w-4" />
+                      )}
+                    </div>
+                  </div>
+                  {errors.password && (
+                    <span className="text-red-500 text-xs">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
+
+                {/* Confirm Password */}
+                <div className="space-y-1">
+                  <Label
+                    htmlFor="confirmPassword"
+                    className="text-slate-700 dark:text-slate-300 font-medium"
+                  >
+                    Confirm Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="confirmPassword"
+                      type={isConfirmPasswordVisible ? "text" : "password"}
+                      placeholder="Confirm Your Password"
+                      className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500 pr-10"
+                      {...register("confirmPassword", {
+                        required: "Please confirm your password",
+                        validate: (value) =>
+                          value === password || "Passwords do not match",
+                      })}
+                    />
+                    <div
+                      className="absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                      onClick={() =>
+                        setIsConfirmPasswordVisible(!isConfirmPasswordVisible)
+                      }
+                    >
+                      {isConfirmPasswordVisible ? (
+                        <FaEyeSlash className="h-4 w-4" />
+                      ) : (
+                        <FaEye className="h-4 w-4" />
+                      )}
+                    </div>
+                  </div>
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-xs">
+                      {errors.confirmPassword.message}
+                    </span>
+                  )}
+                </div>
               </div>
 
-              {/* Confirm Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="******"
-                  {...register("confirmPassword", {
-                    required: "Please confirm your password",
-                    validate: (value) =>
-                      value === password || "Passwords do not match",
-                  })}
-                />
-                {errors.confirmPassword && (
-                  <span className="text-red-500 text-xs">
-                    {errors.confirmPassword.message}
-                  </span>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <div className="pt-4">
-                <Button className="w-full" type="submit" disabled={loading}>
+              {/* Submit */}
+              <div className="pt-2">
+                <Button
+                  className="w-full h-10 text-base font-semibold bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-700 transition-all shadow-md hover:shadow-lg"
+                  type="submit"
+                  disabled={loading}
+                >
                   {loading ? (
-                    <TbFidgetSpinner className="animate-spin text-2xl" />
+                    <TbFidgetSpinner className="animate-spin text-xl" />
                   ) : (
-                    "Register"
+                    "Register as a Donor"
                   )}
                 </Button>
               </div>
             </form>
-
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or
-                </span>
-              </div>
-            </div>
-
-            <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
-              <Link to="/login" className="text-primary font-bold hover:underline">
+            <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+              Already a lifesaver?{" "}
+              <Link
+                to="/login"
+                className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-bold hover:underline"
+              >
                 Login here
               </Link>
-            </p>
-          </CardContent>
-        </Card>
+            </div>
+          </div>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
