@@ -3,7 +3,16 @@ import { Link, NavLink, useLocation } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import BloodLineLogo from "../logo/BloodLineLogo";
 import Container from "../container/Container";
-import { Moon, Sun, Menu, LogOut, LayoutDashboard, User } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Menu,
+  LogOut,
+  LayoutDashboard,
+  User,
+  LogIn,
+  User2Icon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -115,7 +124,7 @@ const Navbar = () => {
                       isActive
                         ? isHome && !isScrolled
                           ? "text-white hover:text-white"
-                          : "text-primary"
+                          : "text-primary dark:text-white/90"
                         : isHome && !isScrolled
                         ? "text-white/80 hover:text-white"
                         : "text-foreground/70"
@@ -188,13 +197,14 @@ const Navbar = () => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                      className="w-56"
+                      className="min-w-56 p-3 space-y-2"
                       align="end"
                       forceMount
                     >
-                      <DropdownMenuLabel className="font-normal border">
-                        <div className="flex flex-col space-y-1">
-                          <p className="text-sm font-medium leading-none">
+                      <DropdownMenuLabel className="flex items-center gap-2 font-normal border rounded-sm text-center">
+                        <User2Icon className="text-green-800/90 bg-green-200 p-1 rounded" />
+                        <div className="flex flex-col items-start space-y-1">
+                          <p className="text-sm font-medium leading-none text-green-600">
                             {user.displayName}
                           </p>
                           <p className="text-xs leading-none text-muted-foreground">
@@ -202,26 +212,37 @@ const Navbar = () => {
                           </p>
                         </div>
                       </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
+                      {/* <DropdownMenuSeparator /> */}
                       <DropdownMenuItem asChild>
-                        <Link to="/dashboard" className="cursor-pointer">
-                          <LayoutDashboard className="mr-2 h-4 w-4" />
+                        <Link
+                          to="/dashboard"
+                          className="cursor-pointer border  hover:translate-x-3 duration-300 text-blue-700"
+                        >
+                          <LayoutDashboard className="h-6! w-6! p-1 rounded bg-blue-200 text-blue-700" />
                           <span>Dashboard</span>
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuSeparator />
+                      {/* <DropdownMenuSeparator /> */}
                       <DropdownMenuItem
                         onClick={handleLogOut}
-                        className="text-red-600 cursor-pointer focus:text-red-600"
+                        className="text-red-600 cursor-pointer focus:text-red-600 border hover:translate-x-3 duration-300"
                       >
-                        <LogOut className="mr-2 h-4 w-4" />
+                        <LogOut className="h-6! w-6! p-1 rounded bg-red-200/70 text-red-600" />
                         <span>Log out</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
                   <Link to="/login">
-                    <Button size="sm">Login</Button>
+                    <Button
+                      size="md"
+                      className={
+                        "px-4 py-2.5 bg-red-600 text-white shadow-[0_4px_14px_0_rgba(220,38,38,0.39)] transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(220,38,38,0.23)] duration-300 rounded-full group"
+                      }
+                    >
+                      <LogIn className="mr-1 group-hover:translate-x-2 transition-all duration-300" />
+                      Login
+                    </Button>
                   </Link>
                 )}
               </div>
@@ -319,7 +340,10 @@ const Navbar = () => {
                   ) : (
                     <SheetClose asChild>
                       <Link to="/login">
-                        <Button className="w-full">Login</Button>
+                        <Button className="w-full">
+                          <LogIn className="w-4 h-4 mr-2" />
+                          Login
+                        </Button>
                       </Link>
                     </SheetClose>
                   )}
