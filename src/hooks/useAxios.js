@@ -2,7 +2,7 @@ import axios from "axios";
 
 // axios instance for declare base url
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://server-bloodline.vercel.app",
 });
 
 // custom hook for call axios instance

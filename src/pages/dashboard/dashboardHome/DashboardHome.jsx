@@ -193,7 +193,7 @@ const DashboardHome = () => {
 
               <div className="rounded-md border">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="hidden md:table-header-group">
                     <TableRow>
                       <TableHead>Recipient Name</TableHead>
                       <TableHead>Location</TableHead>
@@ -206,32 +206,45 @@ const DashboardHome = () => {
                   </TableHeader>
                   <TableBody>
                     {recentRequests.map((req) => (
-                      <TableRow key={req._id}>
-                        <TableCell className="font-medium">
+                      <TableRow
+                        key={req._id}
+                        className="block md:table-row mb-6 md:mb-0 border rounded-lg md:border-b md:rounded-none shadow-sm md:shadow-none bg-card md:bg-transparent overflow-hidden"
+                      >
+                        <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0 font-medium">
+                          <span className="font-bold md:hidden">Recipient</span>
                           {req.recipientName}
                         </TableCell>
-                        <TableCell>
-                          {req.recipientDistrict}, {req.recipientUpazila}
+                        <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                          <span className="font-bold md:hidden">Location</span>
+                          <span>
+                            {req.recipientDistrict}, {req.recipientUpazila}
+                          </span>
                         </TableCell>
-                        <TableCell>
-                          <div className="flex flex-col">
+                        <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                          <span className="font-bold md:hidden">Date & Time</span>
+                          <div className="flex flex-col md:items-start text-right md:text-left">
                             <span>{req.donationDate}</span>
                             <span className="text-xs text-muted-foreground">
                               {req.donationTime}
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell className="font-bold text-red-600">
-                          {req.bloodGroup}
+                        <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                          <span className="font-bold md:hidden">Blood Group</span>
+                          <span className="font-bold text-red-600">
+                            {req.bloodGroup}
+                          </span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                          <span className="font-bold md:hidden">Status</span>
                           <Badge className={statusBadgeColor(req.status)}>
                             {req.status}
                           </Badge>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                          <span className="font-bold md:hidden">Donor Info</span>
                           {req.status === "inprogress" ? (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col md:items-start text-right md:text-left">
                               <span className="font-bold">{req.donorName}</span>
                               <span className="text-xs text-muted-foreground">
                                 {req.donorEmail}
@@ -241,7 +254,8 @@ const DashboardHome = () => {
                             "-"
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="flex md:table-cell items-center justify-between md:justify-end px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                          <span className="font-bold md:hidden">Actions</span>
                           <div className="flex gap-2">
                             <Link to={`/dashboard/update-request/${req._id}`}>
                               <Button variant="ghost" size="icon" className="text-blue-600 hover:text-blue-700">
@@ -256,7 +270,7 @@ const DashboardHome = () => {
                             >
                               <FaTrash />
                             </Button>
-                            <Link to={`/donation-request-details/${req._id}`}>
+                            <Link to={`/dashboard/donation-request-details/${req._id}`}>
                               <Button variant="ghost" size="icon" className="text-gray-600 hover:text-gray-800">
                                 <FaEye />
                               </Button>

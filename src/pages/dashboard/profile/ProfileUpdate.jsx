@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useLocations from "../../../hooks/useLocations";
 import { uploadImage } from "../../../utils/uploadImage";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,12 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProfileUpdate = () => {
@@ -135,14 +129,13 @@ const ProfileUpdate = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form
-            onSubmit={handleSubmit(handleUpdate)}
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit(handleUpdate)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="font-semibold">Name</Label>
+                <Label htmlFor="name" className="font-semibold">
+                  Name
+                </Label>
                 <Input
                   id="name"
                   type="text"
@@ -152,7 +145,9 @@ const ProfileUpdate = () => {
 
               {/* Email (Read Only) */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="font-semibold">Email</Label>
+                <Label htmlFor="email" className="font-semibold">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -167,8 +162,12 @@ const ProfileUpdate = () => {
                 <Label className="font-semibold">Profile Picture</Label>
                 <div className="flex gap-4 items-center">
                   <Avatar className="h-16 w-16 border-2 border-primary">
-                    <AvatarImage src={userData.image || userData.avatar || user?.photoURL} />
-                    <AvatarFallback>{(userData.name || user?.displayName)?.charAt(0)}</AvatarFallback>
+                    <AvatarImage
+                      src={userData.image || userData.avatar || user?.photoURL}
+                    />
+                    <AvatarFallback>
+                      {(userData.name || user?.displayName)?.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
                   <Input
                     type="file"
@@ -257,16 +256,19 @@ const ProfileUpdate = () => {
                 />
               </div>
 
-              <div className="md:col-span-2 pt-4">
+              <div className="md:col-span-2 pt-4 grid md:grid-cols-2 gap-4">
                 <Button
                   type="submit"
-                  className="w-full font-bold bg-red-600 hover:bg-red-700"
+                  className=" font-bold bg-red-600 hover:bg-red-700"
                   disabled={isUpdating}
                 >
                   {isUpdating ? (
                     <TbFidgetSpinner className="animate-spin text-xl mr-2" />
                   ) : null}
                   {isUpdating ? "Saving..." : "Save Changes"}
+                </Button>
+                <Button variant={"outline"}>
+                  <Link to="/dashboard">Cancel</Link>
                 </Button>
               </div>
             </div>

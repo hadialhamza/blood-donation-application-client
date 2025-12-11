@@ -142,7 +142,7 @@ const AllUsers = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="md:p-6 space-y-6">
       {/* Header Section */}
       <div className="flex flex-col lg:flex-row gap-6 justify-between items-start lg:items-center bg-secondary/20 p-6 rounded-lg border">
         {/* Admin Info */}
@@ -312,8 +312,8 @@ const AllUsers = () => {
                             {user.role === "admin"
                               ? "Admin"
                               : user.role === "volunteer"
-                              ? "Volunteer"
-                              : "Donor"}
+                                ? "Volunteer"
+                                : "Donor"}
                           </DropdownMenuItem>
                         ) : (
                           <DropdownMenuItem
@@ -324,8 +324,8 @@ const AllUsers = () => {
                             {user.role === "admin"
                               ? "Admin"
                               : user.role === "volunteer"
-                              ? "Volunteer"
-                              : "Donor"}
+                                ? "Volunteer"
+                                : "Donor"}
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator />

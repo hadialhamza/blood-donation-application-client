@@ -28,7 +28,10 @@ const useLocations = () => {
   return {
     districts,
     upazilas,
-    isLoading: isDistrictsLoading || isUpazilasLoading || (districts.length > 0 && upazilas.length === 0),
+    isLoading:
+      isDistrictsLoading ||
+      isUpazilasLoading ||
+      (districts.length > 0 && upazilas.length === 0),
   };
 };
 

@@ -106,7 +106,7 @@ const AllDonationRequests = () => {
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="hidden md:table-header-group">
             <TableRow>
               <TableHead>Requester</TableHead>
               <TableHead>Recipient</TableHead>
@@ -126,15 +126,34 @@ const AllDonationRequests = () => {
               </TableRow>
             ) : (
               currentData.map((req) => (
-                <TableRow key={req._id}>
-                  <TableCell>{req.requesterName}</TableCell>
-                  <TableCell>{req.recipientName}</TableCell>
-                  <TableCell>{req.recipientDistrict}</TableCell>
-                  <TableCell>{req.donationDate}</TableCell>
-                  <TableCell className="font-bold text-red-600">
-                    {req.bloodGroup}
+                <TableRow
+                  key={req._id}
+                  className="block md:table-row mb-6 md:mb-0 border rounded-lg md:border-b md:rounded-none shadow-sm md:shadow-none bg-card md:bg-transparent overflow-hidden"
+                >
+                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                    <span className="font-bold md:hidden">Requester</span>
+                    {req.requesterName}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                    <span className="font-bold md:hidden">Recipient</span>
+                    {req.recipientName}
+                  </TableCell>
+                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                    <span className="font-bold md:hidden">Location</span>
+                    {req.recipientDistrict}
+                  </TableCell>
+                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                    <span className="font-bold md:hidden">Date</span>
+                    {req.donationDate}
+                  </TableCell>
+                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                    <span className="font-bold md:hidden">Blood Group</span>
+                    <span className="font-bold text-red-600">
+                      {req.bloodGroup}
+                    </span>
+                  </TableCell>
+                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                    <span className="font-bold md:hidden">Status</span>
                     {/* Status Dropdown for Admin/Volunteer */}
                     <div className="w-[140px]">
                       <Select
@@ -155,8 +174,16 @@ const AllDonationRequests = () => {
                       </Select>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="flex md:table-cell items-center justify-between md:justify-end px-4 py-2 md:px-4 md:py-4">
+                    <span className="font-bold md:hidden">Actions</span>
                     <div className="flex gap-2 items-center">
+                      {/* View Button (Available for all) */}
+                      <Link to={`/dashboard/donation-request-details/${req._id}`}>
+                        <Button size="sm" variant="secondary">
+                          View
+                        </Button>
+                      </Link>
+
                       {/* Admin Only Actions */}
                       {role === "admin" && (
                         <>
@@ -173,13 +200,6 @@ const AllDonationRequests = () => {
                             Delete
                           </Button>
                         </>
-                      )}
-
-                      {/* Volunteer has no other actions, maybe View Details if needed */}
-                      {role === "volunteer" && (
-                        <span className="text-xs text-muted-foreground">
-                          Status Update Only
-                        </span>
                       )}
                     </div>
                   </TableCell>

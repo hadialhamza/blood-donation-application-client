@@ -99,7 +99,7 @@ const Funding = () => {
       {/* Funding Table */}
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="hidden md:table-header-group">
             <TableRow>
               <TableHead>Donor Name</TableHead>
               <TableHead>Date</TableHead>
@@ -108,13 +108,23 @@ const Funding = () => {
           </TableHeader>
           <TableBody>
             {funds.map((fund) => (
-              <TableRow key={fund._id}>
-                <TableCell className="font-bold">{fund.name}</TableCell>
-                <TableCell>
+              <TableRow
+                key={fund._id}
+                className="block md:table-row mb-6 md:mb-0 border rounded-lg md:border-b md:rounded-none shadow-sm md:shadow-none bg-card md:bg-transparent overflow-hidden"
+              >
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Donor Name</span>
+                  <span className="font-bold">{fund.name}</span>
+                </TableCell>
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Date</span>
                   {new Date(fund.date).toLocaleDateString()}
                 </TableCell>
-                <TableCell className="text-green-600 font-bold">
-                  ${fund.amount}
+                <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
+                  <span className="font-bold md:hidden">Amount</span>
+                  <span className="text-green-600 font-bold">
+                    ${fund.amount}
+                  </span>
                 </TableCell>
               </TableRow>
             ))}

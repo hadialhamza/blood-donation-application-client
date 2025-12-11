@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router"; // Ensure using react-router-dom
+import { createBrowserRouter } from "react-router";
 import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/home/HomePage";
 import Login from "../pages/login/Login";
@@ -23,6 +23,8 @@ import ContentManagement from "../pages/dashboard/contentManagement/ContentManag
 import AddBlog from "../pages/dashboard/contentManagement/AddBlog";
 import ProfileUpdate from "../pages/dashboard/profile/ProfileUpdate";
 
+import PageTitle from "../components/shared/PageTitle";
+
 export const router = createBrowserRouter([
   // MAIN LAYOUT
   {
@@ -31,48 +33,71 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: (
+          <PageTitle title="Home">
+            <HomePage />
+          </PageTitle>
+        ),
       },
       {
         path: "login",
-        element: <Login />,
+        element: (
+          <PageTitle title="Login">
+            <Login />
+          </PageTitle>
+        ),
       },
       {
         path: "register",
-        element: <Register />,
+        element: (
+          <PageTitle title="Register">
+            <Register />
+          </PageTitle>
+        ),
       },
       {
         path: "search",
-        element: <Search />,
+        element: (
+          <PageTitle title="Search Donors">
+            <Search />
+          </PageTitle>
+        ),
       },
       {
         path: "public-donation-requests",
-        element: <PublicDonationRequests />,
+        element: (
+          <PageTitle title="Donation Requests">
+            <PublicDonationRequests />
+          </PageTitle>
+        ),
       },
       {
         path: "blog",
-        element: <Blog />,
+        element: (
+          <PageTitle title="Blog">
+            <Blog />
+          </PageTitle>
+        ),
       },
       {
         path: "blog/:id",
-        element: <BlogDetails />,
+        element: (
+          <PageTitle title="Blog Details">
+            <BlogDetails />
+          </PageTitle>
+        ),
       },
       {
         path: "funding",
         element: (
-          <PrivateRoute>
-            <Funding />
-          </PrivateRoute>
+          <PageTitle title="Funding">
+            <PrivateRoute>
+              <Funding />
+            </PrivateRoute>
+          </PageTitle>
         ),
       },
-      {
-        path: "donation-request-details/:id",
-        element: (
-          <PrivateRoute>
-            <DonationRequestDetails />
-          </PrivateRoute>
-        ),
-      },
+
     ],
   },
 
@@ -87,50 +112,102 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true, // This makes it the default page at /dashboard
-        element: <DashboardHome />,
+        element: (
+          <PageTitle title="Dashboard">
+            <DashboardHome />
+          </PageTitle>
+        ),
       },
       {
         path: "admin-home",
-        element: <AdminHome />,
+        element: (
+          <PageTitle title="Admin Dashboard">
+            <AdminHome />
+          </PageTitle>
+        ),
       },
       // You might want a separate default for donors, e.g.:
       // { path: "donor-home", element: <DonorHome /> }
 
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <PageTitle title="Profile">
+            <Profile />
+          </PageTitle>
+        ),
       },
       {
         path: "profile/update",
-        element: <ProfileUpdate />,
+        element: (
+          <PageTitle title="Update Profile">
+            <ProfileUpdate />
+          </PageTitle>
+        ),
       },
       {
         path: "create-donation-request",
-        element: <CreateDonationRequest />,
+        element: (
+          <PageTitle title="Create Request">
+            <CreateDonationRequest />
+          </PageTitle>
+        ),
       },
       {
         path: "my-donation-requests",
-        element: <MyDonationRequests />,
+        element: (
+          <PageTitle title="My Requests">
+            <MyDonationRequests />
+          </PageTitle>
+        ),
       },
       {
         path: "update-request/:id",
-        element: <UpdateDonationRequest />,
+        element: (
+          <PageTitle title="Update Request">
+            <UpdateDonationRequest />
+          </PageTitle>
+        ),
       },
       {
         path: "all-users",
-        element: <AllUsers />,
+        element: (
+          <PageTitle title="All Users">
+            <AllUsers />
+          </PageTitle>
+        ),
       },
       {
         path: "all-blood-donation-request",
-        element: <AllDonationRequests />,
+        element: (
+          <PageTitle title="All Requests">
+            <AllDonationRequests />
+          </PageTitle>
+        ),
       },
       {
         path: "content-management",
-        element: <ContentManagement />,
+        element: (
+          <PageTitle title="Content Management">
+            <ContentManagement />
+          </PageTitle>
+        ),
       },
       {
         path: "add-blog",
-        element: <AddBlog />,
+        element: (
+          <PageTitle title="Add Blog">
+            <AddBlog />
+          </PageTitle>
+        ),
+      },
+      {
+        path: "donation-request-details/:id",
+        element: (
+          <PageTitle title="Request Details">
+            <DonationRequestDetails />
+          </PageTitle>
+        ),
       },
     ],
   },

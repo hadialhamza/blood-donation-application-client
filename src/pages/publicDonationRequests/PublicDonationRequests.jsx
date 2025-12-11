@@ -76,7 +76,7 @@ const PublicDonationRequests = () => {
               </CardContent>
               <CardFooter>
                 <Link
-                  to={`/donation-request-details/${req._id}`}
+                  to={`/dashboard/donation-request-details/${req._id}`}
                   className="w-full"
                 >
                   <Button className="w-full bg-red-600 hover:bg-red-700">
