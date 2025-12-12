@@ -94,7 +94,7 @@ const Navbar = () => {
       )}
     >
       <Container>
-        <div className="flex h-16 px-4 md:px-0 items-center">
+        <div className="flex h-16 items-center">
           {/* LOGO */}
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center space-x-2">
@@ -264,7 +264,7 @@ const Navbar = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px]">
                 <SheetHeader>
-                  <SheetTitle className="flex items-center justify-center mb-4">
+                  <SheetTitle className="flex items-center my-4 px-4">
                     <div className="scale-110">
                       <BloodLineLogo />
                     </div>
