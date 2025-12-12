@@ -48,8 +48,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl overflow-hidden w-full max-w-6xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden w-full max-w-6xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
         {/* Left Side: Login Form */}
         <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
           <div className="max-w-md mx-auto w-full">

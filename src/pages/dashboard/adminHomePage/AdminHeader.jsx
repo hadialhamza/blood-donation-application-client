@@ -18,25 +18,10 @@ import {
 
 const AdminHeader = ({ user, adminProfile }) => {
   return (
-    <div
-      className="relative overflow-hidden rounded-3xl border border-red-200 dark:border-red-900
-                    bg-gradient-to-br from-white via-red-50/50 to-rose-50/30 
-                    dark:from-zinc-900 dark:via-red-950/20 dark:to-rose-950/10 
-                    backdrop-blur-xl shadow-xl"
-    >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-6 left-6 w-4 h-6 bg-red-500 rounded-full rotate-45"></div>
-        <div className="absolute top-12 right-12 w-3 h-5 bg-red-500 rounded-full rotate-45"></div>
-        <div className="absolute bottom-8 left-1/3 w-5 h-7 bg-red-500 rounded-full rotate-45"></div>
-      </div>
-
-      {/* Animated Gradient Border */}
-      <div className="absolute inset-0 rounded-3xl p-[1px] bg-gradient-to-r from-red-500/20 via-rose-500/20 to-red-500/20 animate-gradient-x"></div>
-
+    <div className="relative rounded-3xl bg-gradient-primary backdrop-blur-xl shadow-xl">
+      <div className="absolute inset-0 rounded-3xl p-px bg-linear-to-r from-red-500/20 via-rose-500/20 to-red-500/20"></div>
       <div className="relative z-10 p-8">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-          {/* Left Section: Admin Info */}
           <div className="flex-1">
             <div className="flex items-start gap-6">
               <div className="relative">
@@ -46,19 +31,17 @@ const AdminHeader = ({ user, adminProfile }) => {
                     alt={adminProfile.name || user?.displayName}
                     className="object-cover"
                   />
-                  <AvatarFallback className="text-3xl font-bold bg-gradient-to-r from-red-600 to-rose-600 text-white">
+                  <AvatarFallback className="text-3xl font-bold bg-linear-to-r from-red-600 to-rose-600 text-white">
                     {adminProfile.name?.charAt(0) || "A"}
                   </AvatarFallback>
                 </Avatar>
 
-                {/* Status Indicator */}
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-lg flex items-center justify-center">
+                <div className="absolute -top-1 -right-1 w-6 h-6 bg-linear-to-r from-green-500 to-emerald-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-lg flex items-center justify-center">
                   <div className="w-2 h-2 bg-white rounded-full animate-ping"></div>
                 </div>
 
-                {/* Role Badge */}
                 <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-gradient-to-r from-purple-600 to-violet-600 text-white border-0 shadow-lg px-3 py-1">
+                  <Badge className="bg-linear-to-r from-purple-600 to-violet-600 text-white border-0 shadow-lg px-3 py-1">
                     <Crown className="w-3 h-3 mr-1" />
                     Admin
                   </Badge>
@@ -69,7 +52,7 @@ const AdminHeader = ({ user, adminProfile }) => {
                 <div>
                   <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">
                     Welcome,{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">
+                    <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-rose-600">
                       {adminProfile.name?.split(" ")[0] || "Admin"}
                     </span>
                     !
@@ -99,7 +82,7 @@ const AdminHeader = ({ user, adminProfile }) => {
                   </div>
                 </div>
 
-                {/* Stats Row */}
+
                 <div className="grid grid-cols-3 gap-4 pt-2 max-w-md">
                   <div className="text-center p-3 bg-white/50 dark:bg-zinc-800/30 rounded-xl border border-red-100 dark:border-red-900">
                     <div className="text-lg font-bold text-red-600 dark:text-red-400">
@@ -130,15 +113,13 @@ const AdminHeader = ({ user, adminProfile }) => {
             </div>
           </div>
 
-          {/* Right Section: Actions & Info */}
           <div className="flex flex-col sm:flex-row lg:flex-col items-stretch lg:items-end gap-4">
-            {/* Date & Time Card */}
             <div
-              className="p-4 rounded-2xl bg-gradient-to-r from-red-600/10 to-rose-600/10 
+              className="p-4 rounded-2xl bg-linear-to-r from-red-600/10 to-rose-600/10 
                           border border-red-200 dark:border-red-800 backdrop-blur-sm"
             >
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-gradient-to-r from-red-600 to-rose-600 rounded-xl text-white">
+                <div className="p-2.5 bg-linear-to-r from-red-600 to-rose-600 rounded-xl text-white">
                   <Calendar className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
@@ -166,7 +147,6 @@ const AdminHeader = ({ user, adminProfile }) => {
               </div>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <Button
                 size="icon"
@@ -177,7 +157,6 @@ const AdminHeader = ({ user, adminProfile }) => {
                 title="Notifications"
               >
                 <Bell className="h-5 w-5 text-red-600 dark:text-red-400" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></span>
               </Button>
 
               <Button
@@ -205,7 +184,7 @@ const AdminHeader = ({ user, adminProfile }) => {
           </div>
         </div>
 
-        {/* Bottom Status Bar */}
+
         <div className="mt-6 pt-4 border-t border-red-100 dark:border-red-900">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -233,9 +212,9 @@ const AdminHeader = ({ user, adminProfile }) => {
         </div>
       </div>
 
-      {/* CSS Animation */}
-      <style jsx>{`
-        @keyframes gradient-x {
+
+      <style>{`
+        @keyframes linear-x {
           0%,
           100% {
             background-position: 0% 50%;
@@ -244,9 +223,9 @@ const AdminHeader = ({ user, adminProfile }) => {
             background-position: 100% 50%;
           }
         }
-        .animate-gradient-x {
+        .animate-linear-x {
           background-size: 200% 200%;
-          animation: gradient-x 3s ease infinite;
+          animation: linear-x 3s ease infinite;
         }
       `}</style>
     </div>

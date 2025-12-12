@@ -6,9 +6,6 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  Label,
-  Line,
-  LineChart,
   Pie,
   PieChart,
   XAxis,
@@ -31,7 +28,6 @@ import {
   TrendingUp,
   TrendingDown,
   Users,
-  Heart,
   DollarSign,
   Activity,
   Target,
@@ -46,7 +42,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-// --- 1. PIE CHART - Donation Status ---
 export const DonationPieChart = ({ stats }) => {
   const data = [
     {
@@ -92,8 +87,8 @@ export const DonationPieChart = ({ stats }) => {
   const totalRequests = data.reduce((sum, item) => sum + item.visitors, 0);
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500" />
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 via-amber-500 to-red-500" />
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div>
@@ -103,7 +98,7 @@ export const DonationPieChart = ({ stats }) => {
             </CardTitle>
             <CardDescription>Distribution of blood requests</CardDescription>
           </div>
-          <Badge className="bg-gradient-to-r from-emerald-600 to-green-600 text-white">
+          <Badge className="bg-linear-to-r from-emerald-600 to-green-600 text-white">
             {totalRequests} Total
           </Badge>
         </div>
@@ -172,7 +167,7 @@ export const DonationPieChart = ({ stats }) => {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-3 h-3 rounded-full bg-gradient-to-r ${item.gradient}`}
+                    className={`w-3 h-3 rounded-full bg-linear-to-r ${item.gradient}`}
                   ></div>
                   <div className="flex items-center gap-2">
                     {item.icon}
@@ -228,8 +223,8 @@ export const RevenueAreaChart = () => {
   ];
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-red-500" />
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-rose-500 to-red-500" />
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -240,7 +235,7 @@ export const RevenueAreaChart = () => {
             <CardDescription>Monthly funding vs request volume</CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <Badge className="bg-gradient-to-r from-rose-600 to-red-600 text-white">
+            <Badge className="bg-linear-to-r from-rose-600 to-red-600 text-white">
               <Zap className="w-3 h-3 mr-1" />
               +24% Growth
             </Badge>
@@ -374,8 +369,8 @@ export const UserBarChart = ({ stats }) => {
   const totalUsers = data.reduce((sum, item) => sum + item.count, 0);
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500" />
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 via-amber-500 to-red-500" />
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -386,7 +381,7 @@ export const UserBarChart = ({ stats }) => {
             <CardDescription>Account health overview</CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <Badge className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+            <Badge className="bg-linear-to-r from-blue-600 to-indigo-600 text-white">
               <Users className="w-3 h-3 mr-1" />
               {totalUsers} Users
             </Badge>
@@ -438,7 +433,7 @@ export const UserBarChart = ({ stats }) => {
 
           {/* Stats Summary */}
           <div className="space-y-4">
-            <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20">
+            <div className="p-4 rounded-xl bg-linear-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
                   <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -454,7 +449,7 @@ export const UserBarChart = ({ stats }) => {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+            <div className="p-4 rounded-xl bg-linear-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
                   <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
@@ -470,7 +465,7 @@ export const UserBarChart = ({ stats }) => {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20">
+            <div className="p-4 rounded-xl bg-linear-to-r from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/20">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
                   <TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -522,8 +517,8 @@ export const GrowthRadialChart = () => {
   ];
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-amber-500" />
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
+      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-500 via-purple-500 to-amber-500" />
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -533,7 +528,7 @@ export const GrowthRadialChart = () => {
             </CardTitle>
             <CardDescription>Monthly engagement metrics</CardDescription>
           </div>
-          <Badge className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+          <Badge className="bg-linear-to-r from-blue-600 to-indigo-600 text-white">
             <Sparkles className="w-3 h-3 mr-1" />
             Performance
           </Badge>
@@ -590,14 +585,14 @@ export const GrowthRadialChart = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
-                      className={`w-3 h-3 rounded-full bg-gradient-to-r ${item.gradient}`}
+                      className={`w-3 h-3 rounded-full bg-linear-to-r ${item.gradient}`}
                     ></div>
                     <span className="font-medium">{item.name}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-24 h-2 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
                       <div
-                        className={`h-full bg-gradient-to-r ${item.gradient}`}
+                        className={`h-full bg-linear-to-r ${item.gradient}`}
                         style={{ width: `${item.value}%` }}
                       ></div>
                     </div>

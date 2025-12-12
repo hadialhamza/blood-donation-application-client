@@ -14,15 +14,12 @@ import {
   UserCheck,
   UserX,
   Crown,
-  TrendingUp,
   Activity,
   Mail,
   Phone,
   Calendar,
-  Award,
   CheckCircle,
   XCircle,
-  ShieldCheck,
   UserPlus,
   RefreshCw,
 } from "lucide-react";
@@ -30,13 +27,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -53,6 +44,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
+import Loading from "@/components/shared/Loading";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -177,11 +169,10 @@ const AllUsers = () => {
   // Badge Styles
   const getRoleBadge = (role) => {
     const styles = {
-      admin:
-        "bg-gradient-to-r from-purple-600 to-violet-600 text-white border-0",
+      admin: "bg-linear-to-r from-purple-600 to-violet-600 text-white border-0",
       volunteer:
-        "bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0",
-      donor: "bg-gradient-to-r from-red-500 to-rose-500 text-white border-0",
+        "bg-linear-to-r from-orange-500 to-amber-500 text-white border-0",
+      donor: "bg-linear-to-r from-red-500 to-rose-500 text-white border-0",
     };
     return styles[role] || "bg-zinc-100 text-zinc-700";
   };
@@ -204,21 +195,11 @@ const AllUsers = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10">
-        <div className="relative">
-          <RefreshCw className="animate-spin text-5xl text-red-600 dark:text-red-400" />
-          <div className="absolute inset-0 bg-red-500/20 rounded-full blur-xl"></div>
-        </div>
-        <p className="mt-4 text-zinc-600 dark:text-zinc-400">
-          Loading user data...
-        </p>
-      </div>
-    );
+    return <Loading />;
   }
 
   return (
-    <div className="p-6 space-y-6 bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
+    <div className="page-container space-y-6">
       {/* Header Section */}
       <div className="space-y-6">
         <div>
@@ -238,7 +219,7 @@ const AllUsers = () => {
 
         {/* Current Admin Info */}
         {currentUser && (
-          <Card className="border-red-100 dark:border-red-900 bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-900/10 dark:to-rose-900/10">
+          <Card className="border-red-100 dark:border-red-900 bg-linear-to-r from-red-50 to-rose-50 dark:from-red-900/10 dark:to-rose-900/10">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -247,7 +228,7 @@ const AllUsers = () => {
                       src={currentUser.photoURL}
                       alt={currentUser.displayName}
                     />
-                    <AvatarFallback className="text-2xl bg-gradient-to-r from-red-600 to-rose-600 text-white">
+                    <AvatarFallback className="text-2xl bg-linear-to-r from-red-600 to-rose-600 text-white">
                       {currentUser.displayName?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
@@ -256,7 +237,7 @@ const AllUsers = () => {
                       <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
                         {currentUser.displayName}
                       </h2>
-                      <Badge className="bg-gradient-to-r from-purple-600 to-violet-600 text-white">
+                      <Badge className="bg-linear-to-r from-purple-600 to-violet-600 text-white">
                         <Crown className="w-3 h-3 mr-1" /> Admin
                       </Badge>
                     </div>
@@ -284,8 +265,8 @@ const AllUsers = () => {
         )}
 
         {/* Stats Dashboard */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="border-red-100 dark:border-red-900">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -304,7 +285,7 @@ const AllUsers = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -326,7 +307,7 @@ const AllUsers = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -348,7 +329,7 @@ const AllUsers = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -369,11 +350,55 @@ const AllUsers = () => {
               />
             </CardContent>
           </Card>
+
+          <Card className="card-container">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Volunteers
+                  </p>
+                  <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
+                    {volunteerCount}
+                  </p>
+                </div>
+                <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-xl">
+                  <HandHeart className="w-8 h-8 text-amber-600 dark:text-amber-400" />
+                </div>
+              </div>
+              <Progress
+                value={(volunteerCount / totalUsers) * 100}
+                className="mt-4 h-2"
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="card-container">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Blocked
+                  </p>
+                  <p className="text-3xl font-bold text-gray-600 dark:text-gray-400">
+                    {blockedCount}
+                  </p>
+                </div>
+                <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-xl">
+                  <UserX className="w-8 h-8 text-gray-600 dark:text-gray-400" />
+                </div>
+              </div>
+              <Progress
+                value={(blockedCount / totalUsers) * 100}
+                className="mt-4 h-2"
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
 
       {/* Search and Filter Section */}
-      <Card className="border-red-100 dark:border-red-900 shadow-sm">
+      <Card className="card-container">
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             <div className="flex-1 w-full">
@@ -445,14 +470,14 @@ const AllUsers = () => {
               Showing page {currentPage} of {totalPages}
             </p>
           </div>
-          <Button className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700">
+          <Button className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700">
             <UserPlus className="w-4 h-4 mr-2" />
             Add New User
           </Button>
         </div>
 
         {paginatedUsers.length === 0 ? (
-          <Card className="border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-12 text-center">
               <Users className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
@@ -470,9 +495,7 @@ const AllUsers = () => {
             {paginatedUsers.map((user) => (
               <Card
                 key={user._id}
-                className="group border-red-100 dark:border-red-900 
-                hover:border-red-300 dark:hover:border-red-700 hover:shadow-lg 
-                transition-all duration-300 overflow-hidden"
+                className="group card-container hover:border-red-300 dark:hover:border-red-700 hover:shadow-lg overflow-hidden"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between gap-4">
@@ -480,7 +503,7 @@ const AllUsers = () => {
                     <div className="flex items-start gap-4 flex-1">
                       <Avatar className="h-14 w-14 border-2 border-white dark:border-zinc-800 shadow-md">
                         <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback className="bg-gradient-to-r from-red-500 to-rose-500 text-white text-lg">
+                        <AvatarFallback className="bg-linear-to-r from-red-500 to-rose-500 text-white text-lg">
                           {user.name?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
@@ -528,9 +551,9 @@ const AllUsers = () => {
                           <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
                             <Calendar className="w-3 h-3" />
                             Joined:{" "}
-                            {new Date(
-                              user.createdAt || Date.now()
-                            ).toLocaleDateString()}
+                            {user.createdAt
+                              ? new Date(user.createdAt).toLocaleDateString()
+                              : "N/A"}
                           </div>
                         </div>
                       </div>

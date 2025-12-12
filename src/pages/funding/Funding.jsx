@@ -18,7 +18,6 @@ import {
   Target,
   Gift,
 } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -126,7 +125,7 @@ const Funding = () => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-linear-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10">
         <div className="relative">
           <Heart className="animate-pulse text-5xl text-red-600 dark:text-red-400" />
           <div className="absolute inset-0 bg-red-500/20 rounded-full blur-xl"></div>
@@ -139,7 +138,7 @@ const Funding = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
+    <div className="bg-linear-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
       <div className="pt-28 pb-12 px-4 max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -151,20 +150,29 @@ const Funding = () => {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-6">
             Fuel Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-rose-600">
               Life-Saving Mission
             </span>
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
             Your financial support enables us to maintain blood banks, support
-            emergency responses, and ensure no patient ever pays for blood or
             platelets.
           </p>
+          <div className="mt-8">
+            <Button
+              onClick={() => setIsOpen(true)}
+              size="lg"
+              className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <Heart className="w-5 h-5 mr-2 animate-pulse" />
+              Make a Donation
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
             <CardContent className="p-6 text-center">
               <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <DollarSign className="w-8 h-8 text-red-600 dark:text-red-400" />
@@ -178,7 +186,7 @@ const Funding = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
             <CardContent className="p-6 text-center">
               <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Heart className="w-8 h-8 text-red-600 dark:text-red-400" />
@@ -192,7 +200,7 @@ const Funding = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
             <CardContent className="p-6 text-center">
               <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Target className="w-8 h-8 text-red-600 dark:text-red-400" />
@@ -210,7 +218,7 @@ const Funding = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
             <CardContent className="p-6 text-center">
               <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <TrendingUp className="w-8 h-8 text-red-600 dark:text-red-400" />
@@ -293,7 +301,7 @@ const Funding = () => {
                 </div>
                 <Button
                   onClick={() => setIsOpen(true)}
-                  className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white"
+                  className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white"
                 >
                   <Heart className="w-4 h-4 mr-2" />
                   Make a Donation
@@ -321,15 +329,14 @@ const Funding = () => {
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                            index === 0
+                          className={`w-8 h-8 rounded-full flex items-center justify-center ${index === 0
                               ? "bg-amber-100 text-amber-600"
                               : index === 1
-                              ? "bg-zinc-100 text-zinc-600"
-                              : index === 2
-                              ? "bg-rose-100 text-rose-600"
-                              : "bg-red-50 text-red-600"
-                          }`}
+                                ? "bg-zinc-100 text-zinc-600"
+                                : index === 2
+                                  ? "bg-rose-100 text-rose-600"
+                                  : "bg-red-50 text-red-600"
+                            }`}
                         >
                           {index + 1}
                         </div>
@@ -345,7 +352,7 @@ const Funding = () => {
             </Card>
 
             {/* How Funds Are Used */}
-            <Card className="bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/10 border-red-200 dark:border-red-900">
+            <Card className="bg-linear-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/10 border-red-200 dark:border-red-900">
               <CardHeader>
                 <CardTitle className="text-red-700 dark:text-red-400">
                   Your Impact
@@ -416,11 +423,10 @@ const Funding = () => {
                       setSelectedAmount(quickAmount);
                       setAmount(quickAmount);
                     }}
-                    className={`p-3 rounded-xl border-2 text-center transition-all ${
-                      selectedAmount === quickAmount
+                    className={`p-3 rounded-xl border-2 text-center transition-all ${selectedAmount === quickAmount
                         ? "border-red-500 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300"
                         : "border-zinc-200 dark:border-zinc-800 hover:border-red-300 dark:hover:border-red-700"
-                    }`}
+                      }`}
                   >
                     <span className="text-lg font-bold">${quickAmount}</span>
                   </button>
@@ -495,7 +501,7 @@ const Funding = () => {
             </Button>
             <Button
               onClick={handleDonate}
-              className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white"
+              className="flex-1 bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white"
             >
               <Heart className="w-4 h-4 mr-2" />
               Donate ${selectedAmount}

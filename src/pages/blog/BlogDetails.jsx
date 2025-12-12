@@ -50,7 +50,7 @@ const BlogDetails = () => {
 
   return (
     <div className="bg-linear-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
-      {/* Back Navigation */}
+
       <div className="pt-24 pb-8 px-4 max-w-7xl mx-auto">
         <Button variant="ghost" className="group mb-4" asChild>
           <Link to="/blog">
@@ -61,7 +61,7 @@ const BlogDetails = () => {
       </div>
 
       <div className="pb-16 px-4 max-w-4xl mx-auto">
-        {/* Article Header */}
+
         <div className="mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 mb-6">
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
@@ -74,7 +74,7 @@ const BlogDetails = () => {
             {blog.title}
           </h1>
 
-          {/* Author & Metadata */}
+
           <div className="flex flex-wrap items-center gap-6 mb-8">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
@@ -120,7 +120,7 @@ const BlogDetails = () => {
           </div>
         </div>
 
-        {/* Featured Image */}
+
         <div className="relative rounded-3xl overflow-hidden mb-12 shadow-2xl group">
           <img
             src={blog.thumbnail}
@@ -129,13 +129,13 @@ const BlogDetails = () => {
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/30 via-transparent to-transparent"></div>
 
-          {/* Image Caption */}
+
           <div className="absolute bottom-6 left-6 right-6 text-white">
             <p className="text-sm opacity-80">Featured Image</p>
           </div>
         </div>
 
-        {/* Article Content */}
+
         <article className="prose prose-lg dark:prose-invert max-w-none">
           <div className="relative">
             <div
@@ -149,7 +149,7 @@ const BlogDetails = () => {
           </div>
         </article>
 
-        {/* Tags */}
+
         {blog.tags?.length > 0 && (
           <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
             <div className="flex items-center gap-3 mb-4">
@@ -171,7 +171,7 @@ const BlogDetails = () => {
           </div>
         )}
 
-        {/* Author Bio */}
+
         <div className="mt-16 p-8 rounded-3xl bg-linear-to-r from-red-50 to-rose-50 dark:from-red-900/10 dark:to-rose-900/10 border border-red-100 dark:border-red-800">
           <div className="flex flex-col md:flex-row items-start gap-6">
             <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-red-500 to-rose-600 flex items-center justify-center">
@@ -199,7 +199,7 @@ const BlogDetails = () => {
           </div>
         </div>
 
-        {/* Call to Action */}
+
         <div className="mt-16 p-8 rounded-3xl bg-linear-to-r from-red-600 to-rose-700 text-white text-center shadow-2xl">
           <Heart className="w-16 h-16 mx-auto mb-6" />
           <h3 className="text-2xl font-bold mb-4">Inspired by this story?</h3>
@@ -220,7 +220,7 @@ const BlogDetails = () => {
           </div>
         </div>
 
-        {/* Mobile Action Bar */}
+
         <div
           className="fixed bottom-6 left-1/2 transform -translate-x-1/2 lg:hidden bg-white dark:bg-zinc-900 
                     rounded-full shadow-2xl border border-zinc-200 dark:border-zinc-800 px-6 py-3 flex items-center gap-4 z-50"

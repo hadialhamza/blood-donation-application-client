@@ -24,6 +24,8 @@ h6 {
 }
 
 body {
+  overflow-y: overlay;
+  overflow-x: hidden;
   font-family: "Inter", sans-serif;
 }
 
@@ -59,10 +61,15 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #ef4444;
   border-radius: 10px;
+
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #dc2626;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 @theme inline {
@@ -241,5 +248,27 @@ body {
 
   body {
     @apply bg-background text-foreground dark:bg-zinc-900;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl;
+  }
+
+  .glass-panel-hover {
+    @apply hover:bg-white/90 dark:hover:bg-zinc-900/90 hover:shadow-2xl transition-all duration-300;
+  }
+
+  .bg-gradient-primary {
+    @apply bg-linear-to-br from-white via-red-50/50 to-rose-50/30 dark:from-zinc-900 dark:via-red-950/20 dark:to-rose-950/10;
+  }
+
+  .page-container {
+    @apply min-h-screen relative overflow-hidden p-4 md:p-6 lg:p-8;
+  }
+
+  .card-container {
+    @apply p-6 rounded-2xl border border-red-100 dark:border-red-900 bg-white dark:bg-zinc-900 shadow-sm transition-all duration-300;
   }
 }

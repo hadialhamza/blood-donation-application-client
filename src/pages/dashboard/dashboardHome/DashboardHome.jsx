@@ -24,11 +24,9 @@ import {
   Bell,
   Target,
 } from "lucide-react";
-
 import { useAuth } from "../../../hooks/useAuth";
 import useRole from "../../../hooks/useRole";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -36,7 +34,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -48,7 +45,7 @@ const DashboardHome = () => {
   const [role, isRoleLoading] = useRole();
   const axiosSecure = useAxiosSecure();
 
-  // 1. DATA FETCHING FOR ADMIN / VOLUNTEER
+
   const { data: stats = {}, isLoading: isStatsLoading } = useQuery({
     queryKey: ["admin-stats"],
     enabled: !isRoleLoading && (role === "admin" || role === "volunteer"),
@@ -58,7 +55,7 @@ const DashboardHome = () => {
     },
   });
 
-  // 2. DATA FETCHING FOR DONOR
+
   const {
     data: recentRequests = [],
     isLoading: isRequestsLoading,
@@ -72,7 +69,7 @@ const DashboardHome = () => {
     },
   });
 
-  // Handle Delete
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Delete Request?",
@@ -143,14 +140,13 @@ const DashboardHome = () => {
   };
 
   return (
-    <div className="p-6 space-y-8 bg-gradient-to-b from-white to-red-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 min-h-screen">
-      {/* Welcome Header */}
+    <div className="page-container space-y-8">
       <div className="space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
               Welcome back,{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-500">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-500">
                 {user?.displayName}
               </span>
               !
@@ -167,12 +163,12 @@ const DashboardHome = () => {
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16 border-4 border-white dark:border-gray-800 shadow-lg">
               <AvatarImage src={user?.photoURL} alt={user?.displayName} />
-              <AvatarFallback className="text-2xl bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-500 dark:to-rose-500 text-white">
+              <AvatarFallback className="text-2xl bg-linear-to-r from-red-600 to-rose-600 dark:from-red-500 dark:to-rose-500 text-white">
                 {user?.displayName?.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <Badge className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-700 dark:to-rose-700 text-white capitalize">
+              <Badge className="bg-linear-to-r from-red-600 to-rose-600 dark:from-red-700 dark:to-rose-700 text-white capitalize">
                 {role === "admin" && <Shield className="w-3 h-3 mr-1" />}
                 {role === "volunteer" && <Users className="w-3 h-3 mr-1" />}
                 {role === "donor" && <Heart className="w-3 h-3 mr-1" />}
@@ -186,12 +182,12 @@ const DashboardHome = () => {
         </div>
       </div>
 
-      {/* ADMIN/VOLUNTEER DASHBOARD */}
+
       {(role === "admin" || role === "volunteer") && (
         <div className="space-y-8">
-          {/* Stats Cards */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -215,7 +211,7 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -239,7 +235,7 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -263,7 +259,7 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -288,9 +284,9 @@ const DashboardHome = () => {
             </Card>
           </div>
 
-          {/* Additional Stats & Quick Actions */}
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+            <Card className="lg:col-span-2 glass-panel">
               <CardHeader>
                 <CardTitle className="text-gray-900 dark:text-white">
                   Platform Overview
@@ -338,7 +334,7 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+            <Card className="glass-panel">
               <CardHeader>
                 <CardTitle className="text-gray-900 dark:text-white">
                   Quick Actions
@@ -390,12 +386,12 @@ const DashboardHome = () => {
         </div>
       )}
 
-      {/* DONOR DASHBOARD */}
+
       {role === "donor" && (
         <div className="space-y-8">
-          {/* Donor Stats */}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -416,7 +412,7 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -437,7 +433,7 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-lg">
+            <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -459,7 +455,7 @@ const DashboardHome = () => {
             </Card>
           </div>
 
-          {/* Recent Requests */}
+
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -481,7 +477,7 @@ const DashboardHome = () => {
                   </Button>
                 </Link>
                 <Link to="/dashboard/create-donation-request">
-                  <Button className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 dark:from-red-500 dark:to-rose-500">
+                  <Button className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 dark:from-red-500 dark:to-rose-500">
                     <Plus className="w-4 h-4 mr-2" />
                     New Request
                   </Button>
@@ -498,10 +494,10 @@ const DashboardHome = () => {
                     hover:border-red-300 dark:hover:border-red-700 hover:shadow-xl 
                     transition-all duration-300 overflow-hidden bg-white dark:bg-gray-900"
                   >
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-500 dark:from-red-400 dark:to-rose-500" />
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-red-500 to-rose-500 dark:from-red-400 dark:to-rose-500" />
                     <CardContent className="p-6">
                       <div className="space-y-4">
-                        {/* Header */}
+
                         <div className="flex items-start justify-between">
                           <div>
                             <h3 className="font-bold text-gray-900 dark:text-white line-clamp-1">
@@ -526,7 +522,7 @@ const DashboardHome = () => {
                           </div>
                         </div>
 
-                        {/* Details */}
+
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-500" />
@@ -550,7 +546,7 @@ const DashboardHome = () => {
                           )}
                         </div>
 
-                        {/* Actions */}
+
                         <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
                           <div className="flex items-center gap-2">
                             <Link
@@ -605,7 +601,7 @@ const DashboardHome = () => {
                     first request to help someone in need.
                   </p>
                   <Link to="/dashboard/create-donation-request">
-                    <Button className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 dark:from-red-500 dark:to-rose-500">
+                    <Button className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 dark:from-red-500 dark:to-rose-500">
                       <Plus className="w-4 h-4 mr-2" />
                       Create First Request
                     </Button>
@@ -615,8 +611,8 @@ const DashboardHome = () => {
             )}
           </div>
 
-          {/* Quick Tips */}
-          <Card className="bg-gradient-to-r from-red-50 to-rose-50 dark:from-gray-900 dark:to-gray-800 border-red-200 dark:border-gray-700">
+
+          <Card className="bg-linear-to-r from-red-50 to-rose-50 dark:from-gray-900 dark:to-gray-800 border-red-200 dark:border-gray-700">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-red-100 dark:bg-red-900/40 rounded-lg">

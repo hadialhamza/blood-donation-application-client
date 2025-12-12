@@ -96,7 +96,7 @@ const Search = () => {
   }
 
   return (
-    <div className="pt-24 pb-12 px-4 max-w-7xl mx-auto min-h-screen bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10">
+    <div className="pt-24 pb-12 px-4 max-w-7xl mx-auto min-h-screen">
       {/* Header Section */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 mb-6">

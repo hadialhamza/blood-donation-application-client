@@ -4,27 +4,6 @@ import { Heart, Droplets, Users, Activity } from "lucide-react";
 const Loading = () => {
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-linear-to-br from-white via-red-50 to-rose-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 z-50">
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute animate-float"
-            style={{
-              left: `${(i * 17) % 100}%`,
-              top: `${(i * 23) % 100}%`,
-              animationDelay: `${i * 0.5}s`,
-              animationDuration: `${3 + (i % 3)}s`,
-            }}
-          >
-            <div className="relative">
-              <Droplets className="w-4 h-5 text-red-300 dark:text-red-900/50 rotate-45" />
-              <div className="absolute inset-0 bg-red-400/20 blur-sm rounded-full"></div>
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* Main Content */}
       <div className="relative z-10 text-center space-y-8 p-8">
         {/* Logo Animation */}
@@ -63,9 +42,6 @@ const Loading = () => {
           <div className="relative">
             <div className="w-64 h-3 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden mx-auto">
               <div className="h-full bg-linear-to-r from-red-500 via-rose-500 to-red-500 animate-loading-bar rounded-full"></div>
-            </div>
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-              <div className="w-16 h-16 border-4 border-red-200 dark:border-red-900 border-t-red-600 dark:border-t-red-500 rounded-full animate-spin"></div>
             </div>
           </div>
 
@@ -151,7 +127,8 @@ const Loading = () => {
       </div>
 
       {/* CSS Animations */}
-      <style jsx>{`
+      {/* CSS Animations */}
+      <style>{`
         @keyframes float {
           0%,
           100% {
@@ -214,7 +191,7 @@ const Loading = () => {
           animation: bounce-soft 2s ease-in-out infinite;
         }
       `}</style>
-    </div >
+    </div>
   );
 };
 

@@ -82,8 +82,8 @@ const Register = () => {
   if (isLocationsLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl overflow-hidden w-full max-w-7xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden w-full max-w-7xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
         {/* Left Side: Testimonial & Visuals (Hidden on mobile) */}
         <div className="hidden xl:flex w-1/2 bg-red-600 dark:bg-red-900 relative overflow-hidden flex-col justify-center items-center p-12 text-white text-center">
           {/* Background Pattern */}

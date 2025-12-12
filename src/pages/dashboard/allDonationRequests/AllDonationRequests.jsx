@@ -46,6 +46,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 
+import Loading from "@/components/shared/Loading";
+
 const AllDonationRequests = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -55,8 +57,13 @@ const AllDonationRequests = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 5;
 
-  // Fetch All Data
-  const { data: requests = [], refetch } = useQuery({
+
+  const {
+    data: requests = [],
+    refetch,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["all-requests", filterStatus],
     queryFn: async () => {
       const query = filterStatus === "all" ? "" : `?status=${filterStatus}`;
@@ -65,7 +72,11 @@ const AllDonationRequests = () => {
     },
   });
 
-  // Handle Status Update
+  if (isLoading) {
+    return <Loading />;
+  }
+
+
   const handleStatusChange = async (id, newStatus) => {
     const res = await axiosSecure.patch(`/donation-request-status/${id}`, {
       status: newStatus,
@@ -82,7 +93,7 @@ const AllDonationRequests = () => {
     }
   };
 
-  // Handle Delete
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Delete Request?",
@@ -110,7 +121,7 @@ const AllDonationRequests = () => {
     });
   };
 
-  // Status badge styling
+
   const getStatusBadge = (status) => {
     const styles = {
       pending:
@@ -124,7 +135,7 @@ const AllDonationRequests = () => {
     return styles[status] || "bg-gray-100 text-gray-800";
   };
 
-  // Filter requests based on search
+
   const filteredRequests = requests.filter(
     (req) =>
       req.requesterName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -133,7 +144,7 @@ const AllDonationRequests = () => {
       req.recipientDistrict?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Pagination Logic
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = filteredRequests.slice(
     startIndex,
@@ -142,8 +153,8 @@ const AllDonationRequests = () => {
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
   return (
-    <div className="p-6 space-y-6 bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
-      {/* Header Section */}
+    <div className="page-container space-y-6">
+
       <div className="space-y-4">
         <div>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 mb-4">
@@ -161,9 +172,9 @@ const AllDonationRequests = () => {
           </p>
         </div>
 
-        {/* Stats Cards */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -181,7 +192,7 @@ const AllDonationRequests = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -199,7 +210,7 @@ const AllDonationRequests = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -217,7 +228,7 @@ const AllDonationRequests = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -237,8 +248,8 @@ const AllDonationRequests = () => {
         </div>
       </div>
 
-      {/* Search and Filter Bar */}
-      <Card className="border-red-100 dark:border-red-900 shadow-sm">
+
+      <Card className="card-container">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="flex-1 w-full md:w-auto">
@@ -280,8 +291,18 @@ const AllDonationRequests = () => {
         </CardContent>
       </Card>
 
-      {/* Requests List */}
-      <div className="space-y-4">
+
+      <div className="space-y-4 relative">
+        {isFetching && !isLoading && (
+          <div className="absolute inset-0 z-10 bg-white/50 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center rounded-lg">
+            <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 rounded-full shadow-lg border border-red-100 dark:border-red-900">
+              <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+              <span className="text-sm font-medium text-red-600 dark:text-red-400">
+                Updating...
+              </span>
+            </div>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
             Recent Requests ({filteredRequests.length})
@@ -292,7 +313,7 @@ const AllDonationRequests = () => {
         </div>
 
         {currentData.length === 0 ? (
-          <Card className="border-red-100 dark:border-red-900">
+          <Card className="card-container">
             <CardContent className="p-12 text-center">
               <AlertCircle className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
@@ -316,7 +337,7 @@ const AllDonationRequests = () => {
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    {/* Left Column: Request Info */}
+
                     <div className="space-y-4 flex-1">
                       <div className="flex items-start justify-between">
                         <div>
@@ -384,9 +405,9 @@ const AllDonationRequests = () => {
                       </div>
                     </div>
 
-                    {/* Right Column: Actions */}
+
                     <div className="flex items-center gap-3">
-                      {/* Status Selector */}
+
                       <Select
                         value={req.status}
                         onValueChange={(value) =>
@@ -406,7 +427,7 @@ const AllDonationRequests = () => {
                         </SelectContent>
                       </Select>
 
-                      {/* Action Dropdown */}
+
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -455,7 +476,7 @@ const AllDonationRequests = () => {
         )}
       </div>
 
-      {/* Pagination */}
+
       {filteredRequests.length > itemsPerPage && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -493,11 +514,10 @@ const AllDonationRequests = () => {
                     key={pageNum}
                     variant={currentPage === pageNum ? "default" : "outline"}
                     size="sm"
-                    className={`w-10 h-10 ${
-                      currentPage === pageNum
-                        ? "bg-red-600 hover:bg-red-700"
-                        : ""
-                    }`}
+                    className={`w-10 h-10 ${currentPage === pageNum
+                      ? "bg-red-600 hover:bg-red-700"
+                      : ""
+                      }`}
                     onClick={() => setCurrentPage(pageNum)}
                   >
                     {pageNum}

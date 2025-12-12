@@ -4,7 +4,6 @@ import {
   Users,
   Heart,
   TrendingUp,
-  TrendingDown,
   Activity,
   Target,
   ArrowUpRight,
@@ -24,7 +23,7 @@ const AdminStats = ({ stats }) => {
       value: stats.revenue || 0,
       prefix: "$",
       icon: <DollarSign className="w-6 h-6" />,
-      bg: "bg-gradient-to-br from-emerald-500 via-green-500 to-emerald-600",
+      bg: "bg-linear-to-br from-emerald-500 via-green-500 to-emerald-600",
       shadow: "shadow-emerald-500/30",
       trend: "up",
       trendValue: 12.5,
@@ -39,7 +38,7 @@ const AdminStats = ({ stats }) => {
       value: stats.users || 0,
       prefix: "",
       icon: <Users className="w-6 h-6" />,
-      bg: "bg-gradient-to-br from-blue-500 via-indigo-500 to-blue-600",
+      bg: "bg-linear-to-br from-blue-500 via-indigo-500 to-blue-600",
       shadow: "shadow-blue-500/30",
       trend: "up",
       trendValue: 8.2,
@@ -54,7 +53,7 @@ const AdminStats = ({ stats }) => {
       value: stats.bloodRequests || 0,
       prefix: "",
       icon: <Heart className="w-6 h-6" />,
-      bg: "bg-gradient-to-br from-rose-500 via-red-500 to-rose-600",
+      bg: "bg-linear-to-br from-rose-500 via-red-500 to-rose-600",
       shadow: "shadow-rose-500/30",
       trend: "up",
       trendValue: 15.3,
@@ -69,7 +68,7 @@ const AdminStats = ({ stats }) => {
       value: stats.bloodRequests ? Math.floor(stats.bloodRequests * 3.5) : 0,
       prefix: "≈",
       icon: <Award className="w-6 h-6" />,
-      bg: "bg-gradient-to-br from-amber-500 via-orange-500 to-amber-600",
+      bg: "bg-linear-to-br from-amber-500 via-orange-500 to-amber-600",
       shadow: "shadow-amber-500/30",
       trend: "up",
       trendValue: 18.7,
@@ -94,7 +93,7 @@ const AdminStats = ({ stats }) => {
 
   return (
     <div className="space-y-6">
-      {/* Main Stats Cards */}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card, index) => (
           <div
@@ -103,25 +102,25 @@ const AdminStats = ({ stats }) => {
               ${card.bg} text-white shadow-xl ${card.shadow} 
               transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl`}
           >
-            {/* Background Pattern */}
+
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full"></div>
               <div className="absolute bottom-4 left-4 w-6 h-6 bg-white rounded-full"></div>
             </div>
 
-            {/* Animated Border */}
+
             <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-white/30 transition-all duration-500"></div>
 
-            {/* Content */}
+
             <div className="relative z-10 p-6">
               <div className="flex items-start justify-between mb-6">
                 <div
-                  className={`p-3 rounded-xl bg-gradient-to-br ${card.accent} backdrop-blur-sm`}
+                  className={`p-3 rounded-xl bg-linear-to-br ${card.accent} backdrop-blur-sm`}
                 >
                   <div className="text-white">{card.icon}</div>
                 </div>
 
-                {/* Trend Indicator */}
+
                 <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-black/20 backdrop-blur-sm">
                   {card.trend === "up" ? (
                     <ArrowUpRight className="w-3 h-3 text-green-300" />
@@ -171,10 +170,10 @@ const AdminStats = ({ stats }) => {
         ))}
       </div>
 
-      {/* Additional Metrics */}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* User Distribution */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-lg">
+
+        <div className="card-container">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
               User Distribution
@@ -189,15 +188,14 @@ const AdminStats = ({ stats }) => {
               <div key={key} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-3 h-3 rounded-full ${
-                      key === "donors"
-                        ? "bg-red-500"
-                        : key === "volunteers"
+                    className={`w-3 h-3 rounded-full ${key === "donors"
+                      ? "bg-red-500"
+                      : key === "volunteers"
                         ? "bg-blue-500"
                         : key === "admins"
-                        ? "bg-purple-500"
-                        : "bg-amber-500"
-                    }`}
+                          ? "bg-purple-500"
+                          : "bg-amber-500"
+                      }`}
                   ></div>
                   <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 capitalize">
                     {key}
@@ -216,8 +214,8 @@ const AdminStats = ({ stats }) => {
           </div>
         </div>
 
-        {/* Performance Metrics */}
-        <div className="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-lg">
+
+        <div className="card-container">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
               Performance Metrics
@@ -228,7 +226,7 @@ const AdminStats = ({ stats }) => {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20">
               <div className="flex items-center gap-3">
                 <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
                   <Target className="w-4 h-4 text-green-600 dark:text-green-400" />
@@ -247,7 +245,7 @@ const AdminStats = ({ stats }) => {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-linear-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
               <div className="flex items-center gap-3">
                 <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                   <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -266,7 +264,7 @@ const AdminStats = ({ stats }) => {
               </span>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-linear-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
               <div className="flex items-center gap-3">
                 <div className="p-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
                   <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />
@@ -287,8 +285,8 @@ const AdminStats = ({ stats }) => {
           </div>
         </div>
 
-        {/* Quick Stats */}
-        <div className="bg-gradient-to-br from-zinc-900 to-red-950 border-none rounded-2xl p-6 shadow-xl">
+
+        <div className="bg-linear-to-br from-zinc-900 to-red-950 border-none rounded-2xl p-6 shadow-xl">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-bold text-white">
               Platform Highlights

@@ -135,7 +135,7 @@ const TrustedPartners = () => {
 
         {/* Additional Partner Stats */}
         <div className="mt-6 mb-12 text-center">
-          <div className="flex flex-col md:flex-row items-center gap-8 px-8 py-4 bg-zinc-100 dark:bg-zinc-900/50 rounded-2xl">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-8 py-4 rounded-2xl my-3">
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                 50+
@@ -144,7 +144,7 @@ const TrustedPartners = () => {
                 Partner Hospitals
               </div>
             </div>
-            <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+            {/* <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800"></div> */}
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                 100K+
@@ -153,7 +153,7 @@ const TrustedPartners = () => {
                 Blood Units Managed
               </div>
             </div>
-            <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800"></div>
+            {/* <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800"></div> */}
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                 24/7

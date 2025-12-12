@@ -76,7 +76,7 @@ const PublicDonationRequests = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 py-24 relative overflow-hidden">
+    <div className="min-h-screen py-24 relative overflow-hidden">
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="section-badge">
