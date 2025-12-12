@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useForm, Controller, useWatch } from "react-hook-form";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import useAxios from "../../hooks/useAxios";
 import { Loader2 } from "lucide-react";
 import Loading from "@/components/shared/Loading";
@@ -12,17 +14,15 @@ import {
   Heart,
   Phone,
   Mail,
-  Shield,
   Calendar,
-  Clock,
   AlertCircle,
   Filter,
   UserCheck,
   ChevronRight,
+  Download,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -50,7 +50,7 @@ const Search = () => {
   // Location State
   const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
 
-  const { register, handleSubmit, control } = useForm();
+  const { handleSubmit, control, setValue, getValues } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
 
   // Filter Upazilas
@@ -91,6 +91,71 @@ const Search = () => {
   // Quick blood group buttons
   const quickBloodGroups = ["A+", "B+", "O+", "AB+"];
 
+  // PDF Download Handler
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(220, 38, 38); // Red color
+    doc.text("BloodLine - Donor Search Results", 14, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(
+      `Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`,
+      14,
+      28
+    );
+
+    // Search Criteria
+    doc.setFontSize(12);
+    doc.setTextColor(0);
+    doc.text(
+      `Search Criteria: Blood Group: ${
+        getValues("bloodGroup") || "All"
+      }, District: ${getValues("district") || "All"}, Upazila: ${
+        getValues("upazila") || "All"
+      }`,
+      14,
+      38
+    );
+
+    // Table Data
+    const tableData = donors.map((donor) => [
+      donor.name,
+      donor.bloodGroup,
+      donor.status === "active" ? "Available" : "Unavailable",
+      `${donor.district}, ${donor.upazila}`,
+      donor.phone || "N/A",
+      donor.email || "N/A",
+      donor.lastDonation
+        ? new Date(donor.lastDonation).toLocaleDateString()
+        : "First Time",
+    ]);
+
+    autoTable(doc, {
+      startY: 45,
+      head: [
+        [
+          "Name",
+          "Blood Group",
+          "Status",
+          "Location",
+          "Phone",
+          "Email",
+          "Last Donation",
+        ],
+      ],
+      body: tableData,
+      theme: "grid",
+      headStyles: { fillColor: [220, 38, 38], textColor: 255 },
+      styles: { fontSize: 8 },
+    });
+
+    doc.save("bloodline-donor-results.pdf");
+  };
+
   if (isLocationsLoading) {
     return <Loading />;
   }
@@ -107,7 +172,7 @@ const Search = () => {
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-6">
           Search for{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-rose-600">
             Blood Donors
           </span>
         </h1>
@@ -119,7 +184,7 @@ const Search = () => {
 
       {/* Search Form */}
       <Card className="mb-12 border-red-100 dark:border-red-900 shadow-2xl">
-        <CardHeader className="bg-gradient-to-r from-red-600 to-rose-600 text-white">
+        <CardHeader className="bg-linear-to-r from-red-600 to-rose-600 text-white p-4 shadow-lg">
           <CardTitle className="flex items-center gap-3">
             <SearchIcon className="w-6 h-6" />
             Find Compatible Donors
@@ -142,8 +207,7 @@ const Search = () => {
                     type="button"
                     variant="outline"
                     onClick={() => {
-                      const event = { target: { value: group } };
-                      // You'll need to set this value in your form
+                      setValue("bloodGroup", group);
                     }}
                     className="border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                   >
@@ -271,7 +335,7 @@ const Search = () => {
             <div className="pt-4">
               <Button
                 type="submit"
-                className="w-full md:w-auto min-w-[200px] bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white h-12 px-8"
+                className="w-full md:w-auto min-w-[200px] bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white h-12 px-8"
                 disabled={loading}
               >
                 {loading ? (
@@ -367,10 +431,21 @@ const Search = () => {
             Available Donors {hasSearched && `(${donors.length})`}
           </h2>
           {hasSearched && donors.length > 0 && (
-            <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
+            <Badge className="bg-linear-to-r from-green-600 to-emerald-600 text-white">
               <Filter className="w-3 h-3 mr-1" />
               {donors.length} Results
             </Badge>
+          )}
+          {hasSearched && donors.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownloadPDF}
+              className="ml-auto border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
+            </Button>
           )}
         </div>
 
@@ -410,7 +485,7 @@ const Search = () => {
                     >
                       Clear Filters
                     </Button>
-                    <Button className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700">
+                    <Button className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700">
                       Request Emergency Help
                     </Button>
                   </div>
@@ -426,7 +501,7 @@ const Search = () => {
                     hover:border-red-300 dark:hover:border-red-700 hover:shadow-xl 
                     transition-all duration-300 overflow-hidden"
                 >
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-500" />
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-red-500 to-rose-500" />
                   <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row gap-6">
                       {/* Avatar & Blood Group */}
@@ -434,28 +509,30 @@ const Search = () => {
                         <div className="relative">
                           <Avatar className="h-20 w-20 border-4 border-white dark:border-zinc-800 shadow-lg">
                             <AvatarImage src={donor.avatar} alt={donor.name} />
-                            <AvatarFallback className="text-2xl font-bold bg-gradient-to-r from-red-600 to-rose-600 text-white">
+                            <AvatarFallback className="text-2xl font-bold bg-linear-to-r from-red-600 to-rose-600 text-white">
                               {donor.name?.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
                           <div className="absolute -top-2 -right-2">
-                            <Badge className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-3 py-1">
+                            <Badge className="bg-linear-to-r from-red-600 to-rose-600 text-white px-3 py-1">
                               <Droplets className="w-3 h-3 mr-1" />
                               {donor.bloodGroup}
                             </Badge>
                           </div>
                         </div>
                         <Badge
-                          className={`px-3 py-1 ${donor.status === "active"
-                            ? "bg-green-100 text-green-700 border-green-200"
-                            : "bg-amber-100 text-amber-700 border-amber-200"
-                            }`}
+                          className={`px-3 py-1 ${
+                            donor.status === "active"
+                              ? "bg-green-100 text-green-700 border-green-200"
+                              : "bg-amber-100 text-amber-700 border-amber-200"
+                          }`}
                         >
                           <div
-                            className={`w-2 h-2 rounded-full mr-2 ${donor.status === "active"
-                              ? "bg-green-500 animate-pulse"
-                              : "bg-amber-500"
-                              }`}
+                            className={`w-2 h-2 rounded-full mr-2 ${
+                              donor.status === "active"
+                                ? "bg-green-500 animate-pulse"
+                                : "bg-amber-500"
+                            }`}
                           />
                           {donor.status === "active"
                             ? "Available"
@@ -489,8 +566,8 @@ const Search = () => {
                               <p className="text-sm font-medium">
                                 {donor.lastDonation
                                   ? new Date(
-                                    donor.lastDonation
-                                  ).toLocaleDateString()
+                                      donor.lastDonation
+                                    ).toLocaleDateString()
                                   : "First time"}
                               </p>
                             </div>
@@ -522,7 +599,7 @@ const Search = () => {
                           </Button>
                           <Button
                             size="sm"
-                            className="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700"
+                            className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700"
                           >
                             <Mail className="w-4 h-4 mr-2" />
                             Send Message
@@ -539,7 +616,7 @@ const Search = () => {
       </div>
 
       {/* Emergency Banner */}
-      <div className="mt-16 p-8 rounded-3xl bg-gradient-to-r from-red-600 to-rose-700 text-white shadow-2xl">
+      <div className="mt-16 p-8 rounded-3xl bg-linear-to-r from-red-600 to-rose-700 text-white shadow-2xl">
         <div className="max-w-3xl mx-auto text-center">
           <AlertCircle className="w-16 h-16 mx-auto mb-6" />
           <h3 className="text-2xl font-bold mb-4">Need Urgent Help?</h3>
@@ -553,7 +630,7 @@ const Search = () => {
               Emergency Hotline
             </Button>
             <Button
-              variant="outline"
+              variant="primary"
               className="border-2 border-white text-white hover:bg-white/10 rounded-full px-8 py-6 text-lg font-semibold"
             >
               Request Emergency Support

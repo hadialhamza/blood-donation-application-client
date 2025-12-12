@@ -273,6 +273,14 @@ const Funding = () => {
                                 day: "numeric",
                               })}
                             </p>
+                            {fund.transactionId && (
+                              <p
+                                className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5"
+                                title={fund.transactionId}
+                              >
+                                TAX-ID: {fund.transactionId.slice(0, 40)}...
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="text-right">
@@ -329,14 +337,15 @@ const Funding = () => {
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center ${index === 0
+                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                            index === 0
                               ? "bg-amber-100 text-amber-600"
                               : index === 1
-                                ? "bg-zinc-100 text-zinc-600"
-                                : index === 2
-                                  ? "bg-rose-100 text-rose-600"
-                                  : "bg-red-50 text-red-600"
-                            }`}
+                              ? "bg-zinc-100 text-zinc-600"
+                              : index === 2
+                              ? "bg-rose-100 text-rose-600"
+                              : "bg-red-50 text-red-600"
+                          }`}
                         >
                           {index + 1}
                         </div>
@@ -423,10 +432,11 @@ const Funding = () => {
                       setSelectedAmount(quickAmount);
                       setAmount(quickAmount);
                     }}
-                    className={`p-3 rounded-xl border-2 text-center transition-all ${selectedAmount === quickAmount
+                    className={`p-3 rounded-xl border-2 text-center transition-all ${
+                      selectedAmount === quickAmount
                         ? "border-red-500 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300"
                         : "border-zinc-200 dark:border-zinc-800 hover:border-red-300 dark:hover:border-red-700"
-                      }`}
+                    }`}
                   >
                     <span className="text-lg font-bold">${quickAmount}</span>
                   </button>
