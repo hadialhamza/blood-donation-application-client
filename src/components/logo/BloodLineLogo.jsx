@@ -3,7 +3,7 @@ import { TbActivityHeartbeat } from "react-icons/tb";
 
 export default function BloodLineLogo() {
   return (
-    <div className="group flex items-center gap-2 cursor-default select-none">
+    <div className="group flex items-center gap-2 cursor-pointer">
       {/* Logo Icon */}
       <div className="relative">
         <div className="relative z-10 transition-transform duration-300 ease-spring group-hover:rotate-12 group-hover:scale-110">

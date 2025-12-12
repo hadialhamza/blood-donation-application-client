@@ -76,7 +76,7 @@ const Featured = () => {
   ];
 
   return (
-    <section className="mt-20">
+    <section className="mt-20  lg:mt-30">
       <Container>
         <div className="relative z-10">
           {/* Header */}

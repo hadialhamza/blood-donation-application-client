@@ -79,7 +79,7 @@ const TopDonors = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden mt-20">
+    <section className="relative overflow-hidden mt-20  lg:mt-30">
       <Container>
         {/* --- Header --- */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">

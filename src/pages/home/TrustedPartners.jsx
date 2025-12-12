@@ -71,7 +71,7 @@ const TrustedPartners = () => {
 
   return (
     <Container>
-      <div className="mt-20 relative">
+      <div className="mt-20  lg:mt-30 relative">
         {/* Section Title */}
         <div className="text-center mb-8 max-w-3xl mx-auto">
           <div className="section-badge">
