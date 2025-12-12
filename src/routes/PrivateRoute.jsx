@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from "react-router";
-import { TbFidgetSpinner } from "react-icons/tb";
+import Loading from "../components/shared/Loading";
 import { useAuth } from "../hooks/useAuth";
 
 const PrivateRoute = ({ children }) => {
@@ -7,11 +7,7 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <TbFidgetSpinner className="animate-spin text-4xl text-red-600" />
-      </div>
-    );
+    return <Loading />;
   }
 
   if (user) {

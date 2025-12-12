@@ -12,6 +12,9 @@ import {
   User,
   LogIn,
   User2Icon,
+  ChevronRight,
+  Droplets,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +37,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@radix-ui/react-dropdown-menu";
 
 const Navbar = () => {
   const { user, logOut, loading } = useAuth();
@@ -166,79 +170,205 @@ const Navbar = () => {
               {/* Desktop: Auth Logic */}
               <div className="hidden md:flex items-center gap-2">
                 {loading ? (
-                  <Skeleton className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700" />
+                  <Skeleton className="h-10 w-10 rounded-full bg-linear-to-r from-red-200 to-rose-200 dark:from-red-900/30 dark:to-rose-900/30" />
                 ) : user ? (
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                       <Button
                         variant="ghost"
                         className={cn(
-                          "relative h-10 w-10 rounded-full",
-                          isHome && !isScrolled ? "hover:bg-white/20" : ""
+                          "relative h-10 w-10 rounded-full transition-all duration-300",
+                          isHome && !isScrolled
+                            ? "hover:bg-white/20 hover:scale-110"
+                            : "hover:bg-red-50 dark:hover:bg-red-900/20 hover:scale-110"
                         )}
                       >
-                        <Avatar
-                          className={cn(
-                            "h-10 w-10 border",
-                            isHome && !isScrolled
-                              ? "border-white/50"
-                              : "border-border"
-                          )}
-                        >
-                          <AvatarImage
-                            src={user?.photoURL}
-                            alt={user?.displayName || "User"}
-                          />
-                          <AvatarFallback>
-                            <User />
-                          </AvatarFallback>
-                        </Avatar>
+                        <div className="relative">
+                          <Avatar
+                            className={cn(
+                              "h-10 w-10 border-2 transition-all duration-300",
+                              isHome && !isScrolled
+                                ? "border-white/60 hover:border-white"
+                                : "border-red-200 dark:border-red-800 hover:border-red-400 dark:hover:border-red-600"
+                            )}
+                          >
+                            <AvatarImage
+                              src={user?.photoURL}
+                              alt={user?.displayName || "User"}
+                              className="object-cover"
+                            />
+                            <AvatarFallback className="bg-linear-to-r from-red-600 to-rose-600 text-white font-semibold">
+                              {user?.displayName?.charAt(0) || (
+                                <User className="w-5 h-5" />
+                              )}
+                            </AvatarFallback>
+                          </Avatar>
+                          {/* Online Indicator */}
+                          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm animate-pulse"></div>
+                        </div>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
-                      className="min-w-56 p-3 space-y-2"
+                      className="min-w-64 p-0 border-red-200 dark:border-red-900 shadow-2xl overflow-hidden"
                       align="end"
                       forceMount
                     >
-                      <DropdownMenuLabel className="flex items-center gap-2 font-normal border rounded-sm text-center">
-                        <User2Icon className="text-green-800/90 bg-green-200 p-1 rounded" />
-                        <div className="flex flex-col items-start space-y-1">
-                          <p className="text-sm font-medium leading-none text-green-600 dark:text-green-400">
-                            {user.displayName}
-                          </p>
-                          <p className="text-xs leading-none text-muted-foreground">
-                            {user.email}
-                          </p>
+                      {/* User Header */}
+                      <div className="p-4 bg-linear-to-r from-red-600 to-rose-600 text-white">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-12 w-12 border-2 border-white/30">
+                            <AvatarImage
+                              src={user?.photoURL}
+                              alt={user?.displayName}
+                              className="object-cover"
+                            />
+                            <AvatarFallback className="bg-white/20 text-white">
+                              {user?.displayName?.charAt(0)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-sm truncate">
+                              {user.displayName}
+                            </p>
+                            <p className="text-xs text-red-100 truncate">
+                              {user.email}
+                            </p>
+                            <div className="flex items-center gap-1 mt-1">
+                              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                              <span className="text-xs text-red-100">
+                                Online
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      </DropdownMenuLabel>
-                      <DropdownMenuItem asChild>
-                        <Link
-                          to="/dashboard"
-                          className="cursor-pointer border  hover:translate-x-3 duration-300 text-blue-700 dark:text-white"
+                      </div>
+
+                      {/* Menu Items */}
+                      <div className="p-2 space-y-1">
+                        <DropdownMenuItem asChild className="p-0">
+                          <Link
+                            to="/dashboard"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition-all duration-300 hover:translate-x-1 group"
+                          >
+                            <div className="p-2 bg-linear-to-r from-blue-500 to-cyan-500 rounded-lg text-white group-hover:scale-110 transition-transform">
+                              <LayoutDashboard className="h-4 w-4" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-medium text-zinc-900 dark:text-white">
+                                Dashboard
+                              </span>
+                              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                View your activities
+                              </span>
+                            </div>
+                            <ChevronRight className="h-4 w-4 ml-auto text-zinc-400 group-hover:text-red-600 transition-colors" />
+                          </Link>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild className="p-0">
+                          <Link
+                            to="/dashboard/profile"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition-all duration-300 hover:translate-x-1 group"
+                          >
+                            <div className="p-2 bg-linear-to-r from-purple-500 to-violet-500 rounded-lg text-white group-hover:scale-110 transition-transform">
+                              <User className="h-4 w-4" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-medium text-zinc-900 dark:text-white">
+                                Profile
+                              </span>
+                              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                Edit your profile
+                              </span>
+                            </div>
+                            <ChevronRight className="h-4 w-4 ml-auto text-zinc-400 group-hover:text-red-600 transition-colors" />
+                          </Link>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild className="p-0">
+                          <Link
+                            to="/dashboard/my-donation-requests"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition-all duration-300 hover:translate-x-1 group"
+                          >
+                            <div className="p-2 bg-linear-to-r from-amber-500 to-orange-500 rounded-lg text-white group-hover:scale-110 transition-transform">
+                              <Droplets className="h-4 w-4" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-medium text-zinc-900 dark:text-white">
+                                My Requests
+                              </span>
+                              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                Donation history
+                              </span>
+                            </div>
+                            <ChevronRight className="h-4 w-4 ml-auto text-zinc-400 group-hover:text-red-600 transition-colors" />
+                          </Link>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild className="p-0">
+                          <Link
+                            to="/dashboard/funding"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition-all duration-300 hover:translate-x-1 group"
+                          >
+                            <div className="p-2 bg-linear-to-r from-emerald-500 to-green-500 rounded-lg text-white group-hover:scale-110 transition-transform">
+                              <DollarSign className="h-4 w-4" />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-medium text-zinc-900 dark:text-white">
+                                Funding
+                              </span>
+                              <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                                Support our mission
+                              </span>
+                            </div>
+                            <ChevronRight className="h-4 w-4 ml-auto text-zinc-400 group-hover:text-red-600 transition-colors" />
+                          </Link>
+                        </DropdownMenuItem>
+
+                        <Separator className="my-1" />
+
+                        <DropdownMenuItem
+                          onClick={handleLogOut}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition-all duration-300 hover:translate-x-1 group text-red-600 dark:text-red-400 focus:text-red-600"
                         >
-                          <LayoutDashboard className="h-6! w-6! p-1 rounded bg-blue-200 text-blue-700" />
-                          <span>Dashboard</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={handleLogOut}
-                        className="cursor-pointer focus:text-red-600 border hover:translate-x-3 duration-300 text-red-500 dark:text-white"
-                      >
-                        <LogOut className="h-6! w-6! p-1 rounded bg-red-200 text-red-500" />
-                        <span>Log out</span>
-                      </DropdownMenuItem>
+                          <div className="p-2 bg-linear-to-r from-red-500 to-rose-500 rounded-lg text-white group-hover:scale-110 transition-transform">
+                            <LogOut className="h-4 w-4" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="font-medium">Log Out</span>
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                              Sign out from account
+                            </span>
+                          </div>
+                          <LogOut className="h-4 w-4 ml-auto group-hover:rotate-12 transition-transform" />
+                        </DropdownMenuItem>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="px-4 py-2.5 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                            BloodLine v1.0
+                          </span>
+                          <div className="flex items-center gap-1">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                            <span className="text-xs text-green-600 dark:text-green-400">
+                              Secure
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 ) : (
                   <Link to="/login">
                     <Button
                       size="md"
-                      className={
-                        "px-4 py-2.5 bg-red-600 text-white shadow-[0_4px_14px_0_rgba(220,38,38,0.39)] transition-all hover:scale-105 hover:shadow-[0_6px_20px_rgba(220,38,38,0.23)] duration-300 rounded-full group"
-                      }
+                      className="px-6 py-2.5 bg-linear-to-r from-red-600 to-rose-600 text-white shadow-lg transition-all hover:scale-105 hover:shadow-xl hover:shadow-red-500/30 duration-300 rounded-full group"
                     >
-                      <LogIn className="mr-1 group-hover:translate-x-2 transition-all duration-300" />
+                      <LogIn className="mr-2 h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
                       Login
+                      <ChevronRight className="ml-2 h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
                     </Button>
                   </Link>
                 )}

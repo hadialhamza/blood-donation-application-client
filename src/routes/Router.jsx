@@ -24,6 +24,7 @@ import AddBlog from "../pages/dashboard/contentManagement/AddBlog";
 import ProfileUpdate from "../pages/dashboard/profile/ProfileUpdate";
 
 import PageTitle from "../components/shared/PageTitle";
+import NotFoundPage from "@/components/shared/NotFound";
 
 export const router = createBrowserRouter([
   // MAIN LAYOUT
@@ -210,5 +211,9 @@ export const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);

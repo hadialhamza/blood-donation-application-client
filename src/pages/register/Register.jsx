@@ -3,22 +3,31 @@ import { useForm, useWatch, Controller } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { uploadImage } from "../../utils/uploadImage";
-import { TbFidgetSpinner } from "react-icons/tb";
+
+import Loading from "@/components/shared/Loading";
 import { useAuth } from "../../hooks/useAuth";
 import useLocations from "../../hooks/useLocations";
 import useAxios from "../../hooks/useAxios";
 import { FaEye, FaEyeSlash, FaQuoteRight, FaHeart } from "react-icons/fa";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import BloodLineLogo from "@/components/logo/BloodLineLogo";
 
 const Register = () => {
   const { createUser, updateUser, loading, setLoading } = useAuth();
   const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
   const api = useAxios();
   const navigate = useNavigate();
 
@@ -69,82 +78,78 @@ const Register = () => {
       setLoading(false);
     }
   };
-  if (isLocationsLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center bg-slate-50 dark:bg-gray-950">
-        <TbFidgetSpinner className="animate-spin text-5xl text-red-600" />
-      </div>
-    );
-  }
+
+  if (isLocationsLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex justify-center items-center p-4 transition-colors duration-300">
-      {/* Left side content */}
-      <div className="flex flex-col xl:flex-row w-full bg-white dark:bg-gray-900 rounded-3xl overflow-hidden max-w-[1400px] shadow-2xl border border-slate-100 dark:border-gray-800">
-        <div className="hidden xl:block w-1/2 bg-red-600 dark:bg-red-900 relative overflow-hidden order-1 xl:order-1">
-          <div className="relative z-10 h-full flex flex-col justify-center p-12 lg:p-16 text-white text-center">
-            <FaQuoteRight className="absolute -top-6 -right-6 hidden lg:block text-white opacity-10 text-[10rem]" />
-            <div className="mb-6">
-              <h2 className="text-4xl lg:text-5xl font-semibold leading-tight">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl overflow-hidden w-full max-w-7xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
+        {/* Left Side: Testimonial & Visuals (Hidden on mobile) */}
+        <div className="hidden xl:flex w-1/2 bg-red-600 dark:bg-red-900 relative overflow-hidden flex-col justify-center items-center p-12 text-white text-center">
+          {/* Background Pattern */}
+          <div className="absolute top-0 left-0 w-full h-full opacity-10">
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <pattern
+                id="pattern"
+                width="40"
+                height="40"
+                patternUnits="userSpaceOnUse"
+              >
+                <circle cx="20" cy="20" r="2" fill="currentColor" />
+              </pattern>
+              <rect width="100%" height="100%" fill="url(#pattern)" />
+            </svg>
+          </div>
+
+          <div className="relative z-10 max-w-md">
+            <div className="mb-8">
+              <FaQuoteRight className="text-6xl text-white opacity-20 mx-auto mb-4" />
+              <h2 className="text-4xl font-bold mb-6 leading-tight">
                 Be the Hero <br /> in Someone's Story
               </h2>
-            </div>
-            <div className="text-lg lg:text-xl opacity-90 mb-8 lg:mb-10 leading-relaxed mx-auto max-w-lg">
-              "Your single donation can save up to three lives. Join our
-              community of heroes and make a difference today."
-            </div>
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 lg:p-8 relative border border-white/20 max-w-md mx-auto shadow-lg">
-              <div className="flex items-center justify-center gap-4 text-center">
-                <div className="h-12 w-12 lg:h-14 lg:w-14 bg-white rounded-full flex items-center justify-center text-xl font-bold text-red-600">
-                  10k
-                </div>
-                <div>
-                  <h4 className="text-lg lg:text-xl font-bold">
-                    Community Strong
-                  </h4>
-                  <p className="text-sm opacity-80">Active Donors Registered</p>
-                </div>
-              </div>
-              <p className="mt-4 lg:mt-6 text-base lg:text-lg leading-relaxed opacity-90 italic">
-                "Signing up was the best decision I made this year. The feeling
-                of helping others is unmatched."
+              <p className="text-xl opacity-90 leading-relaxed font-light">
+                "Your single donation can save up to three lives. Join our
+                community of heroes and make a difference today."
               </p>
-              <FaHeart className="absolute top-0 right-0 p-3 opacity-50 text-4xl" />
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-lg mt-8 flex items-center gap-4 text-left">
+              <div className="bg-white text-red-600 rounded-full h-12 w-12 flex items-center justify-center font-bold text-lg shrink-0">
+                10k
+              </div>
+              <div>
+                <h4 className="font-bold text-lg">Community Strong</h4>
+                <p className="text-sm opacity-80">Active Donors Registered</p>
+              </div>
+              <FaHeart className="ml-auto text-3xl opacity-50" />
             </div>
           </div>
         </div>
-        {/* Registration Form */}
-        <div className="w-full xl:w-1/2 p-8 lg:p-10 2xl:p-12 flex flex-col justify-center order-2 xl:order-2">
-          <div className="max-w-[480px] mx-auto w-full">
-            {/* Logo */}
-            <div className="mb-4">
-              <BloodLineLogo />
-            </div>
 
-            {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+        {/* Right Side: Registration Form */}
+        <div className="w-full xl:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+          <div className="max-w-xl mx-auto w-full">
+            <div className="mb-8 text-center md:text-left">
+              <BloodLineLogo />
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-6 mb-2">
                 Create Account
               </h1>
-              <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">
+              <p className="text-gray-500 dark:text-gray-400">
                 Join our mission to connect donors and save lives.
               </p>
             </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              {/* Name */}
               <div className="space-y-1">
-                <Label
-                  htmlFor="name"
-                  className="text-slate-700 dark:text-slate-300 font-medium"
-                >
+                <Label htmlFor="name" className="text-sm font-medium">
                   Name
                 </Label>
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Enter Your Name"
-                  className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500"
+                  placeholder="John Doe"
+                  className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 focus:ring-red-500"
                   {...register("name", { required: "Name is required" })}
                 />
                 {errors.name && (
@@ -156,17 +161,14 @@ const Register = () => {
 
               {/* Email */}
               <div className="space-y-1">
-                <Label
-                  htmlFor="email"
-                  className="text-slate-700 dark:text-slate-300 font-medium"
-                >
+                <Label htmlFor="email" className="text-sm font-medium">
                   Email
                 </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Enter Your Email"
-                  className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500"
+                  placeholder="name@example.com"
+                  className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 focus:ring-red-500"
                   {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
@@ -178,17 +180,14 @@ const Register = () => {
 
               {/* Profile Picture */}
               <div className="space-y-1">
-                <Label
-                  htmlFor="image"
-                  className="text-slate-700 dark:text-slate-300 font-medium"
-                >
+                <Label htmlFor="image" className="text-sm font-medium">
                   Profile Picture
                 </Label>
                 <Input
                   id="image"
                   type="file"
                   accept="image/*"
-                  className="h-10 pt-1.5 cursor-pointer border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 file:text-red-600"
+                  className="h-10 cursor-pointer bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 focus:ring-red-500 file:bg-red-100 file:text-red-700 file:border-0 file:rounded-md file:px-2 file:py-1 file:mr-3 file:text-sm file:font-semibold hover:file:bg-red-200"
                   {...register("image", { required: "Image is required" })}
                 />
                 {errors.image && (
@@ -198,12 +197,11 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Blood Group, District & Upazila */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {/* Row: Blood Group, District, Upazila */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Blood Group */}
                 <div className="space-y-1">
-                  <Label className="text-slate-700 dark:text-slate-300 font-medium">
-                    Group
-                  </Label>
+                  <Label className="text-sm font-medium">Group</Label>
                   <Controller
                     control={control}
                     name="bloodGroup"
@@ -213,8 +211,8 @@ const Register = () => {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-                          <SelectValue placeholder="Blood Group" />{" "}
+                        <SelectTrigger className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
                           {[
@@ -241,11 +239,10 @@ const Register = () => {
                     </span>
                   )}
                 </div>
+
                 {/* District */}
                 <div className="space-y-1">
-                  <Label className="text-slate-700 dark:text-slate-300 font-medium">
-                    District
-                  </Label>
+                  <Label className="text-sm font-medium">District</Label>
                   <Controller
                     control={control}
                     name="district"
@@ -255,8 +252,8 @@ const Register = () => {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-                          <SelectValue placeholder="Select District" />{" "}
+                        <SelectTrigger className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[200px]">
                           {districts
@@ -279,9 +276,7 @@ const Register = () => {
 
                 {/* Upazila */}
                 <div className="space-y-1">
-                  <Label className="text-slate-700 dark:text-slate-300 font-medium">
-                    Upazila
-                  </Label>
+                  <Label className="text-sm font-medium">Upazila</Label>
                   <Controller
                     control={control}
                     name="upazila"
@@ -292,9 +287,8 @@ const Register = () => {
                         defaultValue={field.value}
                         disabled={!selectedDistrict}
                       >
-                        <SelectTrigger className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-                          <SelectValue placeholder="Select Upazila" />{" "}
-                          {/* Updated Placeholder */}
+                        <SelectTrigger className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700">
+                          <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent className="max-h-[200px]">
                           {filteredUpazilas
@@ -316,39 +310,30 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Password*/}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {/* Passwords Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <Label
-                    htmlFor="password"
-                    className="text-slate-700 dark:text-slate-300 font-medium"
-                  >
+                  <Label htmlFor="password" classname="text-sm font-medium">
                     Password
                   </Label>
                   <div className="relative">
                     <Input
                       id="password"
                       type={isPasswordVisible ? "text" : "password"}
-                      placeholder="Enter Password (Min 6 chars)"
-                      className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500 pr-10"
+                      placeholder="******"
+                      className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 pr-10 focus:ring-red-500"
                       {...register("password", {
                         required: "Password is required",
-                        minLength: {
-                          value: 6,
-                          message: "Password must be at least 6 characters",
-                        },
+                        minLength: { value: 6, message: "Min 6 chars" },
                       })}
                     />
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    <button
+                      type="button"
                       onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-600"
                     >
-                      {isPasswordVisible ? (
-                        <FaEyeSlash className="h-4 w-4" />
-                      ) : (
-                        <FaEye className="h-4 w-4" />
-                      )}
-                    </div>
+                      {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                    </button>
                   </div>
                   {errors.password && (
                     <span className="text-red-500 text-xs">
@@ -357,38 +342,34 @@ const Register = () => {
                   )}
                 </div>
 
-                {/* Confirm Password */}
                 <div className="space-y-1">
                   <Label
                     htmlFor="confirmPassword"
-                    className="text-slate-700 dark:text-slate-300 font-medium"
+                    classname="text-sm font-medium"
                   >
-                    Confirm Password
+                    Confirm
                   </Label>
                   <div className="relative">
                     <Input
                       id="confirmPassword"
                       type={isConfirmPasswordVisible ? "text" : "password"}
-                      placeholder="Confirm Your Password"
-                      className="h-10 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500 pr-10"
+                      placeholder="******"
+                      className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 pr-10 focus:ring-red-500"
                       {...register("confirmPassword", {
-                        required: "Please confirm your password",
-                        validate: (value) =>
-                          value === password || "Passwords do not match",
+                        required: "Confirm password",
+                        validate: (val) =>
+                          val === password || "Passwords mismatch",
                       })}
                     />
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    <button
+                      type="button"
                       onClick={() =>
                         setIsConfirmPasswordVisible(!isConfirmPasswordVisible)
                       }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-600"
                     >
-                      {isConfirmPasswordVisible ? (
-                        <FaEyeSlash className="h-4 w-4" />
-                      ) : (
-                        <FaEye className="h-4 w-4" />
-                      )}
-                    </div>
+                      {isConfirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                    </button>
                   </div>
                   {errors.confirmPassword && (
                     <span className="text-red-500 text-xs">
@@ -398,30 +379,28 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Submit */}
-              <div className="pt-2">
-                <Button
-                  className="w-full h-10 text-base font-semibold bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-700 transition-all shadow-md hover:shadow-lg"
-                  type="submit"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <TbFidgetSpinner className="animate-spin text-xl" />
-                  ) : (
-                    "Register as a Donor"
-                  )}
-                </Button>
-              </div>
+              <Button
+                className="w-full h-11 mt-4 bg-red-600 hover:bg-red-700 text-white font-semibold shadow-md transition-all hover:shadow-lg"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader2 className="animate-spin text-2xl" />
+                ) : (
+                  "Register as Donor"
+                )}
+              </Button>
             </form>
-            <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+
+            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
               Already a lifesaver?{" "}
               <Link
                 to="/login"
-                className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-bold hover:underline"
+                className="font-bold text-red-600 hover:underline dark:text-red-400"
               >
                 Login here
               </Link>
-            </div>
+            </p>
           </div>
         </div>
       </div>

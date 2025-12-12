@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { TbFidgetSpinner } from "react-icons/tb";
+import { Loader2 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdBloodtype } from "react-icons/md";
@@ -48,245 +48,156 @@ const Login = () => {
   };
 
   return (
-    // Page Background: Light (slate-50) / Dark (gray-950)
-    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex justify-center items-center p-4 transition-colors duration-300">
-      <title>Blood Line | Login</title>
-
-      <div className="flex flex-col xl:flex-row w-full bg-white dark:bg-gray-900 rounded-3xl overflow-hidden max-w-[1400px] shadow-2xl border border-slate-100 dark:border-gray-800">
+    <div className="min-h-screen bg-slate-50 dark:bg-gray-950 flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl overflow-hidden w-full max-w-6xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
         {/* Left Side: Login Form */}
-        <div className="w-full xl:w-1/2 p-8 lg:p-12 2xl:p-20 flex flex-col justify-center">
-          <div className="max-w-[480px] mx-auto w-full">
-            {/* Logo area */}
-            <div className="mb-5">
+        <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+          <div className="max-w-md mx-auto w-full">
+            {/* Logo */}
+            <div className="mb-8 text-center md:text-left">
               <BloodLineLogo />
             </div>
 
             {/* Heading */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+            <div className="mb-8 text-center md:text-left">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 Welcome Back! 👋
               </h1>
-              <p className="text-slate-500 dark:text-slate-400 mt-2 text-base">
-                Sign in to manage your donations or find donors.
+              <p className="text-gray-500 dark:text-gray-400">
+                Please enter your details to sign in.
               </p>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Email */}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* Email Input */}
               <div className="space-y-2">
-                <Label
-                  htmlFor="email"
-                  className="text-slate-700 dark:text-slate-300 font-medium"
-                >
-                  Email
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email Address
                 </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="donor@example.com"
-                  className="h-11 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500"
+                  placeholder="name@example.com"
+                  className="h-11 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 focus:ring-2 focus:ring-red-500 transition-all"
                   {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
-                  <span className="text-red-500 text-xs">
+                  <p className="text-red-500 text-xs mt-1">
                     {errors.email.message}
-                  </span>
+                  </p>
                 )}
               </div>
 
-              {/* Password */}
+              {/* Password Input */}
               <div className="space-y-2">
-                <Label
-                  htmlFor="password"
-                  className="text-slate-700 dark:text-slate-300 font-medium"
-                >
-                  Password
-                </Label>
+                <div className="flex justify-between items-center">
+                  <Label htmlFor="password" classname="text-sm font-medium">
+                    Password
+                  </Label>
+                  <Link
+                    to="/forgot-password"
+                    classname="text-xs text-red-600 hover:underline dark:text-red-400"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
                 <div className="relative">
                   <Input
                     id="password"
                     type={isPasswordVisible ? "text" : "password"}
-                    placeholder="******"
-                    className="h-11 border-slate-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:border-red-500 focus:ring-red-500 pr-10"
+                    placeholder="••••••••"
+                    className="h-11 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 pr-10 focus:ring-2 focus:ring-red-500 transition-all"
                     {...register("password", {
                       required: "Password is required",
                     })}
                   />
-                  <div
-                    className="absolute top-1/2 -translate-y-1/2 right-3 cursor-pointer text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                  <button
+                    type="button"
                     onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   >
-                    {isPasswordVisible ? (
-                      <FaEyeSlash className="h-5 w-5" />
-                    ) : (
-                      <FaEye className="h-5 w-5" />
-                    )}
-                  </div>
+                    {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                  </button>
                 </div>
                 {errors.password && (
-                  <span className="text-red-500 text-xs">
+                  <p className="text-red-500 text-xs mt-1">
                     {errors.password.message}
-                  </span>
+                  </p>
                 )}
               </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="isRemebered"
-                    className="h-4 w-4 rounded border-slate-300 text-red-600 focus:ring-red-500"
-                  />
-                  <label
-                    htmlFor="isRemebered"
-                    className="text-sm text-slate-600 dark:text-slate-400 cursor-pointer font-medium"
-                  >
-                    Remember me
-                  </label>
-                </div>
-                <a
-                  href="#"
-                  className="text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium hover:underline"
+              {/* Remember Me Checkbox - Optional but good for UX */}
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  className="rounded border-gray-300 text-red-600 focus:ring-red-500"
+                />
+                <label
+                  htmlFor="remember"
+                  className="text-sm text-gray-600 dark:text-gray-400"
                 >
-                  Forgot Password?
-                </a>
+                  Remember me for 30 days
+                </label>
               </div>
 
               {/* Submit Button */}
               <Button
-                className="w-full h-11 text-base font-semibold bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-700 transition-all shadow-md hover:shadow-lg"
                 type="submit"
+                className="w-full h-11 bg-red-600 hover:bg-red-700 text-white font-semibold transition-all shadow-md hover:shadow-lg"
                 disabled={loading}
               >
                 {loading ? (
-                  <TbFidgetSpinner className="animate-spin text-2xl" />
+                  <Loader2 className="animate-spin text-xl" />
                 ) : (
                   "Sign In"
                 )}
               </Button>
             </form>
 
-            <div className="mt-8 text-center text-base text-slate-600 dark:text-slate-400">
+            {/* Footer */}
+            <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-bold hover:underline"
+                className="font-semibold text-red-600 hover:underline dark:text-red-400"
               >
-                Sign Up
+                Sign up
               </Link>
-            </div>
+            </p>
           </div>
         </div>
 
-        {/* Right Side: Decorative Image & Testimonial */}
-        <div className="hidden xl:block w-1/2 bg-red-600 dark:bg-red-900 relative overflow-hidden">
-          {/* Background SVG shape - Adjusted Colors for Blood Theme */}
-          <svg
-            className="absolute top-0 right-0 pointer-events-none"
-            width="100%"
-            height="100%"
-            viewBox="0 0 1208 1080"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g filter="url(#filter0_f_4801_13605)">
-              <circle
-                cx="604"
-                cy="565"
-                r="404"
-                fill="url(#paint0_radial_4801_13605)"
-              ></circle>
-            </g>
-            <defs>
-              <filter
-                id="filter0_f_4801_13605"
-                x="0"
-                y="-39"
-                width="1208"
-                height="1208"
-                filterUnits="userSpaceOnUse"
-                colorInterpolationFilters="sRGB"
-              >
-                <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
-                <feBlend
-                  mode="normal"
-                  in="SourceGraphic"
-                  in2="BackgroundImageFix"
-                  result="shape"
-                ></feBlend>
-                <feGaussianBlur
-                  stdDeviation="100"
-                  result="effect1_foregroundBlur_4801_13605"
-                ></feGaussianBlur>
-              </filter>
-              <radialGradient
-                id="paint0_radial_4801_13605"
-                cx="0"
-                cy="0"
-                r="1"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(805.322 373.168) rotate(134.675) scale(1098.13)"
-              >
-                <stop stopColor="#f43f5e" stopOpacity="0.6"></stop>{" "}
-                {/* Rose-500 */}
-                <stop offset="1" stopColor="#f43f5e" stopOpacity="0"></stop>
-              </radialGradient>
-            </defs>
-          </svg>
+        {/* Right Side: Visual/Branding (Hidden on mobile) */}
+        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-red-600 to-rose-700 relative overflow-hidden items-center justify-center text-white p-12">
+          {/* Background Decorations */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
-          {/* Testimonial Content */}
-          <div className="relative z-10 h-full flex flex-col justify-center p-16 text-white">
-            {/* Quote Pattern */}
-            <svg
-              className="absolute -top-6 -right-6 hidden lg:block text-white opacity-10"
-              width="209"
-              height="162"
-              viewBox="0 0 209 162"
-              fill="currentColor"
-            >
-              <path d="M62 25H0V0H209V162H185C184.317 129.162 169.576 122.271 158.235 120.921H121.512C100.402 119.676 90.7287 104.351 90.7287 93.7286V57.8571C89.4326 35.64 71.0009 26.7357 62 25Z" />
-            </svg>
-
-            <div className="mb-6">
-              <h2 className="text-5xl font-semibold leading-tight">
-                Give Blood, <br /> Save a Life...
-              </h2>
+          <div className="relative z-10 max-w-md text-center">
+            <div className="mb-6 inline-flex p-4 bg-white/20 backdrop-blur-md rounded-full shadow-lg border border-white/30">
+              <MdBloodtype className="text-5xl text-white" />
             </div>
+            <h2 className="text-4xl font-bold mb-6 leading-tight">
+              Every Drop Counts
+            </h2>
+            <p className="text-lg text-red-50 opacity-90 leading-relaxed mb-8">
+              "Join our community of heroes. Your donation can be the lifeline
+              someone is desperately waiting for today."
+            </p>
 
-            <div className="text-xl opacity-90 mb-10 leading-relaxed max-w-lg">
-              "Connecting donors with those in need has never been easier. Blood
-              Line is a lifesaver in every sense of the word. Join our community
-              today."
-            </div>
-
-            {/* Testimonial Card */}
-            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 relative border border-white/20 max-w-md shadow-lg">
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 bg-white rounded-full flex items-center justify-center text-xl font-bold text-red-600">
-                  SJ
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold">Sarah Jenkins</h4>
-                  <p className="text-sm opacity-80">Regular Donor</p>
-                </div>
+            {/* Simple Stats or Testimonial */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-left">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <span className="text-sm font-medium uppercase tracking-wider text-red-100">
+                  Live Impact
+                </span>
               </div>
-              <p className="mt-6 text-lg leading-relaxed opacity-90 italic">
-                "I was able to find a recipient in minutes. The platform is
-                fast, secure, and reliable."
-              </p>
-
-              {/* Decorative Corner Icon */}
-              <div className="absolute top-0 right-0 p-4 opacity-20">
-                <svg
-                  width="40"
-                  height="40"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M14.017 21L14.017 18C14.017 16.8954 13.1216 16 12.017 16H9.01735C8.46506 16 8.01735 15.5523 8.01735 15V9H14.017V22H14.017ZM21.017 21L21.017 18C21.017 16.8954 20.1216 16 19.017 16H16.017C15.4651 16 15.0174 15.5523 15.0174 15V9H21.017V22H21.017ZM7 9H2V2H7V9ZM21 9H16V2H21V9ZM7 21H2V12H7V21ZM21 21H16V12H21V21Z" />
-                </svg>
+              <div className="text-3xl font-bold">12,450+</div>
+              <div className="text-sm text-red-100 opacity-80">
+                Lives saved this year
               </div>
             </div>
           </div>

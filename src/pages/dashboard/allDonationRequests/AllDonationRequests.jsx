@@ -5,16 +5,24 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
 import useRole from "../../../hooks/useRole";
+import {
+  Search,
+  Filter,
+  Eye,
+  Edit,
+  Trash2,
+  AlertCircle,
+  Droplets,
+  MapPin,
+  Calendar,
+  User,
+  Activity,
+  ChevronLeft,
+  ChevronRight,
+  MoreVertical,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   Select,
   SelectContent,
@@ -22,6 +30,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 const AllDonationRequests = () => {
   const { user } = useAuth();
@@ -29,6 +52,7 @@ const AllDonationRequests = () => {
   const [role] = useRole();
   const [filterStatus, setFilterStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 5;
 
   // Fetch All Data
@@ -36,198 +60,463 @@ const AllDonationRequests = () => {
     queryKey: ["all-requests", filterStatus],
     queryFn: async () => {
       const query = filterStatus === "all" ? "" : `?status=${filterStatus}`;
-      const res = await axiosSecure.get(
-        `/all-blood-donation-requests${query}`
-      );
+      const res = await axiosSecure.get(`/all-blood-donation-requests${query}`);
       return res.data;
     },
   });
 
-  // Handle Status Update (Allowed for Admin & Volunteer)
+  // Handle Status Update
   const handleStatusChange = async (id, newStatus) => {
     const res = await axiosSecure.patch(`/donation-request-status/${id}`, {
       status: newStatus,
     });
     if (res.data.modifiedCount > 0) {
       refetch();
-      Swal.fire("Updated", `Status changed to ${newStatus}`, "success");
+      Swal.fire({
+        title: "Status Updated",
+        text: `Request status changed to ${newStatus}`,
+        icon: "success",
+        confirmButtonColor: "#ef4444",
+        background: "#f0f9ff",
+      });
     }
   };
 
-  // Handle Delete (Admin Only)
+  // Handle Delete
   const handleDelete = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Delete Request?",
+      text: "This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+      background: "#f0f9ff",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await axiosSecure.delete(`/donation-request/${id}`);
         if (res.data.deletedCount > 0) {
-          Swal.fire("Deleted!", "Request has been deleted.", "success");
+          Swal.fire({
+            title: "Deleted!",
+            text: "Request has been deleted successfully.",
+            icon: "success",
+            confirmButtonColor: "#ef4444",
+          });
           refetch();
         }
       }
     });
   };
 
+  // Status badge styling
+  const getStatusBadge = (status) => {
+    const styles = {
+      pending:
+        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-yellow-200",
+      inprogress:
+        "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border-blue-200",
+      done: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-green-200",
+      canceled:
+        "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-red-200",
+    };
+    return styles[status] || "bg-gray-100 text-gray-800";
+  };
+
+  // Filter requests based on search
+  const filteredRequests = requests.filter(
+    (req) =>
+      req.requesterName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      req.recipientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      req.bloodGroup?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      req.recipientDistrict?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   // Pagination Logic
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentData = requests.slice(startIndex, startIndex + itemsPerPage);
-  const totalPages = Math.ceil(requests.length / itemsPerPage);
+  const currentData = filteredRequests.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">All Blood Donation Requests</h2>
+    <div className="p-6 space-y-6 bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
+      {/* Header Section */}
+      <div className="space-y-4">
+        <div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 mb-4">
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-semibold text-red-600 dark:text-red-400">
+              Request Management
+            </span>
+          </div>
+          <h2 className="text-3xl font-bold text-zinc-900 dark:text-white">
+            Blood Donation Requests
+          </h2>
+          <p className="text-zinc-600 dark:text-zinc-400 mt-2">
+            Manage and monitor all blood donation requests from patients and
+            hospitals
+          </p>
+        </div>
 
-        {/* Filter */}
-        <div className="w-[180px]">
-          <Select
-            value={filterStatus}
-            onValueChange={(value) => setFilterStatus(value)}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Filter by Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="inprogress">In Progress</SelectItem>
-              <SelectItem value="done">Done</SelectItem>
-              <SelectItem value="canceled">Canceled</SelectItem>
-            </SelectContent>
-          </Select>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Total Requests
+                  </p>
+                  <p className="text-2xl font-bold text-zinc-900 dark:text-white">
+                    {requests.length}
+                  </p>
+                </div>
+                <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                  <Activity className="w-6 h-6 text-red-600 dark:text-red-400" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Pending
+                  </p>
+                  <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                    {requests.filter((r) => r.status === "pending").length}
+                  </p>
+                </div>
+                <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+                  <AlertCircle className="w-6 h-6 text-amber-600 dark:text-amber-400" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    In Progress
+                  </p>
+                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    {requests.filter((r) => r.status === "inprogress").length}
+                  </p>
+                </div>
+                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <Activity className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                    Completed
+                  </p>
+                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                    {requests.filter((r) => r.status === "done").length}
+                  </p>
+                </div>
+                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Droplets className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader className="hidden md:table-header-group">
-            <TableRow>
-              <TableHead>Requester</TableHead>
-              <TableHead>Recipient</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Blood Group</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {currentData.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
-                  No requests found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              currentData.map((req) => (
-                <TableRow
-                  key={req._id}
-                  className="block md:table-row mb-6 md:mb-0 border rounded-lg md:border-b md:rounded-none shadow-sm md:shadow-none bg-card md:bg-transparent overflow-hidden"
+      {/* Search and Filter Bar */}
+      <Card className="border-red-100 dark:border-red-900 shadow-sm">
+        <CardContent className="p-6">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            <div className="flex-1 w-full md:w-auto">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-zinc-400" />
+                <Input
+                  placeholder="Search requests by name, blood group, or location..."
+                  className="pl-10 h-12"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 w-full md:w-auto">
+              <div className="flex items-center gap-2">
+                <Filter className="w-5 h-5 text-zinc-400" />
+                <Select
+                  value={filterStatus}
+                  onValueChange={(value) => {
+                    setFilterStatus(value);
+                    setCurrentPage(1);
+                  }}
                 >
-                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
-                    <span className="font-bold md:hidden">Requester</span>
-                    {req.requesterName}
-                  </TableCell>
-                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
-                    <span className="font-bold md:hidden">Recipient</span>
-                    {req.recipientName}
-                  </TableCell>
-                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
-                    <span className="font-bold md:hidden">Location</span>
-                    {req.recipientDistrict}
-                  </TableCell>
-                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
-                    <span className="font-bold md:hidden">Date</span>
-                    {req.donationDate}
-                  </TableCell>
-                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
-                    <span className="font-bold md:hidden">Blood Group</span>
-                    <span className="font-bold text-red-600">
-                      {req.bloodGroup}
-                    </span>
-                  </TableCell>
-                  <TableCell className="flex md:table-cell items-center justify-between px-4 py-2 md:px-4 md:py-4 border-b md:border-b-0">
-                    <span className="font-bold md:hidden">Status</span>
-                    {/* Status Dropdown for Admin/Volunteer */}
-                    <div className="w-[140px]">
+                  <SelectTrigger className="w-[180px] h-12">
+                    <SelectValue placeholder="Filter by Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="inprogress">In Progress</SelectItem>
+                    <SelectItem value="done">Completed</SelectItem>
+                    <SelectItem value="canceled">Canceled</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Requests List */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-white">
+            Recent Requests ({filteredRequests.length})
+          </h3>
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            Page {currentPage} of {totalPages}
+          </p>
+        </div>
+
+        {currentData.length === 0 ? (
+          <Card className="border-red-100 dark:border-red-900">
+            <CardContent className="p-12 text-center">
+              <AlertCircle className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+                No requests found
+              </h3>
+              <p className="text-zinc-500 dark:text-zinc-400">
+                {searchQuery
+                  ? "Try a different search term"
+                  : "No donation requests match the current filter"}
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {currentData.map((req) => (
+              <Card
+                key={req._id}
+                className="group border-red-100 dark:border-red-900 
+                hover:border-red-300 dark:hover:border-red-700 hover:shadow-lg 
+                transition-all duration-300 overflow-hidden"
+              >
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    {/* Left Column: Request Info */}
+                    <div className="space-y-4 flex-1">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <Badge
+                              className={`px-3 py-1 rounded-full border ${getStatusBadge(
+                                req.status
+                              )}`}
+                            >
+                              {req.status.toUpperCase()}
+                            </Badge>
+                            <Badge className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border-red-200 px-3 py-1 rounded-full">
+                              {req.bloodGroup}
+                            </Badge>
+                          </div>
+                          <h4 className="text-lg font-semibold text-zinc-900 dark:text-white">
+                            Request for {req.recipientName}
+                          </h4>
+                          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                            By {req.requesterName}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <MapPin className="w-4 h-4 text-red-600 dark:text-red-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                              Location
+                            </p>
+                            <p className="font-medium">
+                              {req.recipientDistrict}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <Calendar className="w-4 h-4 text-red-600 dark:text-red-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                              Date Needed
+                            </p>
+                            <p className="font-medium">{req.donationDate}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <Droplets className="w-4 h-4 text-red-600 dark:text-red-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                              Blood Group
+                            </p>
+                            <p className="font-bold text-red-600 dark:text-red-400">
+                              {req.bloodGroup}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column: Actions */}
+                    <div className="flex items-center gap-3">
+                      {/* Status Selector */}
                       <Select
                         value={req.status}
                         onValueChange={(value) =>
                           handleStatusChange(req._id, value)
                         }
                       >
-                        <SelectTrigger className="h-8">
+                        <SelectTrigger className="w-[140px] h-10">
                           <SelectValue placeholder="Status" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="inprogress">In Progress</SelectItem>
-                          <SelectItem value="done">Done</SelectItem>
+                          <SelectItem value="inprogress">
+                            In Progress
+                          </SelectItem>
+                          <SelectItem value="done">Completed</SelectItem>
                           <SelectItem value="canceled">Canceled</SelectItem>
                         </SelectContent>
                       </Select>
-                    </div>
-                  </TableCell>
-                  <TableCell className="flex md:table-cell items-center justify-between md:justify-end px-4 py-2 md:px-4 md:py-4">
-                    <span className="font-bold md:hidden">Actions</span>
-                    <div className="flex gap-2 items-center">
-                      {/* View Button (Available for all) */}
-                      <Link to={`/dashboard/donation-request-details/${req._id}`}>
-                        <Button size="sm" variant="secondary">
-                          View
-                        </Button>
-                      </Link>
 
-                      {/* Admin Only Actions */}
-                      {role === "admin" && (
-                        <>
-                          <Link to={`/dashboard/update-request/${req._id}`}>
-                            <Button size="sm" variant="outline" className="text-blue-600 hover:text-blue-700">
-                              Edit
-                            </Button>
-                          </Link>
+                      {/* Action Dropdown */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
                           <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => handleDelete(req._id)}
+                            variant="ghost"
+                            size="icon"
+                            className="h-10 w-10"
                           >
-                            Delete
+                            <MoreVertical className="w-5 h-5" />
                           </Button>
-                        </>
-                      )}
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <Link
+                            to={`/dashboard/donation-request-details/${req._id}`}
+                          >
+                            <DropdownMenuItem className="cursor-pointer">
+                              <Eye className="w-4 h-4 mr-2" />
+                              View Details
+                            </DropdownMenuItem>
+                          </Link>
+
+                          {role === "admin" && (
+                            <>
+                              <Link to={`/dashboard/update-request/${req._id}`}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit Request
+                                </DropdownMenuItem>
+                              </Link>
+                              <DropdownMenuItem
+                                className="cursor-pointer text-red-600 focus:text-red-600"
+                                onClick={() => handleDelete(req._id)}
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete Request
+                              </DropdownMenuItem>
+                            </>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Pagination Controls */}
-      {requests.length > itemsPerPage && (
-        <div className="flex justify-center items-center gap-4 mt-6">
-          <Button
-            variant="outline"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-          >
-            « Previous
-          </Button>
-          <span className="text-sm font-medium">Page {currentPage}</span>
-          <Button
-            variant="outline"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-          >
-            Next »
-          </Button>
+      {/* Pagination */}
+      {filteredRequests.length > itemsPerPage && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            Showing {startIndex + 1} to{" "}
+            {Math.min(startIndex + itemsPerPage, filteredRequests.length)} of{" "}
+            {filteredRequests.length} requests
+          </p>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              className="gap-2"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </Button>
+
+            <div className="flex items-center gap-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+
+                return (
+                  <Button
+                    key={pageNum}
+                    variant={currentPage === pageNum ? "default" : "outline"}
+                    size="sm"
+                    className={`w-10 h-10 ${
+                      currentPage === pageNum
+                        ? "bg-red-600 hover:bg-red-700"
+                        : ""
+                    }`}
+                    onClick={() => setCurrentPage(pageNum)}
+                  >
+                    {pageNum}
+                  </Button>
+                );
+              })}
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              className="gap-2"
+            >
+              Next
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       )}
     </div>
