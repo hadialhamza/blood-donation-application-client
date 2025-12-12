@@ -19,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -102,7 +101,7 @@ const Navbar = () => {
               <div
                 className={cn(
                   isHome && !isScrolled
-                    ? "[&_span.font-normal]:text-white [&_.text-xs]:text-white/90"
+                    ? "[&_span.logo-title]:text-gray-200 [&_.logo-subtitle]:text-gray-300"
                     : ""
                 )}
               >
@@ -204,7 +203,7 @@ const Navbar = () => {
                       <DropdownMenuLabel className="flex items-center gap-2 font-normal border rounded-sm text-center">
                         <User2Icon className="text-green-800/90 bg-green-200 p-1 rounded" />
                         <div className="flex flex-col items-start space-y-1">
-                          <p className="text-sm font-medium leading-none text-green-600">
+                          <p className="text-sm font-medium leading-none text-green-600 dark:text-green-400">
                             {user.displayName}
                           </p>
                           <p className="text-xs leading-none text-muted-foreground">
@@ -212,22 +211,20 @@ const Navbar = () => {
                           </p>
                         </div>
                       </DropdownMenuLabel>
-                      {/* <DropdownMenuSeparator /> */}
                       <DropdownMenuItem asChild>
                         <Link
                           to="/dashboard"
-                          className="cursor-pointer border  hover:translate-x-3 duration-300 text-blue-700"
+                          className="cursor-pointer border  hover:translate-x-3 duration-300 text-blue-700 dark:text-white"
                         >
                           <LayoutDashboard className="h-6! w-6! p-1 rounded bg-blue-200 text-blue-700" />
                           <span>Dashboard</span>
                         </Link>
                       </DropdownMenuItem>
-                      {/* <DropdownMenuSeparator /> */}
                       <DropdownMenuItem
                         onClick={handleLogOut}
-                        className="text-red-600 cursor-pointer focus:text-red-600 border hover:translate-x-3 duration-300"
+                        className="cursor-pointer focus:text-red-600 border hover:translate-x-3 duration-300 text-red-500 dark:text-white"
                       >
-                        <LogOut className="h-6! w-6! p-1 rounded bg-red-200/70 text-red-600" />
+                        <LogOut className="h-6! w-6! p-1 rounded bg-red-200 text-red-500" />
                         <span>Log out</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
