@@ -1,89 +1,147 @@
 import React from "react";
-import { HeartPulse, HandHeart, Users, ArrowRight } from "lucide-react";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  HeartPulse,
+  Clock,
+  Users,
+  MapPin,
+  Bell,
+  AlertTriangle,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
+import Container from "@/components/container/Container";
 
 const Featured = () => {
   const features = [
     {
-      icon: <HeartPulse className="h-8 w-8 text-red-500" />,
-      title: "Save Lives",
+      icon: <HeartPulse className="w-6 h-6 text-white" />,
+      title: "Emergency Matching",
       description:
-        "One pint of blood can save up to three lives. Your single contribution makes a massive, direct impact on emergency care.",
+        "Critical cases get prioritized automatically. Our system instantly connects urgent requests with compatible donors within a 10km radius.",
+      gradient: "from-red-500 to-rose-600",
+      delay: "0",
+      stat: "Under 5 min response",
     },
     {
-      icon: <HandHeart className="h-8 w-8 text-red-500" />,
-      title: "Health Benefits",
+      icon: <Clock className="w-6 h-6 text-white" />,
+      title: "Real-Time Availability",
       description:
-        "Regular donation helps balance iron levels, reduces the risk of heart disease, and stimulates new blood cell production.",
+        "See donor availability live. Our system tracks when donors are eligible to donate next based on medical guidelines and previous donations.",
+      gradient: "from-blue-500 to-indigo-500",
+      delay: "100",
+      stat: "Updated every 30 seconds",
     },
     {
-      icon: <Users className="h-8 w-8 text-red-500" />,
-      title: "Community Support",
+      icon: <Users className="w-6 h-6 text-white" />,
+      title: "Blood Group Network",
       description:
-        "Join a network of everyday heroes. Be the safety net for your community when disasters or emergencies strike.",
+        "Connect with rare blood type communities. Find O-negative universal donors or match specific requirements like CMV-negative blood.",
+      gradient: "from-violet-500 to-purple-500",
+      delay: "200",
+      stat: "8+ Blood Types",
+    },
+    {
+      icon: <MapPin className="w-6 h-6 text-white" />,
+      title: "Location Intelligence",
+      description:
+        "Smart radius search finds donors near hospitals. Filter by district, upazila, or specific medical facilities for faster response times.",
+      gradient: "from-emerald-500 to-green-500",
+      delay: "300",
+      stat: "500+ Locations",
+    },
+    {
+      icon: <Bell className="w-6 h-6 text-white" />,
+      title: "Smart Notifications",
+      description:
+        "Get alerts for matching blood requests. Donors receive notifications only for compatible blood types and nearby emergencies.",
+      gradient: "from-orange-500 to-amber-500",
+      delay: "400",
+      stat: "Instant Alerts",
+    },
+    {
+      icon: <AlertTriangle className="w-6 h-6 text-white" />,
+      title: "Critical Shortage Alerts",
+      description:
+        "Receive notifications when specific blood types are running low in your area. Help prevent blood bank shortages before they become emergencies.",
+      gradient: "from-pink-500 to-rose-500",
+      delay: "500",
+      stat: "Proactive System",
     },
   ];
 
   return (
-    <section className="py-24 bg-slate-50 dark:bg-zinc-900/50">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center rounded-full border border-red-200 bg-red-50 px-3 py-1 text-sm font-medium text-red-600 dark:border-red-900/30 dark:bg-red-900/10 dark:text-red-400">
-            Why Donate?
+    <section className="py-18">
+      <Container>
+        <div className="relative z-10">
+          {/* Header */}
+          <div className="text-center max-w-4xl mx-auto mb-16">
+            <div className="section-badge">
+              <Sparkles className="w-4 h-4" />
+              <span>Core Features</span>
+            </div>
+
+            <h2 className="gradient-title">
+              Smart solutions for{" "}
+              <span className="">emergency situations.</span>
+            </h2>
+            <p className="subtitle">
+              Our platform combines cutting-edge technology with compassionate
+              community to ensure no patient waits for blood when every second
+              counts.
+            </p>
           </div>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            Be the reason for someone's{" "}
-            <span className="text-red-600">heartbeat</span>
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Donating blood is a simple procedure that can be done within an
-            hour, but its impact lasts a lifetime for the receiver.
-          </p>
-        </div>
 
-        {/* Feature Cards Grid */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="group relative overflow-hidden border-transparent bg-white/50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:bg-zinc-900/50 dark:border-zinc-800"
-            >
-              {/* Decorative gradient blob on hover */}
-              <div className="absolute inset-0 bg-linear-to-br from-red-500/5 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="group relative p-8 rounded-3xl border-2 
+                    bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm
+                    hover:shadow-2xl hover:-translate-y-2 
+                    transition-all duration-500 overflow-hidden"
+              >
+                {/* Top Accent Line */}
+                <div
+                  className={`absolute top-0 left-0 w-full h-0.5 bg-linear-to-r ${feature.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}
+                ></div>
 
-              <CardHeader className="relative pb-2">
-                <div className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-red-50 dark:bg-red-900/20 group-hover:bg-background group-hover:text-white transition-colors duration-300">
-                  {/* Clone element to apply hover color logic easily if needed, or rely on group-hover in parent */}
-                  <div className="transition-colors duration-300 group-hover:text-white">
-                    {feature.icon}
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Icon & Stat Row */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div
+                      className={`
+                                w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg
+                                bg-linear-to-br ${feature.gradient} 
+                                group-hover:scale-110 group-hover:rotate-3 transition-all duration-300
+                            `}
+                    >
+                      {feature.icon}
+                    </div>
+                    <span className="text-sm font-bold px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300">
+                      {feature.stat}
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4 ">
+                    {feature.title}
+                  </h3>
+
+                  <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 grow">
+                    {feature.description}
+                  </p>
+
+                  {/* Learn More Link */}
+                  <div className="flex items-center text-red-600 dark:text-red-400 font-semibold text-sm opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    How it works{" "}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                   </div>
                 </div>
-                <CardTitle className="text-xl font-bold">
-                  {feature.title}
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="relative">
-                <CardDescription className="text-base leading-relaxed">
-                  {feature.description}
-                </CardDescription>
-
-                {/* Learn More Link (Optional) */}
-                <div className="mt-6 flex items-center text-sm font-medium text-red-600 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-2">
-                  Learn more <ArrowRight className="ml-2 h-4 w-4" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

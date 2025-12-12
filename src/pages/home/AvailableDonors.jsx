@@ -92,16 +92,16 @@ const AvailableDonors = () => {
         <div className="relative z-10">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 font-bold text-sm mb-6 shadow-sm">
+            <div className="section-badge">
               <Activity className="w-4 h-4 animate-pulse" />
               <span>Live Database Status</span>
             </div>
 
-            <h2 className="text-4xl md:text-5xl font-black text-foreground mb-6 tracking-tight">
-              Available <span className="text-gradient">Blood Donors</span>
+            <h2 className="gradient-title">
+              Available <span>Blood Donors</span>
             </h2>
 
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="subtitle">
               We track donor availability in real-time. Below is a snapshot of
               our current active donor pool, ready to respond to emergencies.
             </p>
