@@ -75,7 +75,7 @@ const TrustedPartners = () => {
         {/* Section Title */}
         <div className="text-center mb-8 max-w-3xl mx-auto">
           <div className="section-badge">
-            <Handshake className="w-4 h-4 text-red-600 dark:text-red-400" />
+            <Handshake className="w-4 h-4 text-red-600 dark:text-red-400 animate-pulse" />
             <span className="text-sm font-semibold text-red-600 dark:text-red-400">
               Trusted Partners
             </span>
@@ -135,7 +135,7 @@ const TrustedPartners = () => {
 
         {/* Additional Partner Stats */}
         <div className="mt-6 mb-12 text-center">
-          <div className="inline-flex items-center gap-8 px-8 py-4 bg-zinc-100 dark:bg-zinc-900/50 rounded-2xl">
+          <div className="flex flex-col md:flex-row items-center gap-8 px-8 py-4 bg-zinc-100 dark:bg-zinc-900/50 rounded-2xl">
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                 50+

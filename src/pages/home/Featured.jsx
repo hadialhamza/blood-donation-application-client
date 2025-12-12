@@ -82,7 +82,7 @@ const Featured = () => {
           {/* Header */}
           <div className="text-center max-w-4xl mx-auto mb-16">
             <div className="section-badge">
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 animate-pulse" />
               <span>Core Features</span>
             </div>
 

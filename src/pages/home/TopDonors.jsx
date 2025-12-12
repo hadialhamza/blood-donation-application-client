@@ -84,7 +84,7 @@ const TopDonors = () => {
         {/* --- Header --- */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="section-badge">
-            <Trophy className="w-4 h-4" />
+            <Trophy className="w-4 h-4 animate-pulse" />
             <span>Hall of Fame</span>
           </div>
           <h2 className="gradient-title">
