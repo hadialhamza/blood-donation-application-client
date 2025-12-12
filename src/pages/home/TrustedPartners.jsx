@@ -10,6 +10,7 @@ import {
   Plus,
   ShieldCheck,
   HeartHandshake,
+  Handshake,
 } from "lucide-react";
 import Marquee from "react-fast-marquee";
 import { Button } from "@/components/ui/button";
@@ -70,11 +71,11 @@ const TrustedPartners = () => {
 
   return (
     <Container>
-      <div className="mt-24 pt-12 border-t border-zinc-200 dark:border-zinc-800 relative">
+      <div className="mt-20 relative">
         {/* Section Title */}
-        <div className="text-center mb-12 max-w-3xl mx-auto">
+        <div className="text-center mb-8 max-w-3xl mx-auto">
           <div className="section-badge">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+            <Handshake className="w-4 h-4 text-red-600 dark:text-red-400" />
             <span className="text-sm font-semibold text-red-600 dark:text-red-400">
               Trusted Partners
             </span>
@@ -92,12 +93,12 @@ const TrustedPartners = () => {
         </div>
 
         {/* Marquee Container */}
-        <div className="relative w-full overflow-hidden py-4">
+        <div className="relative w-full overflow-hidden py-2">
           <Marquee
             gradient={false}
             speed={50}
             pauseOnHover={true}
-            className="py-6"
+            className="py-4"
           >
             <div className="flex items-center gap-8 px-4">
               {partners.map((partner, index) => (
@@ -133,8 +134,8 @@ const TrustedPartners = () => {
         </div>
 
         {/* Additional Partner Stats */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-8 px-8 py-4 bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl">
+        <div className="mt-6 mb-12 text-center">
+          <div className="inline-flex items-center gap-8 px-8 py-4 bg-zinc-100 dark:bg-zinc-900/50 rounded-2xl">
             <div className="text-center">
               <div className="text-2xl font-bold text-red-600 dark:text-red-400">
                 50+
@@ -165,26 +166,26 @@ const TrustedPartners = () => {
         </div>
 
         {/* Trust cards */}
-        <div className="flex flex-col md:flex-row items-stretch gap-10 w-full">
+        <div className="flex flex-col md:flex-row items-stretch gap-12 max-w-4xl mx-auto">
           {/* Card 1 */}
           <Card className="flex-1 bg-linear-to-br from-red-600 to-red-800 text-white border-none shadow-xl shadow-red-900/20 relative overflow-hidden gap-3">
             <div className="absolute bottom-0 right-0 p-8 opacity-10 transform translate-x-6 translate-y-6 rotate-12 pointer-events-none">
-              <ShieldCheck size={180} />
+              <ShieldCheck size={120} />
             </div>
 
             <CardHeader className="relative z-10">
-              <div className="mb-2 w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/10">
-                <ShieldCheck className="w-7 h-7 text-white" />
+              <div className="mb-2 w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/10">
+                <ShieldCheck className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-2xl font-bold text-white">
+              <CardTitle className="text-xl font-bold text-white">
                 Community Trust
               </CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-2 relative z-10">
               <div className="flex items-end gap-2">
-                <span className="text-6xl font-black">100%</span>
-                <span className="mb-3 text-red-100 font-semibold text-lg">
+                <span className="text-4xl font-black">100 %</span>
+                <span className="mb-2 text-red-100 font-semibold text-base">
                   Verified
                 </span>
               </div>
@@ -204,24 +205,24 @@ const TrustedPartners = () => {
           {/* Card 2 */}
           <Card className="flex-1 bg-linear-to-br from-red-600 to-red-800 text-white border-none shadow-xl shadow-red-900/20 relative overflow-hidden gap-3">
             <div className="absolute bottom-0 right-0 p-8 opacity-10 transform translate-x-6 translate-y-6 rotate-12 pointer-events-none">
-              <HeartHandshake size={180} />
+              <HeartHandshake size={120} />
             </div>
 
             <CardHeader className="relative z-10">
-              <div className="mb-2 w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/10">
-                <HeartHandshake className="w-7 h-7 text-white" />
+              <div className="mb-2 w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/10">
+                <HeartHandshake className="w-6 h-6 text-white" />
               </div>
-              <CardTitle className="text-2xl font-bold text-white">
+              <CardTitle className="text-xl font-bold text-white">
                 Community Impact
               </CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-2 relative z-10">
               <div className="flex items-end gap-3">
-                <span className="text-6xl font-black tracking-tighter">
-                  2.5k+
+                <span className="text-4xl font-black tracking-tighter">
+                  2.5 k +
                 </span>
-                <span className="mb-3 text-red-100 font-semibold text-lg">
+                <span className="mb-2 text-red-100 font-semibold text-base">
                   Lives Saved
                 </span>
               </div>

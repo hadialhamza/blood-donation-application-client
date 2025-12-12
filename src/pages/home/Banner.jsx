@@ -55,7 +55,7 @@ const Banner = () => {
     },
   ];
   return (
-    <section className="relative w-full overflow-hidden flex items-center justify-center pt-32 pb-20">
+    <section className="relative w-full overflow-hidden flex items-center justify-center pt-32 pb-15">
       <div
         className="absolute inset-0 z-0 w-full h-full bg-cover bg-center bg-no-repeat"
         style={{

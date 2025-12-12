@@ -87,7 +87,7 @@ const AvailableDonors = () => {
   };
 
   return (
-    <section className="pt-6">
+    <section className="mt-20">
       <Container>
         <div className="relative z-10">
           {/* Section Header */}
@@ -108,7 +108,7 @@ const AvailableDonors = () => {
           </div>
 
           {/* Blood group cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
             {bloodGroups.map((item, index) => {
               const theme = getThemeClasses(item.theme, item.featured);
 

@@ -21,15 +21,17 @@ const Featured = () => {
       gradient: "from-red-500 to-rose-600",
       delay: "0",
       stat: "Under 5 min response",
+      colSpan: "md:col-span-2",
     },
     {
       icon: <Clock className="w-6 h-6 text-white" />,
       title: "Real-Time Availability",
       description:
-        "See donor availability live. Our system tracks when donors are eligible to donate next based on medical guidelines and previous donations.",
+        "See donor availability live. Our system tracks when donors are eligible to donate next.",
       gradient: "from-blue-500 to-indigo-500",
       delay: "100",
-      stat: "Updated every 30 seconds",
+      stat: "Updated every 30s",
+      colSpan: "md:col-span-1",
     },
     {
       icon: <Users className="w-6 h-6 text-white" />,
@@ -39,6 +41,7 @@ const Featured = () => {
       gradient: "from-violet-500 to-purple-500",
       delay: "200",
       stat: "8+ Blood Types",
+      colSpan: "md:col-span-1",
     },
     {
       icon: <MapPin className="w-6 h-6 text-white" />,
@@ -48,6 +51,7 @@ const Featured = () => {
       gradient: "from-emerald-500 to-green-500",
       delay: "300",
       stat: "500+ Locations",
+      colSpan: "md:col-span-2",
     },
     {
       icon: <Bell className="w-6 h-6 text-white" />,
@@ -57,20 +61,22 @@ const Featured = () => {
       gradient: "from-orange-500 to-amber-500",
       delay: "400",
       stat: "Instant Alerts",
+      colSpan: "md:col-span-2",
     },
     {
       icon: <AlertTriangle className="w-6 h-6 text-white" />,
       title: "Critical Shortage Alerts",
       description:
-        "Receive notifications when specific blood types are running low in your area. Help prevent blood bank shortages before they become emergencies.",
+        "Receive notifications when specific blood types are running low in your area. Help prevent blood bank shortages.",
       gradient: "from-pink-500 to-rose-500",
       delay: "500",
       stat: "Proactive System",
+      colSpan: "md:col-span-1",
     },
   ];
 
   return (
-    <section className="py-18">
+    <section className="mt-20">
       <Container>
         <div className="relative z-10">
           {/* Header */}
@@ -91,15 +97,15 @@ const Featured = () => {
             </p>
           </div>
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:px-20">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative p-8 rounded-3xl border-2 
-                    bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm
+                className={`group relative py-5 px-6 rounded-3xl border-2 
+                    bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md shadow-lg
                     hover:shadow-2xl hover:-translate-y-2 
-                    transition-all duration-500 overflow-hidden"
+                    transition-all duration-500 overflow-hidden
+                    ${feature.colSpan} flex flex-col`}
               >
                 {/* Top Accent Line */}
                 <div
@@ -108,10 +114,10 @@ const Featured = () => {
 
                 <div className="relative z-10 flex flex-col h-full">
                   {/* Icon & Stat Row */}
-                  <div className="flex justify-between items-start mb-6">
+                  <div className="flex justify-between items-start mb-4">
                     <div
                       className={`
-                                w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg
+                                w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg
                                 bg-linear-to-br ${feature.gradient} 
                                 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300
                             `}
@@ -123,16 +129,16 @@ const Featured = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4 ">
+                  <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2 ">
                     {feature.title}
                   </h3>
 
-                  <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 grow">
+                  <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-2 grow">
                     {feature.description}
                   </p>
 
                   {/* Learn More Link */}
-                  <div className="flex items-center text-red-600 dark:text-red-400 font-semibold text-sm opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                  <div className="flex items-center text-red-600 dark:text-red-400 font-semibold text-sm opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mt-auto">
                     How it works{" "}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                   </div>
