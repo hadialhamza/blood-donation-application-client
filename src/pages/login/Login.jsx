@@ -92,12 +92,12 @@ const Login = () => {
               {/* Password Input */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <Label htmlFor="password" classname="text-sm font-medium">
+                  <Label htmlFor="password" className="text-sm font-medium">
                     Password
                   </Label>
                   <Link
                     to="/forgot-password"
-                    classname="text-xs text-red-600 hover:underline dark:text-red-400"
+                    className="text-xs text-red-600 hover:underline dark:text-red-400"
                   >
                     Forgot Password?
                   </Link>
@@ -170,7 +170,7 @@ const Login = () => {
         </div>
 
         {/* Right Side: Visual/Branding (Hidden on mobile) */}
-        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-red-600 to-rose-700 relative overflow-hidden items-center justify-center text-white p-12">
+        <div className="hidden md:flex w-1/2 bg-linear-to-br from-red-600 to-rose-700 relative overflow-hidden items-center justify-center text-white p-12">
           {/* Background Decorations */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>

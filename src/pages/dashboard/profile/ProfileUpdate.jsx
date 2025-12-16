@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
@@ -45,24 +44,52 @@ const ProfileUpdate = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
 
-  // 1. Fetch User Data
-  const {
-    data: userData = {},
-    refetch,
-    isLoading: isUserLoading,
-  } = useQuery({
-    queryKey: ["user", user?.email],
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/user/${user?.email}`);
-      return res.data;
-    },
-  });
+  const [userData, setUserData] = useState({});
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
-  // 2. Fetch Locations
-  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
-
+  // Initialize form first to make reset available
   const { register, handleSubmit, reset, control, watch } = useForm();
   const imageFile = watch("imageFile");
+
+  // 1. Fetch User Data
+  useEffect(() => {
+    if (user?.email) {
+      setIsUserLoading(true);
+      axiosSecure
+        .get(`/user/${user?.email}`)
+        .then((res) => {
+          setUserData(res.data);
+          const data = res.data;
+          // Pre-fill form fields
+          reset({
+            name: data.name,
+            email: data.email,
+            district: data.district,
+            upazila: data.upazila,
+            bloodGroup: data.bloodGroup,
+            phone: data.phone || "",
+            image: data.image || data.avatar,
+          });
+          setPreviewImage(data.image || data.avatar || user?.photoURL);
+          setIsUserLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setIsUserLoading(false);
+        });
+    }
+  }, [user?.email, user?.photoURL, axiosSecure, reset]);
+
+  const refetch = () => {
+    if (user?.email) {
+      axiosSecure.get(`/user/${user?.email}`).then((res) => {
+        setUserData(res.data);
+      });
+    }
+  };
+
+  // 2. Fetch Locations
+  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
 
   // Handle image preview
   useEffect(() => {
@@ -76,27 +103,11 @@ const ProfileUpdate = () => {
     }
   }, [imageFile]);
 
-  // 3. Populate form when data loads
-  useEffect(() => {
-    if (userData && !isUserLoading) {
-      reset({
-        name: userData.name,
-        email: userData.email,
-        district: userData.district,
-        upazila: userData.upazila,
-        bloodGroup: userData.bloodGroup,
-        phone: userData.phone || "",
-        image: userData.image || userData.avatar,
-      });
-      setPreviewImage(userData.image || userData.avatar || user?.photoURL);
-    }
-  }, [userData, isUserLoading, reset, user]);
-
   // 4. Watch District for Upazila Filtering
   const selectedDistrict = useWatch({ control, name: "district" });
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);
   const filteredUpazilas = currentDistrict
-    ? upazilas.filter((u) => u.district_id === currentDistrict.id)
+    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
     : [];
 
   const handleUpdate = async (data) => {

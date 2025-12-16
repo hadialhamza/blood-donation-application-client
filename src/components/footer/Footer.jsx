@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router";
 import BloodLineLogo from "../logo/BloodLineLogo";
-import { Facebook, Linkedin, Github, ArrowRight, Heart } from "lucide-react";
-import { PiXLogo } from "react-icons/pi";
+import { ArrowRight, Heart } from "lucide-react";
+import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6"; // Ensure you have react-icons installed
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
@@ -13,33 +14,28 @@ const Footer = () => {
 
   const socials = [
     {
-      icon: <Facebook className="h-5 w-5" />,
+      icon: <FaFacebookF className="relative z-10 text-lg transition-colors duration-300 group-hover:text-white" />,
       href: "https://facebook.com/hadialhamza",
       label: "Facebook",
-      className:
-        "text-blue-600 bg-blue-500 dark:bg-blue-600 hover:bg-[#1877F2] text-white border-blue-200 dark:border-blue-900/30",
+      color: "bg-[#1877F2]", // Facebook Blue
     },
     {
-      icon: <PiXLogo className="h-5 w-5" />,
+      icon: <FaXTwitter className="relative z-10 text-lg transition-colors duration-300 group-hover:text-white" />,
       href: "https://x.com/hadialhamza",
       label: "X (Twitter)",
-      className:
-        "text-zinc-800 bg-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black border-zinc-200 dark:border-zinc-800",
+      color: "bg-black", // X Black
     },
     {
-      icon: <Linkedin className="h-5 w-5" />,
+      icon: <FaLinkedinIn className="relative z-10 text-lg transition-colors duration-300 group-hover:text-white" />,
       href: "https://linkedin.com/in/hadialhamza",
       label: "LinkedIn",
-      className:
-        "text-blue-700 bg-blue-500 dark:bg-blue-600 hover:bg-[#0A66C2] text-white border-blue-200 dark:border-blue-900/30",
+      color: "bg-[#0A66C2]", // LinkedIn Blue
     },
     {
-      icon: <Github className="h-5 w-5" />,
+      icon: <FaGithub className="relative z-10 text-lg transition-colors duration-300 group-hover:text-white" />,
       href: "https://github.com/hadialhamza",
       label: "GitHub",
-      // GitHub Dark Colors
-      className:
-        "text-zinc-900 text-zinc-100 bg-zinc-900 dark:bg-zinc-800 text-zinc-100 hover:bg-[#333] hover:text-white border-zinc-200 dark:border-zinc-800",
+      color: "bg-[#24292e]", // GitHub Dark
     },
   ];
 
@@ -48,6 +44,8 @@ const Footer = () => {
       <div className="md:px-10 pt-16 pb-6 relative z-10">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-6">
+            
+            {/* 1. Brand & Socials */}
             <div className="lg:col-span-4 space-y-6">
               <Link to="/" className="inline-block">
                 <BloodLineLogo />
@@ -58,29 +56,36 @@ const Footer = () => {
                 safe, and efficient for everyone.
               </p>
 
-              <div className="flex items-center gap-3 pt-2">
+              {/* ✨ NEW SOCIAL BUTTONS WITH HOVER EFFECT */}
+              <div className="flex items-center gap-4 pt-2">
                 {socials.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className={`rounded-full transition-all duration-300 ${social.className}`}
+                  <div key={index} className="relative group">
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       aria-label={social.label}
+                      className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white dark:bg-zinc-900 text-slate-600 dark:text-slate-400 shadow-sm ring-1 ring-slate-200 dark:ring-zinc-800 transition-all hover:ring-0 hover:shadow-md"
                     >
+                      {/* Fill Background Effect */}
+                      <span className={`absolute inset-0 translate-y-full ${social.color} transition-transform duration-300 ease-in-out group-hover:translate-y-0`} />
+                      
+                      {/* Icon */}
                       {social.icon}
-                    </Button>
-                  </a>
+                    </a>
+                    
+                    {/* Tooltip (Optional - Remove if you want it cleaner) */}
+                    <span className={`pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md ${social.color} px-2 py-1 text-[10px] text-white opacity-0 shadow-lg transition-all duration-300 group-hover:-top-12 group-hover:opacity-100`}>
+                      {social.label}
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
 
             <div className="hidden lg:block lg:col-span-1"></div>
 
+            {/* 2. Platform Links */}
             <div className="lg:col-span-2 space-y-4">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
                 Platform
@@ -105,6 +110,7 @@ const Footer = () => {
               </ul>
             </div>
 
+            {/* 3. Support Links */}
             <div className="lg:col-span-2 space-y-4">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
                 Support
@@ -129,6 +135,7 @@ const Footer = () => {
               </ul>
             </div>
 
+            {/* 4. Newsletter */}
             <div className="lg:col-span-3 space-y-4">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
                 Stay Updated
@@ -159,16 +166,10 @@ const Footer = () => {
             <p>© {currentYear} BloodLine Ltd. All rights reserved.</p>
 
             <div className="flex items-center gap-6">
-              <Link
-                to="/terms"
-                className="hover:text-zinc-900 dark:hover:text-white transition-colors hover:underline"
-              >
+              <Link to="/terms" className="hover:text-zinc-900 dark:hover:text-white transition-colors hover:underline">
                 Terms
               </Link>
-              <Link
-                to="/privacy"
-                className="hover:text-zinc-900 dark:hover:text-white transition-colors hover:underline"
-              >
+              <Link to="/privacy" className="hover:text-zinc-900 dark:hover:text-white transition-colors hover:underline">
                 Privacy
               </Link>
               <p className="flex items-center gap-1">

@@ -24,7 +24,7 @@ import BloodLineLogo from "@/components/logo/BloodLineLogo";
 
 const Register = () => {
   const { createUser, updateUser, loading, setLoading } = useAuth();
-  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
+  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
@@ -45,7 +45,7 @@ const Register = () => {
     (district) => district.name === selectedDistrict
   );
   const filteredUpazilas = currentDistrict
-    ? upazilas.filter((upazila) => upazila.district_id === currentDistrict.id)
+    ? allUpazilas.filter((upazila) => upazila.district_id === currentDistrict.id)
     : [];
 
   const onSubmit = async (data) => {

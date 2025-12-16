@@ -47,7 +47,7 @@ const CreateDonationRequest = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Location State
-  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
+  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
 
   const { register, handleSubmit, control } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
@@ -55,7 +55,7 @@ const CreateDonationRequest = () => {
   // Filter Upazilas
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);
   const filteredUpazilas = currentDistrict
-    ? upazilas.filter((u) => u.district_id === currentDistrict.id)
+    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
     : [];
 
   const onSubmit = async (data) => {

@@ -3,6 +3,7 @@ import CountUp from "react-countup";
 import { Link } from "react-router";
 import { Droplet, ArrowRight, Users, Activity } from "lucide-react";
 import Container from "@/components/container/Container";
+import GlassCard from "../../components/glassCard/GlassCard";
 
 const AvailableDonors = () => {
   const bloodGroups = [
@@ -113,9 +114,10 @@ const AvailableDonors = () => {
               const theme = getThemeClasses(item.theme, item.featured);
 
               return (
-                <div
+                <GlassCard
                   key={index}
-                  className={`group relative p-6 rounded-3xl backdrop-blur-md ${theme.bg} ${theme.border} border hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between h-full`}
+                  className={`p-6 hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between h-full ${theme.text}`}
+                  glassClassName={`${theme.bg} ${theme.border}`}
                 >
                   {/* Icon */}
                   <div className="flex justify-between items-center mb-5">
@@ -167,7 +169,7 @@ const AvailableDonors = () => {
                       </button>
                     </Link>
                   </div>
-                </div>
+                </GlassCard>
               );
             })}
           </div>

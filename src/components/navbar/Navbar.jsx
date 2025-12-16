@@ -129,8 +129,8 @@ const Navbar = () => {
                           ? "text-white hover:text-white"
                           : "text-primary dark:text-white/90"
                         : isHome && !isScrolled
-                        ? "text-white/80 hover:text-white"
-                        : "text-foreground/70"
+                          ? "text-white/80 hover:text-white"
+                          : "text-foreground/70"
                     )
                   }
                 >

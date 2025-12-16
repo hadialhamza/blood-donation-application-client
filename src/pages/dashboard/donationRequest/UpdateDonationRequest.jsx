@@ -7,18 +7,13 @@ import useLocations from "../../../hooks/useLocations";
 import {
   User,
   MapPin,
-  Calendar,
   Clock,
-  Droplet,
-  Building2,
   FileText,
   ArrowLeft,
   Edit3,
   Loader2,
 } from "lucide-react";
-
 import Loading from "@/components/shared/Loading";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,7 +41,11 @@ const UpdateDonationRequest = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // State for location dropdowns & data
-  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
+  const {
+    districts,
+    allUpazilas,
+    isLoading: isLocationsLoading,
+  } = useLocations();
   const [requestData, setRequestData] = useState(null);
 
   const { register, handleSubmit, setValue, control } = useForm();
@@ -73,7 +72,7 @@ const UpdateDonationRequest = () => {
   // Filter Upazilas logic
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);
   const filteredUpazilas = currentDistrict
-    ? upazilas.filter((u) => u.district_id === currentDistrict.id)
+    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
     : [];
 
   const onSubmit = async (data) => {
@@ -333,8 +332,7 @@ const UpdateDonationRequest = () => {
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="animate-spin mr-2" /> Saving
-                  Changes...
+                  <Loader2 className="animate-spin mr-2" /> Saving Changes...
                 </>
               ) : (
                 "Save Changes"

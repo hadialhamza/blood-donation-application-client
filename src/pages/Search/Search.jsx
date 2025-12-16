@@ -48,7 +48,7 @@ const Search = () => {
   });
 
   // Location State
-  const { districts, upazilas, isLoading: isLocationsLoading } = useLocations();
+  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
 
   const { handleSubmit, control, setValue, getValues } = useForm();
   const selectedDistrict = useWatch({ control, name: "district" });
@@ -56,7 +56,7 @@ const Search = () => {
   // Filter Upazilas
   const currentDistrict = districts.find((d) => d.name === selectedDistrict);
   const filteredUpazilas = currentDistrict
-    ? upazilas.filter((u) => u.district_id === currentDistrict.id)
+    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
     : [];
 
   // Search Donors function
@@ -112,10 +112,8 @@ const Search = () => {
     doc.setFontSize(12);
     doc.setTextColor(0);
     doc.text(
-      `Search Criteria: Blood Group: ${
-        getValues("bloodGroup") || "All"
-      }, District: ${getValues("district") || "All"}, Upazila: ${
-        getValues("upazila") || "All"
+      `Search Criteria: Blood Group: ${getValues("bloodGroup") || "All"
+      }, District: ${getValues("district") || "All"}, Upazila: ${getValues("upazila") || "All"
       }`,
       14,
       38
@@ -521,18 +519,16 @@ const Search = () => {
                           </div>
                         </div>
                         <Badge
-                          className={`px-3 py-1 ${
-                            donor.status === "active"
+                          className={`px-3 py-1 ${donor.status === "active"
                               ? "bg-green-100 text-green-700 border-green-200"
                               : "bg-amber-100 text-amber-700 border-amber-200"
-                          }`}
+                            }`}
                         >
                           <div
-                            className={`w-2 h-2 rounded-full mr-2 ${
-                              donor.status === "active"
+                            className={`w-2 h-2 rounded-full mr-2 ${donor.status === "active"
                                 ? "bg-green-500 animate-pulse"
                                 : "bg-amber-500"
-                            }`}
+                              }`}
                           />
                           {donor.status === "active"
                             ? "Available"
@@ -566,8 +562,8 @@ const Search = () => {
                               <p className="text-sm font-medium">
                                 {donor.lastDonation
                                   ? new Date(
-                                      donor.lastDonation
-                                    ).toLocaleDateString()
+                                    donor.lastDonation
+                                  ).toLocaleDateString()
                                   : "First time"}
                               </p>
                             </div>

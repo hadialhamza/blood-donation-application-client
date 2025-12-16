@@ -35,14 +35,11 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  // Monitor User & Get Token
+  // Observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // console.log("CurrentUser-->", currentUser);
-
       if (currentUser) {
-        // get token and store client side
         currentUser.getIdToken().then((token) => {
           if (token) {
             localStorage.setItem("access-token", token);
