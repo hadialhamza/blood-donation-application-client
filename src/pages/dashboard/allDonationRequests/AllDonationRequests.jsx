@@ -57,7 +57,6 @@ const AllDonationRequests = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 5;
 
-
   const {
     data: requests = [],
     refetch,
@@ -76,7 +75,6 @@ const AllDonationRequests = () => {
     return <Loading />;
   }
 
-
   const handleStatusChange = async (id, newStatus) => {
     const res = await axiosSecure.patch(`/donation-request-status/${id}`, {
       status: newStatus,
@@ -92,7 +90,6 @@ const AllDonationRequests = () => {
       });
     }
   };
-
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -121,7 +118,6 @@ const AllDonationRequests = () => {
     });
   };
 
-
   const getStatusBadge = (status) => {
     const styles = {
       pending:
@@ -135,7 +131,6 @@ const AllDonationRequests = () => {
     return styles[status] || "bg-gray-100 text-gray-800";
   };
 
-
   const filteredRequests = requests.filter(
     (req) =>
       req.requesterName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -143,7 +138,6 @@ const AllDonationRequests = () => {
       req.bloodGroup?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       req.recipientDistrict?.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = filteredRequests.slice(
@@ -154,7 +148,6 @@ const AllDonationRequests = () => {
 
   return (
     <div className="page-container space-y-6">
-
       <div className="space-y-4">
         <div>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800 mb-4">
@@ -171,7 +164,6 @@ const AllDonationRequests = () => {
             hospitals
           </p>
         </div>
-
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="card-container">
@@ -248,7 +240,6 @@ const AllDonationRequests = () => {
         </div>
       </div>
 
-
       <Card className="card-container">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -290,7 +281,6 @@ const AllDonationRequests = () => {
           </div>
         </CardContent>
       </Card>
-
 
       <div className="space-y-4 relative">
         {isFetching && !isLoading && (
@@ -337,7 +327,6 @@ const AllDonationRequests = () => {
               >
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-
                     <div className="space-y-4 flex-1">
                       <div className="flex items-start justify-between">
                         <div>
@@ -405,9 +394,7 @@ const AllDonationRequests = () => {
                       </div>
                     </div>
 
-
                     <div className="flex items-center gap-3">
-
                       <Select
                         value={req.status}
                         onValueChange={(value) =>
@@ -426,7 +413,6 @@ const AllDonationRequests = () => {
                           <SelectItem value="canceled">Canceled</SelectItem>
                         </SelectContent>
                       </Select>
-
 
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -476,7 +462,6 @@ const AllDonationRequests = () => {
         )}
       </div>
 
-
       {filteredRequests.length > itemsPerPage && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -514,10 +499,11 @@ const AllDonationRequests = () => {
                     key={pageNum}
                     variant={currentPage === pageNum ? "default" : "outline"}
                     size="sm"
-                    className={`w-10 h-10 ${currentPage === pageNum
-                      ? "bg-red-600 hover:bg-red-700"
-                      : ""
-                      }`}
+                    className={`w-10 h-10 ${
+                      currentPage === pageNum
+                        ? "bg-red-600 hover:bg-red-700"
+                        : ""
+                    }`}
                     onClick={() => setCurrentPage(pageNum)}
                   >
                     {pageNum}

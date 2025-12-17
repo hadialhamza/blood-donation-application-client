@@ -7,6 +7,13 @@ import {
   ShieldCheck,
   Users,
   HeartHandshake,
+  Hospital,
+  Stethoscope,
+  Heart,
+  Building,
+  Activity,
+  Shield,
+  Plus,
 } from "lucide-react";
 
 export const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -124,5 +131,56 @@ export const trustCards = [
     color: "text-rose-400",
     bgColor: "bg-rose-500/10",
     borderColor: "border-rose-500/20",
+  },
+];
+
+export const partners = [
+  {
+    icon: <Hospital className="w-6 h-6 text-white" />,
+    name: "Dhaka Medical College",
+    type: "Teaching Hospital",
+    color: "from-red-500 to-rose-600",
+  },
+  {
+    icon: <Stethoscope className="w-6 h-6 text-white" />,
+    name: "Square Hospital",
+    type: "Multi-Specialty",
+    color: "from-blue-500 to-cyan-600",
+  },
+  {
+    icon: <Heart className="w-6 h-6 text-white" />,
+    name: "National Heart Foundation",
+    type: "Cardiac Care",
+    color: "from-rose-500 to-pink-600",
+  },
+  {
+    icon: <Building className="w-6 h-6 text-white" />,
+    name: "Apollo Hospitals",
+    type: "International Chain",
+    color: "from-green-500 to-emerald-600",
+  },
+  {
+    icon: <Activity className="w-6 h-6 text-white" />,
+    name: "United Hospital",
+    type: "Critical Care",
+    color: "from-purple-500 to-violet-600",
+  },
+  {
+    icon: <Shield className="w-6 h-6 text-white" />,
+    name: "Bangladesh Red Crescent",
+    type: "Emergency Response",
+    color: "from-red-600 to-orange-600",
+  },
+  {
+    icon: <Users className="w-6 h-6 text-white" />,
+    name: "Ibn Sina Hospital",
+    type: "Network Hospital",
+    color: "from-amber-500 to-yellow-600",
+  },
+  {
+    icon: <Plus className="w-6 h-6 text-white" />,
+    name: "Labaid Hospital",
+    type: "Specialized Care",
+    color: "from-cyan-500 to-teal-600",
   },
 ];

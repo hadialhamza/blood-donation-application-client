@@ -34,11 +34,9 @@ const LocationSelector = ({ control, errors }) => {
                 <SelectValue placeholder="Select District" />
               </SelectTrigger>
               <SelectContent>
-                {districts
-                  ?.sort((a, b) => a.name.localeCompare(b.name))
-                  .map((d) => (
-                    <SelectItem key={d.id} value={d.name}>
-                      {d.name}
+                {districts?.sort((a, b) => a.name.localeCompare(b.name)).map((d) => (
+                  <SelectItem key={d.id} value={d.name}>
+                    {d.name}
                     </SelectItem>
                   ))}
               </SelectContent>
@@ -72,11 +70,9 @@ const LocationSelector = ({ control, errors }) => {
                 <SelectValue placeholder="Select Upazila" />
               </SelectTrigger>
               <SelectContent>
-                {filteredUpazilas
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((u) => (
-                    <SelectItem key={u.id} value={u.name}>
-                      {u.name}
+                {filteredUpazilas.sort((a, b) => a.name.localeCompare(b.name)).map((u) => (
+                  <SelectItem key={u.id} value={u.name}>
+                    {u.name}
                     </SelectItem>
                   ))}
               </SelectContent>

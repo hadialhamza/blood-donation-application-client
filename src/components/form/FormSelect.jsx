@@ -18,11 +18,9 @@ const FormSelect = ({ control, name, label, icon: Icon, placeholder, options, ru
         control={control}
         rules={rules}
         render={({ field }) => (
-          <Select
-            onValueChange={field.onChange}
+          <Select onValueChange={field.onChange}
             defaultValue={field.value}
-            disabled={disabled}
-          >
+            disabled={disabled}>
             <SelectTrigger className="w-full h-11 border-red-200 dark:border-red-800 focus:ring-red-500 bg-white dark:bg-zinc-900">
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
