@@ -14,8 +14,9 @@ import {
 } from "lucide-react";
 import Marquee from "react-fast-marquee";
 import { Button } from "@/components/ui/button";
-import Container from "@/components/container/Container";
+import Container from "@/components/shared/container/Container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import SectionHeader from "@/components/shared/SectionHeader";
 
 const TrustedPartners = () => {
   const partners = [
@@ -73,24 +74,13 @@ const TrustedPartners = () => {
     <Container>
       <div className="mt-20  lg:mt-30 relative">
         {/* Section Title */}
-        <div className="text-center mb-8 max-w-3xl mx-auto">
-          <div className="section-badge">
-            <Handshake className="w-4 h-4 text-red-600 dark:text-red-400 animate-pulse" />
-            <span className="text-sm font-semibold text-red-600 dark:text-red-400">
-              Trusted Partners
-            </span>
-          </div>
-          <h2 className="gradient-title">
-            Partnered with Leading{" "}
-            <span className="text-red-600 dark:text-red-400">
-              Medical Institutions
-            </span>
-          </h2>
-          <p className="subtitle">
-            Collaborating with hospitals and healthcare organizations nationwide
-            to ensure blood reaches those in need
-          </p>
-        </div>
+        <SectionHeader
+          icon={Handshake}
+          badge="Trusted Partners"
+          title="Partnered with Leading"
+          highlight="Medical Institutions"
+          description="Collaborating with hospitals and healthcare organizations nationwide to ensure blood reaches those in need"
+        />
 
         {/* Marquee Container */}
         <div className="relative w-full overflow-hidden py-2">

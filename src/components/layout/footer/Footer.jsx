@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router";
-import BloodLineLogo from "../logo/BloodLineLogo";
+import BloodLineLogo from "../../shared/logo/BloodLineLogo";
 import { ArrowRight, Heart } from "lucide-react";
 import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6"; // Ensure you have react-icons installed
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import Container from "../container/Container";
+import Container from "../../shared/container/Container";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -44,7 +44,7 @@ const Footer = () => {
       <div className="md:px-10 pt-16 pb-6 relative z-10">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-6">
-            
+
             {/* 1. Brand & Socials */}
             <div className="lg:col-span-4 space-y-6">
               <Link to="/" className="inline-block">
@@ -69,11 +69,11 @@ const Footer = () => {
                     >
                       {/* Fill Background Effect */}
                       <span className={`absolute inset-0 translate-y-full ${social.color} transition-transform duration-300 ease-in-out group-hover:translate-y-0`} />
-                      
+
                       {/* Icon */}
                       {social.icon}
                     </a>
-                    
+
                     {/* Tooltip (Optional - Remove if you want it cleaner) */}
                     <span className={`pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md ${social.color} px-2 py-1 text-[10px] text-white opacity-0 shadow-lg transition-all duration-300 group-hover:-top-12 group-hover:opacity-100`}>
                       {social.label}

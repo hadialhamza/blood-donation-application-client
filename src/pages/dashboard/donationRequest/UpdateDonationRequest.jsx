@@ -3,13 +3,14 @@ import { useForm, useWatch, Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import useLocations from "../../../hooks/useLocations";
+
+import LocationSelector from "@/components/form/LocationSelector";
+import PageHeader from "@/components/shared/PageHeader";
 import {
   User,
   MapPin,
   Clock,
   FileText,
-  ArrowLeft,
   Edit3,
   Loader2,
 } from "lucide-react";
@@ -28,9 +29,6 @@ import {
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
@@ -40,16 +38,11 @@ const UpdateDonationRequest = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // State for location dropdowns & data
-  const {
-    districts,
-    allUpazilas,
-    isLoading: isLocationsLoading,
-  } = useLocations();
+  // Removed internal location state and filter logic
   const [requestData, setRequestData] = useState(null);
 
-  const { register, handleSubmit, setValue, control } = useForm();
-  const selectedDistrict = useWatch({ control, name: "district" });
+  const { register, handleSubmit, setValue, control, formState: { errors } } = useForm();
+  // Removed manual Upazila filtering logic
 
   // 1. Fetch Existing Request Data
   useEffect(() => {
@@ -70,10 +63,7 @@ const UpdateDonationRequest = () => {
   }, [id, axiosSecure, setValue]);
 
   // Filter Upazilas logic
-  const currentDistrict = districts.find((d) => d.name === selectedDistrict);
-  const filteredUpazilas = currentDistrict
-    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
-    : [];
+
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -111,38 +101,20 @@ const UpdateDonationRequest = () => {
     }
   };
 
-  if (isLocationsLoading || !requestData) {
+  if (!requestData) {
     return <Loading />;
   }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 p-4 md:p-8">
       {/* Navigation */}
-      <div className="max-w-4xl mx-auto mb-6">
-        <Button
-          variant="ghost"
-          className="pl-0 hover:bg-transparent hover:text-red-600 transition-colors mb-4"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" /> Cancel Edit
-        </Button>
-      </div>
+      <PageHeader
+        title="Update Request"
+        subtitle="Modify the details of your blood donation request."
+        icon={Edit3}
+      />
 
       <Card className="max-w-4xl mx-auto border-none shadow-2xl bg-white dark:bg-zinc-900 overflow-hidden">
-        {/* Decorative Header */}
-        <div className="bg-amber-500 h-2 w-full"></div>
-        <CardHeader className="text-center pt-8 pb-2">
-          <div className="mx-auto bg-amber-100 dark:bg-amber-900/20 p-3 rounded-full w-fit mb-4 text-amber-600">
-            <Edit3 className="w-8 h-8" />
-          </div>
-          <CardTitle className="text-3xl font-bold text-zinc-900 dark:text-white">
-            Update Request
-          </CardTitle>
-          <CardDescription>
-            Modify the details of your blood donation request.
-          </CardDescription>
-        </CardHeader>
-
         <CardContent className="p-6 md:p-10">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* 1. Recipient Info */}
@@ -156,7 +128,7 @@ const UpdateDonationRequest = () => {
                   <Label htmlFor="recipientName">Recipient Name</Label>
                   <Input
                     id="recipientName"
-                    className="h-11 focus-visible:ring-amber-500"
+                    className="h-10 focus-visible:ring-amber-500"
                     {...register("recipientName", { required: true })}
                   />
                 </div>
@@ -172,7 +144,7 @@ const UpdateDonationRequest = () => {
                         onValueChange={field.onChange}
                         value={field.value}
                       >
-                        <SelectTrigger className="h-11 focus:ring-amber-500">
+                        <SelectTrigger className="h-10 focus:ring-amber-500">
                           <SelectValue placeholder="Select Group" />
                         </SelectTrigger>
                         <SelectContent>
@@ -205,68 +177,18 @@ const UpdateDonationRequest = () => {
               </h3>
               <Separator />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label>District</Label>
-                  <Controller
-                    name="district"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger className="h-11 focus:ring-amber-500">
-                          <SelectValue placeholder="Select District" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {districts
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((d) => (
-                              <SelectItem key={d.id} value={d.name}>
-                                {d.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Upazila</Label>
-                  <Controller
-                    name="upazila"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={!selectedDistrict}
-                      >
-                        <SelectTrigger className="h-11 focus:ring-amber-500">
-                          <SelectValue placeholder="Select Upazila" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {filteredUpazilas
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((u) => (
-                              <SelectItem key={u.id} value={u.name}>
-                                {u.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
+                {/* Location Selector */}
+                <LocationSelector
+                  control={control}
+                  errors={errors}
+                  disabled={isSubmitting}
+                />
 
                 <div className="space-y-2">
                   <Label htmlFor="hospitalName">Hospital Name</Label>
                   <Input
                     id="hospitalName"
-                    className="h-11 focus-visible:ring-amber-500"
+                    className="h-10 focus-visible:ring-amber-500"
                     {...register("hospitalName", { required: true })}
                   />
                 </div>
@@ -274,7 +196,7 @@ const UpdateDonationRequest = () => {
                   <Label htmlFor="fullAddress">Full Address</Label>
                   <Input
                     id="fullAddress"
-                    className="h-11 focus-visible:ring-amber-500"
+                    className="h-10 focus-visible:ring-amber-500"
                     {...register("fullAddress", { required: true })}
                   />
                 </div>
@@ -293,7 +215,7 @@ const UpdateDonationRequest = () => {
                   <Input
                     id="donationDate"
                     type="date"
-                    className="h-11 focus-visible:ring-amber-500"
+                    className="h-10 focus-visible:ring-amber-500"
                     {...register("donationDate", { required: true })}
                   />
                 </div>
@@ -302,7 +224,7 @@ const UpdateDonationRequest = () => {
                   <Input
                     id="donationTime"
                     type="time"
-                    className="h-11 focus-visible:ring-amber-500"
+                    className="h-10 focus-visible:ring-amber-500"
                     {...register("donationTime", { required: true })}
                   />
                 </div>

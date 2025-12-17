@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { useLocation } from "react-router";
 
 const PageTitle = ({ title, children }) => {
-    const location = useLocation();
+  const location = useLocation();
 
-    useEffect(() => {
-        document.title = `${title} | Blood Line`;
-    }, [location, title]);
+  useEffect(() => {
+    document.title = `${title} | Blood Line`;
+  }, [location, title]);
 
-    return children;
+  return children;
 };
 
 export default PageTitle;

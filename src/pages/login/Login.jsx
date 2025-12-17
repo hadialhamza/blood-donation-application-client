@@ -10,7 +10,7 @@ import { MdBloodtype } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import BloodLineLogo from "@/components/logo/BloodLineLogo";
+import BloodLineLogo from "@/components/shared/logo/BloodLineLogo";
 
 const Login = () => {
   const { signIn, loading, setLoading } = useAuth();

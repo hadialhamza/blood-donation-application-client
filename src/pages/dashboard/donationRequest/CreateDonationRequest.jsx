@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useForm, useWatch, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-import useLocations from "../../../hooks/useLocations";
+import LocationSelector from "@/components/form/LocationSelector";
 import {
   User,
   MapPin,
@@ -13,13 +13,10 @@ import {
   Droplet,
   Building2,
   FileText,
-  ArrowLeft,
   HeartHandshake,
   Loader2,
 } from "lucide-react";
-
-import Loading from "@/components/shared/Loading";
-
+import PageHeader from "@/components/shared/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,13 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
 const CreateDonationRequest = () => {
@@ -46,17 +37,12 @@ const CreateDonationRequest = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Location State
-  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
-
-  const { register, handleSubmit, control } = useForm();
-  const selectedDistrict = useWatch({ control, name: "district" });
-
-  // Filter Upazilas
-  const currentDistrict = districts.find((d) => d.name === selectedDistrict);
-  const filteredUpazilas = currentDistrict
-    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
-    : [];
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
@@ -102,39 +88,15 @@ const CreateDonationRequest = () => {
     }
   };
 
-  if (isLocationsLoading) {
-    return <Loading />;
-  }
-
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 p-4 md:p-8">
-      {/* Navigation & Header */}
-      <div className="max-w-4xl mx-auto mb-6">
-        <Button
-          variant="ghost"
-          className="pl-0 hover:bg-transparent hover:text-red-600 transition-colors mb-4"
-          onClick={() => navigate(-1)}
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back
-        </Button>
-      </div>
+      <PageHeader
+        title="Create Donation Request"
+        subtitle="Provide details to find a blood donor nearby."
+        icon={HeartHandshake}
+      />
 
       <Card className="max-w-4xl mx-auto border-none shadow-2xl bg-white dark:bg-zinc-900 overflow-hidden">
-        {/* Decorative Top Bar */}
-        <div className="bg-gradient-to-r from-red-600 to-rose-600 h-2 w-full"></div>
-
-        <CardHeader className="text-center pt-8 pb-2">
-          <div className="mx-auto bg-red-100 dark:bg-red-900/20 p-3 rounded-full w-fit mb-4 text-red-600">
-            <HeartHandshake className="w-8 h-8" />
-          </div>
-          <CardTitle className="text-3xl font-bold text-zinc-900 dark:text-white">
-            Create Donation Request
-          </CardTitle>
-          <CardDescription className="text-lg">
-            Provide details to find a blood donor nearby.
-          </CardDescription>
-        </CardHeader>
-
         <CardContent className="p-6 md:p-10">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* Section 1: Requester & Recipient */}
@@ -164,7 +126,7 @@ const CreateDonationRequest = () => {
                   <Input
                     id="recipientName"
                     placeholder="Who needs the blood?"
-                    className="h-11 focus-visible:ring-red-500"
+                    className="h-10 focus-visible:ring-red-500"
                     {...register("recipientName", { required: true })}
                   />
                 </div>
@@ -191,7 +153,7 @@ const CreateDonationRequest = () => {
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
-                        <SelectTrigger className="h-11 focus:ring-red-500">
+                        <SelectTrigger className="h-10 focus:ring-red-500">
                           <SelectValue placeholder="Select Blood Group" />
                         </SelectTrigger>
                         <SelectContent>
@@ -231,7 +193,7 @@ const CreateDonationRequest = () => {
                   <Input
                     id="hospitalName"
                     placeholder="e.g. Dhaka Medical College"
-                    className="h-11 focus-visible:ring-red-500"
+                    className="h-10 focus-visible:ring-red-500"
                     {...register("hospitalName", { required: true })}
                   />
                 </div>
@@ -246,70 +208,12 @@ const CreateDonationRequest = () => {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* District */}
-                <div className="space-y-2">
-                  <Label className="font-semibold">District</Label>
-                  <Controller
-                    name="district"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger className="h-11 focus:ring-red-500">
-                          <SelectValue placeholder="Select District" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {districts
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((d) => (
-                              <SelectItem key={d.id} value={d.name}>
-                                {d.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
-
-                {/* Upazila */}
-                <div className="space-y-2">
-                  <Label className="font-semibold">Upazila</Label>
-                  <Controller
-                    name="upazila"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        disabled={!selectedDistrict}
-                      >
-                        <SelectTrigger className="h-11 focus:ring-red-500">
-                          <SelectValue
-                            placeholder={
-                              selectedDistrict
-                                ? "Select Upazila"
-                                : "Select District First"
-                            }
-                          />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {filteredUpazilas
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((u) => (
-                              <SelectItem key={u.id} value={u.name}>
-                                {u.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                </div>
+                {/* Location Selector */}
+                <LocationSelector
+                  control={control}
+                  errors={errors}
+                  disabled={isSubmitting}
+                />
 
                 {/* Address */}
                 <div className="md:col-span-2 space-y-2">
@@ -319,7 +223,7 @@ const CreateDonationRequest = () => {
                   <Input
                     id="fullAddress"
                     placeholder="e.g. Ward 12, Room 404, 3rd Floor"
-                    className="h-11 focus-visible:ring-red-500"
+                    className="h-10 focus-visible:ring-red-500"
                     {...register("fullAddress", { required: true })}
                   />
                 </div>
@@ -335,7 +239,7 @@ const CreateDonationRequest = () => {
                   <Input
                     id="donationDate"
                     type="date"
-                    className="h-11 focus-visible:ring-red-500"
+                    className="h-10 focus-visible:ring-red-500"
                     {...register("donationDate", { required: true })}
                   />
                 </div>
@@ -351,7 +255,7 @@ const CreateDonationRequest = () => {
                   <Input
                     id="donationTime"
                     type="time"
-                    className="h-11 focus-visible:ring-red-500"
+                    className="h-10 focus-visible:ring-red-500"
                     {...register("donationTime", { required: true })}
                   />
                 </div>
@@ -385,8 +289,7 @@ const CreateDonationRequest = () => {
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="animate-spin mr-2" /> Posting
-                  Request...
+                  <Loader2 className="animate-spin mr-2" /> Posting Request...
                 </>
               ) : (
                 "Submit Donation Request"

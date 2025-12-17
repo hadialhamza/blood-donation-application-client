@@ -19,8 +19,9 @@ import {
 import Loading from "@/components/shared/Loading";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import useLocations from "../../../hooks/useLocations";
 import { uploadImage } from "../../../utils/uploadImage";
+
+import LocationSelector from "@/components/form/LocationSelector";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,7 +49,7 @@ const ProfileUpdate = () => {
   const [isUserLoading, setIsUserLoading] = useState(true);
 
   // Initialize form first to make reset available
-  const { register, handleSubmit, reset, control, watch } = useForm();
+  const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm();
   const imageFile = watch("imageFile");
 
   // 1. Fetch User Data
@@ -88,9 +89,6 @@ const ProfileUpdate = () => {
     }
   };
 
-  // 2. Fetch Locations
-  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
-
   // Handle image preview
   useEffect(() => {
     if (imageFile && imageFile[0]) {
@@ -102,13 +100,6 @@ const ProfileUpdate = () => {
       reader.readAsDataURL(file);
     }
   }, [imageFile]);
-
-  // 4. Watch District for Upazila Filtering
-  const selectedDistrict = useWatch({ control, name: "district" });
-  const currentDistrict = districts.find((d) => d.name === selectedDistrict);
-  const filteredUpazilas = currentDistrict
-    ? allUpazilas.filter((u) => u.district_id === currentDistrict.id)
-    : [];
 
   const handleUpdate = async (data) => {
     setIsUpdating(true);
@@ -158,7 +149,7 @@ const ProfileUpdate = () => {
     }
   };
 
-  if (isUserLoading || isLocationsLoading) return <Loading />;
+  if (isUserLoading) return <Loading />;
 
   return (
     <div className="p-6 bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
@@ -397,75 +388,12 @@ const ProfileUpdate = () => {
                     <MapPin className="w-4 h-4" />
                     Location Information
                   </Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-xs font-medium">District</Label>
-                      <Controller
-                        name="district"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <SelectTrigger className="h-12">
-                              <SelectValue placeholder="Select District" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {districts
-                                .sort((a, b) => a.name.localeCompare(b.name))
-                                .map((d) => (
-                                  <SelectItem key={d.id} value={d.name}>
-                                    {d.name}
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label className="text-xs font-medium">Upazila</Label>
-                      <Controller
-                        name="upazila"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                            disabled={!selectedDistrict}
-                          >
-                            <SelectTrigger className="h-12">
-                              <SelectValue
-                                placeholder={
-                                  selectedDistrict
-                                    ? "Select Upazila"
-                                    : "Select district first"
-                                }
-                              />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {filteredUpazilas
-                                .sort((a, b) => a.name.localeCompare(b.name))
-                                .map((u) => (
-                                  <SelectItem key={u.id} value={u.name}>
-                                    {u.name}
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
-                        )}
-                      />
-                      {!selectedDistrict && (
-                        <p className="text-xs text-amber-600 dark:text-amber-400">
-                          Please select a district first
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                  <LocationSelector
+                    control={control}
+                    errors={errors}
+                    defaultDistrict={userData.district}
+                    defaultUpazila={userData.upazila}
+                  />
                 </div>
 
                 {/* Blood Group */}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Droplet, Quote, Trophy, Loader2 } from "lucide-react";
-import Container from "@/components/container/Container";
+import Container from "@/components/shared/container/Container";
+import SectionHeader from "@/components/shared/SectionHeader";
 import useAxios from "@/hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 
@@ -50,20 +51,13 @@ const TopDonors = () => {
     <section className="relative overflow-hidden mt-20 lg:mt-30">
       <Container>
         {/* --- Header --- */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="section-badge">
-            <Trophy className="w-4 h-4 animate-pulse" />
-            <span>Hall of Fame</span>
-          </div>
-          <h2 className="gradient-title">
-            Our <span> Top Donors</span>
-          </h2>
-          <p className="subtitle">
-            We proudly honor our top donors who make a lasting impact. Their
-            generosity drives our mission forward, saving lives and creating a
-            stronger community.
-          </p>
-        </div>
+        <SectionHeader
+          icon={Trophy}
+          badge="Hall of Fame"
+          title="Our"
+          highlight="Top Donors"
+          description="We proudly honor our top donors who make a lasting impact. Their generosity drives our mission forward, saving lives and creating a stronger community."
+        />
 
         {displayDonors.length === 0 ? (
           <div className="text-center text-gray-500 py-10">

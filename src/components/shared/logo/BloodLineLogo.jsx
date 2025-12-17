@@ -7,7 +7,7 @@ export default function BloodLineLogo() {
       {/* Logo Icon */}
       <div className="relative">
         <div className="relative z-10 transition-transform duration-300 ease-spring group-hover:rotate-12 group-hover:scale-110">
-          <FaDroplet className="w-9 h-9 text-red-600 drop-shadow-md" />
+          <FaDroplet className="w-8 h-8 text-red-600" />
         </div>
 
         {/* Logo bg animation */}
@@ -20,7 +20,7 @@ export default function BloodLineLogo() {
       {/* Logo Title */}
       <div className="flex flex-col items-center">
         <div className="relative">
-          <h1 className="text-2xl md:text-3xl font-black tracking-tight leading-none border-b-3 border-red-600 ">
+          <h1 className="text-2xl md:text-[1.6rem] font-black tracking-tight leading-none border-b-3 border-red-600 ">
             <span className="text-gradient">Blood</span>
             <span className="logo-title text-gray-900 dark:text-gray-200 font-bold drop-shadow-lg">
               Line
@@ -29,7 +29,7 @@ export default function BloodLineLogo() {
         </div>
 
         {/* Logo Subtitle */}
-        <div className="mt-1 text-[0.6rem] md:text-xs font-bold tracking-[0.2em] uppercase group-hover:text-red-500 transition-colors duration-300 text-gray-800 dark:text-gray-300">
+        <div className="text-[0.7rem] font-bold tracking-widest uppercase group-hover:text-red-500 transition-colors duration-300 text-gray-800 dark:text-gray-300">
           <div className="flex items-center gap-1">
             <span className="logo-subtitle">• Save</span>
             <span>

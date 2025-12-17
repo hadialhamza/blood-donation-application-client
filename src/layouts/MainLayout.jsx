@@ -1,8 +1,8 @@
 import React from "react";
 import GlobalBackground from "../components/shared/GlobalBackground";
-import Navbar from "../components/navbar/Navbar";
+import Navbar from "../components/layout/navbar/Navbar";
 import { Outlet } from "react-router";
-import Footer from "../components/footer/Footer";
+import Footer from "../components/layout/footer/Footer";
 
 const MainLayout = () => {
   return (

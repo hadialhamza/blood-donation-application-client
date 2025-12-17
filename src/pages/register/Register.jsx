@@ -6,7 +6,6 @@ import { uploadImage } from "../../utils/uploadImage";
 
 import Loading from "@/components/shared/Loading";
 import { useAuth } from "../../hooks/useAuth";
-import useLocations from "../../hooks/useLocations";
 import useAxios from "../../hooks/useAxios";
 import { FaEye, FaEyeSlash, FaQuoteRight, FaHeart } from "react-icons/fa";
 import { Loader2 } from "lucide-react";
@@ -20,11 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import BloodLineLogo from "@/components/logo/BloodLineLogo";
+import BloodLineLogo from "@/components/shared/logo/BloodLineLogo";
+import LocationSelector from "@/components/form/LocationSelector";
 
 const Register = () => {
   const { createUser, updateUser, loading, setLoading } = useAuth();
-  const { districts, allUpazilas, isLoading: isLocationsLoading } = useLocations();
+  // Location logic moved to LocationSelector
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
@@ -38,15 +38,7 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const selectedDistrict = useWatch({ control, name: "district" });
   const password = useWatch({ control, name: "password" });
-
-  const currentDistrict = districts.find(
-    (district) => district.name === selectedDistrict
-  );
-  const filteredUpazilas = currentDistrict
-    ? allUpazilas.filter((upazila) => upazila.district_id === currentDistrict.id)
-    : [];
 
   const onSubmit = async (data) => {
     const { name, email, image, password, bloodGroup, district, upazila } =
@@ -78,8 +70,6 @@ const Register = () => {
       setLoading(false);
     }
   };
-
-  if (isLocationsLoading) return <Loading />;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -240,73 +230,9 @@ const Register = () => {
                   )}
                 </div>
 
-                {/* District */}
-                <div className="space-y-1">
-                  <Label className="text-sm font-medium">District</Label>
-                  <Controller
-                    control={control}
-                    name="district"
-                    rules={{ required: "District is required" }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700">
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[200px]">
-                          {districts
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((d) => (
-                              <SelectItem key={d.id} value={d.name}>
-                                {d.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                  {errors.district && (
-                    <span className="text-red-500 text-xs">
-                      {errors.district.message}
-                    </span>
-                  )}
-                </div>
-
-                {/* Upazila */}
-                <div className="space-y-1">
-                  <Label className="text-sm font-medium">Upazila</Label>
-                  <Controller
-                    control={control}
-                    name="upazila"
-                    rules={{ required: "Upazila is required" }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        disabled={!selectedDistrict}
-                      >
-                        <SelectTrigger className="h-10 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700">
-                          <SelectValue placeholder="Select" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[200px]">
-                          {filteredUpazilas
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((u) => (
-                              <SelectItem key={u.id} value={u.name}>
-                                {u.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                  {errors.upazila && (
-                    <span className="text-red-500 text-xs">
-                      {errors.upazila.message}
-                    </span>
-                  )}
+                {/* District and Upazila */}
+                <div className="col-span-1 md:col-span-2">
+                  <LocationSelector control={control} errors={errors} containerClassName="gap-4 md:grid-cols-2" />
                 </div>
               </div>
 

@@ -22,7 +22,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import Loading from "@/components/shared/Loading";
-import BloodLineLogo from "@/components/logo/BloodLineLogo";
+import BloodLineLogo from "@/components/shared/logo/BloodLineLogo";
 
 const NavItem = ({ to, icon: Icon, children }) => (
   <NavLink

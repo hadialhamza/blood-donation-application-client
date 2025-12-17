@@ -19,7 +19,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import Container from "@/components/container/Container";
+import Container from "@/components/shared/container/Container";
 
 const ContactUs = () => {
   return (

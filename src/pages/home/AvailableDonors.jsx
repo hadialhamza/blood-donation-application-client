@@ -2,8 +2,9 @@ import React from "react";
 import CountUp from "react-countup";
 import { Link } from "react-router";
 import { Droplet, ArrowRight, Users, Activity } from "lucide-react";
-import Container from "@/components/container/Container";
-import GlassCard from "../../components/glassCard/GlassCard";
+import Container from "@/components/shared/container/Container";
+import GlassCard from "@/components/shared/glassCard/GlassCard";
+import SectionHeader from "@/components/shared/SectionHeader";
 
 const AvailableDonors = () => {
   const bloodGroups = [
@@ -92,21 +93,13 @@ const AvailableDonors = () => {
       <Container>
         <div className="relative z-10">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="section-badge">
-              <Activity className="w-4 h-4 animate-pulse" />
-              <span>Live Database Status</span>
-            </div>
-
-            <h2 className="gradient-title">
-              Available <span>Blood Donors</span>
-            </h2>
-
-            <p className="subtitle">
-              We track donor availability in real-time. Below is a snapshot of
-              our current active donor pool, ready to respond to emergencies.
-            </p>
-          </div>
+          <SectionHeader
+            icon={Activity}
+            badge="Live Database Status"
+            title="Available"
+            highlight="Blood Donors"
+            description="We track donor availability in real-time. Below is a snapshot of our current active donor pool, ready to respond to emergencies."
+          />
 
           {/* Blood group cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">

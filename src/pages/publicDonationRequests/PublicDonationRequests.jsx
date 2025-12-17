@@ -15,8 +15,8 @@ import Loading from "@/components/shared/Loading";
 import useAxios from "../../hooks/useAxios";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardFooter } from "@/components/ui/card";
-import Container from "@/components/container/Container";
-import GlassCard from "../../components/glassCard/GlassCard";
+import Container from "@/components/shared/container/Container";
+import GlassCard from "@/components/shared/glassCard/GlassCard";
 
 const getBloodGroupStyles = (group) => {
   const normalizedGroup = group ? group.toUpperCase() : "";

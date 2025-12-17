@@ -1,59 +1,11 @@
 import React from "react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import {
-  Heart,
-  Search,
-  Users,
-  ShieldCheck,
-  Clock,
-  HeartHandshake,
-} from "lucide-react";
-import CountUp from "react-countup";
+import { Heart, Search } from "lucide-react";
+import { trustCards } from "@/data/Data";
+import TrustCard from "@/components/cards/TrustCard";
 
 const Banner = () => {
-  const trustCards = [
-    {
-      icon: ShieldCheck,
-      count: 100,
-      suffix: " %",
-      label: "Verified & Secure",
-      subtext: "All donors are screened",
-      color: "text-emerald-400",
-      bgColor: "bg-emerald-500/10",
-      borderColor: "border-emerald-500/20",
-    },
-    {
-      icon: Clock,
-      count: 24,
-      suffix: " / 7",
-      label: "Rapid Response",
-      subtext: "Connect within seconds",
-      color: "text-blue-400",
-      bgColor: "bg-blue-500/10",
-      borderColor: "border-blue-500/20",
-    },
-    {
-      icon: Users,
-      count: 5000,
-      suffix: " +",
-      label: "Active Heroes",
-      subtext: "Ready to donate now",
-      color: "text-amber-400",
-      bgColor: "bg-amber-500/10",
-      borderColor: "border-amber-500/20",
-    },
-    {
-      icon: HeartHandshake,
-      count: 1200,
-      suffix: " +",
-      label: "Lives Impacted",
-      subtext: "Successful donations",
-      color: "text-rose-400",
-      bgColor: "bg-rose-500/10",
-      borderColor: "border-rose-500/20",
-    },
-  ];
   return (
     <section className="relative w-full overflow-hidden flex items-center justify-center pt-32 pb-15">
       <div
@@ -101,7 +53,7 @@ const Banner = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-white/20 bg-white/5 text-white backdrop-blur-md hover:bg-white/10 hover:text-white hover:border-white/40 hover:scale-105 font-semibold h-10 md:h-13 text-lg transition-all rounded-full duration-300"
+                  className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white hover:border-white/40 hover:scale-105 font-semibold h-10 md:h-13 text-lg transition-all rounded-full duration-300"
                 >
                   <Search className="h-5 w-5" />
                   Find Donors
@@ -113,38 +65,7 @@ const Banner = () => {
           {/* Trust Indicators / Stats */}
           <div className="pt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-1000 delay-200">
             {trustCards.map((stat, index) => (
-              <div
-                key={index}
-                className={`flex flex-col items-center justify-center p-6 rounded-2xl border backdrop-blur-md transition-all hover:-translate-y-2 duration-300 ${stat.borderColor} ${stat.bgColor} bg-opacity-10`}
-              >
-                {/* Icon Container */}
-                <div
-                  className={`p-3 rounded-full bg-white/5 mb-3 ${stat.color} shadow-[0_0_10px_rgba(0,0,0,0.1)]`}
-                >
-                  <stat.icon className="h-8 w-8" />
-                </div>
-
-                {/* Counter Number */}
-                <span className="block text-3xl font-bold text-white mb-1">
-                  <CountUp
-                    end={stat.count}
-                    duration={3}
-                    separator=","
-                    enableScrollSpy={true}
-                    scrollSpyOnce={true}
-                    scrollSpyDelay={index * 200}
-                  />
-                  <span className={stat.color}>{stat.suffix}</span>
-                </span>
-
-                {/* Labels */}
-                <span className="text-base font-semibold text-white">
-                  {stat.label}
-                </span>
-                <span className="text-sm font-medium text-gray-400 mt-1">
-                  {stat.subtext}
-                </span>
-              </div>
+              <TrustCard key={index} stat={stat} index={index} />
             ))}
           </div>
         </div>
