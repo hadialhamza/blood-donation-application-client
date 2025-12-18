@@ -9,7 +9,6 @@ import { Separator } from "@/components/ui/separator";
 const SearchedDonorCard = ({ donor }) => {
   return (
     <Card className="group border-2 border-red-100 dark:border-red-900 hover:border-red-300 dark:hover:border-red-700 hover:shadow-lg transition-all duration-300 overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-red-500 to-rose-500" />
       <CardContent>
         <div className="flex flex-col sm:flex-row gap-6">
           {/* Avatar & Status */}
@@ -23,18 +22,16 @@ const SearchedDonorCard = ({ donor }) => {
               </Avatar>
             </div>
             <Badge
-              className={`px-3 py-1 ${
-                donor.status === "active"
+              className={`px-3 py-1 ${donor.status === "active"
                   ? "bg-green-100 text-green-700 border-green-200"
                   : "bg-amber-100 text-amber-700 border-amber-200"
-              }`}
+                }`}
             >
               <div
-                className={`w-2 h-2 rounded-full mr-2 ${
-                  donor.status === "active"
+                className={`w-2 h-2 rounded-full mr-2 ${donor.status === "active"
                     ? "bg-green-500 animate-pulse"
                     : "bg-amber-500"
-                }`}
+                  }`}
               />
               {donor.status === "active" ? "Available" : "Unavailable"}
             </Badge>

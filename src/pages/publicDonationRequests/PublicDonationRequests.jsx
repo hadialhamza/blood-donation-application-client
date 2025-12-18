@@ -70,7 +70,7 @@ const PublicDonationRequests = () => {
     queryKey: ["public-requests"],
     queryFn: async () => {
       const res = await api.get("donation-requests");
-      return res.data;
+      return res.data.sort((a, b) => (b._id > a._id ? 1 : -1));
     },
   });
 
@@ -80,7 +80,7 @@ const PublicDonationRequests = () => {
     <div className="min-h-screen py-24 relative overflow-hidden">
       <Container>
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="section-badge">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 text-sm font-medium mx-auto">
             <Activity className="w-4 h-4 text-red-500 animate-pulse" /> Live
             Dashboard
           </div>
@@ -117,17 +117,10 @@ const PublicDonationRequests = () => {
               return (
                 <GlassCard
                   key={req._id}
-                  // FIX 2: Removed 'overflow-hidden' if possible (unless you really need rounded corners clipping)
                   className="group relative rounded-3xl transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full overflow-hidden shadow-lg"
                   glassClassName={`bg-white/30 dark:bg-black/40 ${styles.border}`}
-                  // FIX 3: Reduced blur from 'xl' (expensive) to 'md' (fast)
                   blurIntensity="md"
                 >
-                  {/* FIX 4: REMOVED THE SHIMMER DIV ENTIRELY 
-       That sliding gradient layer was likely consuming 30-40% of your GPU resources.
-    */}
-
-                  {/* Static Tint Layer - Kept this, it's cheap */}
                   <div
                     className={`absolute inset-0 bg-linear-to-br ${styles.tint} opacity-40 pointer-events-none`}
                   ></div>
@@ -146,7 +139,6 @@ const PublicDonationRequests = () => {
                         </h3>
                       </div>
 
-                      {/* Badge - Removed backdrop-blur-md from here if parent already has it, but small blurs are okay */}
                       <div
                         className={`grow-shrink-0 w-14 h-14 rounded-2xl flex flex-col items-center justify-center font-black shadow-sm border border-white/20 ${styles.badgeBg} ${styles.textColor}`}
                       >
@@ -158,7 +150,6 @@ const PublicDonationRequests = () => {
                     </div>
 
                     <div className="space-y-4">
-                      {/* Info Items - Replaced 'backdrop-blur-sm' with solid semi-transparent colors for speed */}
                       <div className="flex items-start gap-3 p-3 rounded-xl bg-white/50 dark:bg-black/30 border border-white/10 dark:border-white/5">
                         <MapPin
                           className={`w-4 h-4 mt-0.5 shrink-0 ${styles.textColor}`}
@@ -196,10 +187,10 @@ const PublicDonationRequests = () => {
                       className="w-full"
                     >
                       <Button
-                        className={`w-full h-12 rounded-xl font-bold transition-transform duration-300 active:scale-95
-                         bg-zinc-900/80 dark:bg-white/90 text-white dark:text-zinc-900 
-                         border border-white/10
-                         ${styles.btnHover} dark:hover:text-white
+                        className={`w-full h-12 rounded-xl font-bold transition-all duration-300 active:scale-95
+                         ${styles.badgeBg} ${styles.textColor}
+                         border border-transparent
+                         ${styles.btnHover} hover:text-white dark:hover:text-white
                          group-hover:shadow-lg`}
                       >
                         View Full Details{" "}

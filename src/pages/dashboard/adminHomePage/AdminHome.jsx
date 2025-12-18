@@ -35,25 +35,22 @@ const AdminHome = () => {
   return (
     <div className="page-container">
       <div className="relative z-10 space-y-8">
-        <AdminHeader user={user} adminProfile={adminProfile} />
-
-        <AdminStats stats={stats} />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          <div className="xl:col-span-2 h-full">
+        <AdminHeader user={user} adminProfile={adminProfile} stats={stats} />
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="xl:col-span-2">
             <RevenueAreaChart />
           </div>
-
-          <div className="xl:col-span-1 h-full">
+          <div>
             <DonationPieChart stats={stats} />
           </div>
-
-          <div className="xl:col-span-1 h-full">
+          <div>
             <UserBarChart stats={stats} />
           </div>
-
-          <div className="xl:col-span-2 h-full">
+          <div className="xl:col-span-2">
             <GrowthRadialChart />
+          </div>
+          <div className="xl:col-span-2">
+            <AdminStats />
           </div>
         </div>
       </div>

@@ -183,11 +183,10 @@ const ContentManagement = () => {
               </div>
 
               {/* Content Area */}
-              <CardContent className="p-5 flex-grow">
+              <CardContent className="p-5 grow">
                 <h3 className="text-lg font-bold text-zinc-900 dark:text-white line-clamp-2 leading-tight mb-2 group-hover:text-red-600 transition-colors">
                   {blog.title}
                 </h3>
-                {/* Optional: Add date or excerpt here if available in data */}
                 <p className="text-xs text-muted-foreground line-clamp-3">
                   Click "View" to read the full content preview.
                 </p>

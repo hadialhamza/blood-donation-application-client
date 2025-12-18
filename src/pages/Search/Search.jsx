@@ -64,7 +64,7 @@ const Search = () => {
 
   return (
     <Container>
-      <div className="my-10 min-h-screen">
+      <div className="mt-20 lg:mt-32 mb-10 min-h-screen">
         <SectionHeader
           icon={SearchIcon}
           badge="Find Life-Saving Help"

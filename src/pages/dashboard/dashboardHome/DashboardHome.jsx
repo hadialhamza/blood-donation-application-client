@@ -45,7 +45,6 @@ const DashboardHome = () => {
   const [role, isRoleLoading] = useRole();
   const axiosSecure = useAxiosSecure();
 
-
   const { data: stats = {}, isLoading: isStatsLoading } = useQuery({
     queryKey: ["admin-stats"],
     enabled: !isRoleLoading && (role === "admin" || role === "volunteer"),
@@ -54,7 +53,6 @@ const DashboardHome = () => {
       return res.data;
     },
   });
-
 
   const {
     data: recentRequests = [],
@@ -65,10 +63,9 @@ const DashboardHome = () => {
     enabled: !isRoleLoading && role === "donor",
     queryFn: async () => {
       const res = await axiosSecure.get(`/donation-requests/${user?.email}`);
-      return res.data.slice(0, 3);
+      return res.data;
     },
   });
-
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -128,9 +125,7 @@ const DashboardHome = () => {
     (role === "donor" && isRequestsLoading) ||
     ((role === "admin" || role === "volunteer") && isStatsLoading)
   ) {
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
 
   const userStats = {
@@ -138,6 +133,10 @@ const DashboardHome = () => {
     pending: recentRequests.filter((req) => req.status === "pending").length,
     total: recentRequests.length,
   };
+
+  const displayedRequests = [...recentRequests]
+    .sort((a, b) => (b._id > a._id ? 1 : -1))
+    .slice(0, 3);
 
   return (
     <div className="page-container space-y-8">
@@ -182,10 +181,8 @@ const DashboardHome = () => {
         </div>
       </div>
 
-
       {(role === "admin" || role === "volunteer") && (
         <div className="space-y-8">
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
@@ -283,7 +280,6 @@ const DashboardHome = () => {
               </CardContent>
             </Card>
           </div>
-
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2 glass-panel">
@@ -386,10 +382,8 @@ const DashboardHome = () => {
         </div>
       )}
 
-
       {role === "donor" && (
         <div className="space-y-8">
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="glass-panel glass-panel-hover">
               <CardContent className="p-6">
@@ -455,7 +449,6 @@ const DashboardHome = () => {
             </Card>
           </div>
 
-
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
@@ -485,9 +478,9 @@ const DashboardHome = () => {
               </div>
             </div>
 
-            {recentRequests.length > 0 ? (
+            {displayedRequests.length > 0 ? (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {recentRequests.map((req) => (
+                {displayedRequests.map((req) => (
                   <Card
                     key={req._id}
                     className="group border-gray-200 dark:border-gray-800 
@@ -497,7 +490,6 @@ const DashboardHome = () => {
                     <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-red-500 to-rose-500 dark:from-red-400 dark:to-rose-500" />
                     <CardContent className="p-6">
                       <div className="space-y-4">
-
                         <div className="flex items-start justify-between">
                           <div>
                             <h3 className="font-bold text-gray-900 dark:text-white line-clamp-1">
@@ -522,7 +514,6 @@ const DashboardHome = () => {
                           </div>
                         </div>
 
-
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-gray-400 dark:text-gray-500" />
@@ -545,7 +536,6 @@ const DashboardHome = () => {
                             </div>
                           )}
                         </div>
-
 
                         <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
                           <div className="flex items-center gap-2">
@@ -610,7 +600,6 @@ const DashboardHome = () => {
               </Card>
             )}
           </div>
-
 
           <Card className="bg-linear-to-r from-red-50 to-rose-50 dark:from-gray-900 dark:to-gray-800 border-red-200 dark:border-gray-700">
             <CardContent className="p-6">

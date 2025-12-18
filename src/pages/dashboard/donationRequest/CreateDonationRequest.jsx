@@ -89,17 +89,16 @@ const CreateDonationRequest = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 p-4 md:p-8">
+    <div className="min-h-screen  p-4 md:p-8">
       <PageHeader
         title="Create Donation Request"
         subtitle="Provide details to find a blood donor nearby."
         icon={HeartHandshake}
       />
 
-      <Card className="max-w-4xl mx-auto border-none shadow-2xl bg-white dark:bg-zinc-900 overflow-hidden">
+      <Card className="max-w-5xl mx-auto border-none shadow-lg bg-white dark:bg-zinc-900 overflow-hidden">
         <CardContent className="p-6 md:p-10">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Section 1: Requester & Recipient */}
             <div className="space-y-4">
               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                 <User className="w-4 h-4" /> Personal Information
@@ -107,7 +106,6 @@ const CreateDonationRequest = () => {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Read Only Requester */}
                 <div className="bg-slate-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-slate-100 dark:border-zinc-800">
                   <Label className="text-xs text-muted-foreground uppercase">
                     Requester
@@ -118,7 +116,6 @@ const CreateDonationRequest = () => {
                   <div className="text-sm text-zinc-500">{user?.email}</div>
                 </div>
 
-                {/* Recipient Input */}
                 <div className="space-y-2">
                   <Label htmlFor="recipientName" className="font-semibold">
                     Recipient Name
@@ -133,7 +130,6 @@ const CreateDonationRequest = () => {
               </div>
             </div>
 
-            {/* Section 2: Medical Details */}
             <div className="space-y-4">
               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                 <Droplet className="w-4 h-4" /> Medical Details
@@ -141,7 +137,6 @@ const CreateDonationRequest = () => {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Blood Group */}
                 <div className="space-y-2">
                   <Label className="font-semibold">Blood Group Needed</Label>
                   <Controller
@@ -181,7 +176,6 @@ const CreateDonationRequest = () => {
                   />
                 </div>
 
-                {/* Hospital Name */}
                 <div className="space-y-2">
                   <Label
                     htmlFor="hospitalName"
@@ -200,7 +194,6 @@ const CreateDonationRequest = () => {
               </div>
             </div>
 
-            {/* Section 3: Location & Timing */}
             <div className="space-y-4">
               <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                 <MapPin className="w-4 h-4" /> Location & Timing
@@ -208,7 +201,6 @@ const CreateDonationRequest = () => {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Location Selector */}
                 <LocationSelector
                   control={control}
                   errors={errors}
@@ -262,7 +254,6 @@ const CreateDonationRequest = () => {
               </div>
             </div>
 
-            {/* Section 4: Message */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label
@@ -281,7 +272,6 @@ const CreateDonationRequest = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
             <Button
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all"

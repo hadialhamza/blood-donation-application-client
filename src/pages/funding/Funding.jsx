@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import useRole from "../../hooks/useRole";
 
 const Funding = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +46,7 @@ const Funding = () => {
   const [selectedAmount, setSelectedAmount] = useState(10);
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  const [role] = useRole();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -60,7 +62,6 @@ const Funding = () => {
     },
   });
 
-  // Check for session_id on return
   useEffect(() => {
     const sessionId = searchParams.get("session_id");
     if (sessionId) {
@@ -170,72 +171,72 @@ const Funding = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
-            <CardContent className="p-6 text-center">
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <DollarSign className="w-8 h-8 text-red-600 dark:text-red-400" />
-              </div>
-              <div className="text-3xl font-bold text-zinc-900 dark:text-white">
-                ${totalRaised.toLocaleString()}
-              </div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-                Total Raised
-              </p>
-            </CardContent>
-          </Card>
+        {(role === "admin" || role === "volunteer") && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+              <CardContent className="p-6 text-center">
+                <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <DollarSign className="w-8 h-8 text-red-600 dark:text-red-400" />
+                </div>
+                <div className="text-3xl font-bold text-zinc-900 dark:text-white">
+                  ${totalRaised.toLocaleString()}
+                </div>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+                  Total Raised
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
-            <CardContent className="p-6 text-center">
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Heart className="w-8 h-8 text-red-600 dark:text-red-400" />
-              </div>
-              <div className="text-3xl font-bold text-zinc-900 dark:text-white">
-                {funds.length}
-              </div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-                Donations Made
-              </p>
-            </CardContent>
-          </Card>
+            <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+              <CardContent className="p-6 text-center">
+                <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Heart className="w-8 h-8 text-red-600 dark:text-red-400" />
+                </div>
+                <div className="text-3xl font-bold text-zinc-900 dark:text-white">
+                  {funds.length}
+                </div>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+                  Donations Made
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
-            <CardContent className="p-6 text-center">
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Target className="w-8 h-8 text-red-600 dark:text-red-400" />
-              </div>
-              <div className="text-3xl font-bold text-zinc-900 dark:text-white">
-                $50K
-              </div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-                Quarterly Goal
-              </p>
-              <Progress
-                value={(totalRaised / 50000) * 100}
-                className="mt-2 h-2"
-              />
-            </CardContent>
-          </Card>
+            <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+              <CardContent className="p-6 text-center">
+                <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Target className="w-8 h-8 text-red-600 dark:text-red-400" />
+                </div>
+                <div className="text-3xl font-bold text-zinc-900 dark:text-white">
+                  $50K
+                </div>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+                  Quarterly Goal
+                </p>
+                <Progress
+                  value={(totalRaised / 50000) * 100}
+                  className="mt-2 h-2"
+                />
+              </CardContent>
+            </Card>
 
-          <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
-            <CardContent className="p-6 text-center">
-              <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <TrendingUp className="w-8 h-8 text-red-600 dark:text-red-400" />
-              </div>
-              <div className="text-3xl font-bold text-zinc-900 dark:text-white">
-                +42%
-              </div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
-                Growth This Month
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+            <Card className="bg-linear-to-br from-white to-red-50 dark:from-zinc-900 dark:to-red-950/20 border-red-100 dark:border-red-900">
+              <CardContent className="p-6 text-center">
+                <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <TrendingUp className="w-8 h-8 text-red-600 dark:text-red-400" />
+                </div>
+                <div className="text-3xl font-bold text-zinc-900 dark:text-white">
+                  +42%
+                </div>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2">
+                  Growth This Month
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column: Recent Donations */}
           <div className="lg:col-span-2">
             <Card className="border-red-100 dark:border-red-900 shadow-lg">
               <CardHeader>
@@ -318,7 +319,6 @@ const Funding = () => {
             </Card>
           </div>
 
-          {/* Right Column: Top Donors & Info */}
           <div className="space-y-6">
             {/* Top Donors */}
             <Card className="border-red-100 dark:border-red-900 shadow-lg">
@@ -360,7 +360,6 @@ const Funding = () => {
               </CardContent>
             </Card>
 
-            {/* How Funds Are Used */}
             <Card className="bg-linear-to-br from-red-50 to-rose-50 dark:from-red-900/20 dark:to-rose-900/10 border-red-200 dark:border-red-900">
               <CardHeader>
                 <CardTitle className="text-red-700 dark:text-red-400">
@@ -401,7 +400,6 @@ const Funding = () => {
         </div>
       </div>
 
-      {/* Donation Modal */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[500px] border-red-200 dark:border-red-900">
           <DialogHeader>
@@ -418,7 +416,6 @@ const Funding = () => {
           </DialogHeader>
 
           <div className="py-6">
-            {/* Quick Amount Selector */}
             <div className="mb-8">
               <Label className="text-sm font-medium mb-3 block">
                 Select Amount
@@ -471,7 +468,6 @@ const Funding = () => {
               </div>
             </div>
 
-            {/* Impact Preview */}
             <Card className="bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
@@ -493,7 +489,6 @@ const Funding = () => {
               </CardContent>
             </Card>
 
-            {/* Security Note */}
             <div className="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
               <Shield className="w-4 h-4 inline mr-1" />
               Secure payment processed with Stripe. All transactions are

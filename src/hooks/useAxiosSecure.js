@@ -9,8 +9,6 @@ const axiosSecure = axios.create({
 const useAxiosSecure = () => {
   const navigate = useNavigate();
   const { logOut, setLoading } = useAuth();
-
-  // Request Interceptor: Add Token
   axiosSecure.interceptors.request.use(
     function (config) {
       const token = localStorage.getItem("access-token");
@@ -23,8 +21,6 @@ const useAxiosSecure = () => {
       return Promise.reject(error);
     }
   );
-
-  // Response Interceptor: Handle 401/403
   axiosSecure.interceptors.response.use(
     function (response) {
       return response;

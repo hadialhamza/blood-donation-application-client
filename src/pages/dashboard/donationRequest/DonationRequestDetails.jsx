@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import {
   Card,
   CardContent,
@@ -99,10 +98,9 @@ const DonationRequestDetails = () => {
       </div>
 
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
-        {/* --- LEFT COLUMN: Request Info --- */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="border-none shadow-xl bg-white dark:bg-zinc-900 overflow-hidden">
-            <div className="h-2 w-full bg-gradient-to-r from-red-500 to-rose-600"></div>
+            <div className="h-2 w-full bg-linear-to-r from-red-500 to-rose-600"></div>
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
@@ -110,10 +108,11 @@ const DonationRequestDetails = () => {
                     variant={
                       request.status === "pending" ? "default" : "secondary"
                     }
-                    className={`mb-3 ${request.status === "pending"
+                    className={`mb-3 ${
+                      request.status === "pending"
                         ? "bg-amber-500 hover:bg-amber-600"
                         : "bg-green-600"
-                      }`}
+                    }`}
                   >
                     <AlertCircle className="w-3 h-3 mr-1" />{" "}
                     {request.status === "pending"
@@ -128,7 +127,6 @@ const DonationRequestDetails = () => {
                     {request.recipientUpazila}, {request.recipientDistrict}
                   </CardDescription>
                 </div>
-                {/* Blood Group Hero Badge for Mobile/Tablet (Hidden on large, shown in right col usually, but good for header too) */}
                 <div className="lg:hidden h-16 w-16 bg-red-50 dark:bg-red-900/20 rounded-2xl flex flex-col items-center justify-center border border-red-100 dark:border-red-900/50 text-red-600 dark:text-red-400 font-black">
                   <Droplet className="w-4 h-4 fill-current mb-1" />
                   <span className="text-xl">{request.bloodGroup}</span>
@@ -186,10 +184,8 @@ const DonationRequestDetails = () => {
           </Card>
         </div>
 
-        {/* --- RIGHT COLUMN: Action & Overview --- */}
         <div className="lg:col-span-1 space-y-6">
-          {/* Blood Group Highlight Card */}
-          <Card className="border-none shadow-xl bg-gradient-to-br from-red-600 to-rose-700 text-white relative overflow-hidden hidden lg:block">
+          <Card className="border-none shadow-xl bg-linear-to-br from-red-600 to-rose-700 text-white relative overflow-hidden hidden lg:block">
             <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div className="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 bg-black/10 rounded-full blur-2xl"></div>
 

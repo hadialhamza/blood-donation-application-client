@@ -28,7 +28,6 @@ import {
   TrendingUp,
   TrendingDown,
   Users,
-  DollarSign,
   Activity,
   Target,
   Clock,
@@ -87,9 +86,8 @@ export const DonationPieChart = ({ stats }) => {
   const totalRequests = data.reduce((sum, item) => sum + item.visitors, 0);
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 via-amber-500 to-red-500" />
-      <CardHeader className="pb-3">
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative gap-0">
+      <CardHeader>
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
@@ -104,10 +102,10 @@ export const DonationPieChart = ({ stats }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
           {/* Chart */}
-          <div className="lg:col-span-2">
-            <ResponsiveContainer width="100%" height={300}>
+          <div>
+            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Tooltip
                   contentStyle={{
@@ -156,14 +154,14 @@ export const DonationPieChart = ({ stats }) => {
           </div>
 
           {/* Legend */}
-          <div className="space-y-4">
+          <div>
             <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
               Breakdown
             </div>
             {data.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-3 rounded-lg bg-zinc-50 dark:bg-zinc-900/50"
+                className="flex items-center justify-between p-1 rounded-lg bg-zinc-50 dark:bg-zinc-900/50"
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -190,7 +188,7 @@ export const DonationPieChart = ({ stats }) => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="border-t border-zinc-100 dark:border-zinc-800 pt-4">
+      <CardFooter className="border-t border-zinc-100 dark:border-zinc-800">
         <div className="flex items-center justify-between w-full">
           <div className="text-sm text-zinc-500 dark:text-zinc-400">
             <Target className="w-4 h-4 inline mr-1" />
@@ -223,8 +221,7 @@ export const RevenueAreaChart = () => {
   ];
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-rose-500 to-red-500" />
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative gap-0!">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -243,7 +240,7 @@ export const RevenueAreaChart = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={250}>
           <AreaChart
             data={data}
             margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
@@ -370,7 +367,6 @@ export const UserBarChart = ({ stats }) => {
 
   return (
     <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-emerald-500 via-amber-500 to-red-500" />
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -394,7 +390,7 @@ export const UserBarChart = ({ stats }) => {
             <ResponsiveContainer width="100%" height={250}>
               <BarChart
                 data={data}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                margin={{ top: 20, right: 10, left: 20, bottom: 5 }}
               >
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -422,7 +418,7 @@ export const UserBarChart = ({ stats }) => {
                   }}
                   formatter={(value) => [value, "Users"]}
                 />
-                <Bar dataKey="count" radius={[8, 8, 0, 0]} barSize={60}>
+                <Bar dataKey="count" radius={[8, 8, 0, 0]} barSize={50}>
                   {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.fill} />
                   ))}
@@ -487,7 +483,6 @@ export const UserBarChart = ({ stats }) => {
   );
 };
 
-// --- 4. GROWTH RADIAL CHART ---
 export const GrowthRadialChart = () => {
   const data = [
     {
@@ -517,8 +512,7 @@ export const GrowthRadialChart = () => {
   ];
 
   return (
-    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative">
-      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-blue-500 via-purple-500 to-amber-500" />
+    <Card className="border-red-100 dark:border-red-900 shadow-lg overflow-hidden relative gap-0">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -535,8 +529,8 @@ export const GrowthRadialChart = () => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="flex items-center justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="flex flex-col justify-center">
             <ResponsiveContainer width="100%" height={250}>
               <RadialBarChart
                 innerRadius="20%"
@@ -570,17 +564,17 @@ export const GrowthRadialChart = () => {
                   iconSize={10}
                   layout="vertical"
                   verticalAlign="middle"
-                  wrapperStyle={{ right: -40 }}
+                  wrapperStyle={{ bottom: -0 }}
                 />
               </RadialBarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="space-y-4">
+          <div>
             {data.map((item, index) => (
               <div
                 key={index}
-                className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/50"
+                className="py-1 rounded-xl bg-zinc-50 dark:bg-zinc-900/50"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

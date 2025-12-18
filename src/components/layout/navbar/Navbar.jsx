@@ -109,7 +109,6 @@ const Navbar = () => {
     >
       <Container>
         <div className="flex h-14 items-center">
-          {/* LOGO */}
           <div className="flex items-center gap-2">
             <Link to="/" className="flex items-center space-x-2">
               <div
@@ -124,7 +123,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* --- DESKTOP NAV --- */}
           <div className="ml-auto flex items-center gap-5">
             <ActiveNav
               navLinks={navLinks}
@@ -133,7 +131,6 @@ const Navbar = () => {
             />
 
             <div className="flex items-center gap-5">
-              {/* Theme Toggle */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -149,7 +146,6 @@ const Navbar = () => {
                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
               </Button>
 
-              {/* Desktop Auth Logic */}
               <div className="hidden md:flex items-center gap-2">
                 {loading ? (
                   <Skeleton className="h-10 w-10 rounded-full" />
@@ -176,7 +172,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* --- MOBILE NAV --- */}
           <MobileMenu
             navLinks={navLinks}
             user={user}

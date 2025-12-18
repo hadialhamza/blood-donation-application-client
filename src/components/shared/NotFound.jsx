@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/button";
 const NotFoundPage = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-white via-red-50 to-rose-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex flex-col">
-      {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-center gap-7 relative z-10 px-4">
         <div className="max-w-4xl mx-auto text-center space-y-12">
-          {/* Error Number */}
           <div className="relative">
             <div className="text-[180px] md:text-[250px] font-black leading-none">
               <span className="text-transparent bg-clip-text bg-linear-to-r from-red-400 via-rose-400 to-red-400 animate-linear-x">
@@ -29,8 +27,6 @@ const NotFoundPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Message */}
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
               Page Not Found
@@ -40,8 +36,6 @@ const NotFoundPage = () => {
               worry—our donors are here to help you get back on track.
             </p>
           </div>
-
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/">
               <Button className="bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all group">
@@ -61,7 +55,6 @@ const NotFoundPage = () => {
             </Link>
           </div>
         </div>
-        {/* Footer */}
         <div className="border-t border-gray-100 dark:border-gray-800 text-center">
           <div className="max-w-4xl mx-auto px-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -82,8 +75,6 @@ const NotFoundPage = () => {
           </div>
         </div>
       </div>
-
-      {/* CSS Animations */}
       <style jsx>{`
         @keyframes float {
           0%,

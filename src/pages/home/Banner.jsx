@@ -62,7 +62,6 @@ const Banner = () => {
             </div>
           </div>
 
-          {/* Trust Indicators / Stats */}
           <div className="pt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in fade-in duration-1000 delay-200">
             {trustCards.map((stat, index) => (
               <TrustCard key={index} stat={stat} index={index} />

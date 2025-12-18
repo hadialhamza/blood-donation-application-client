@@ -39,7 +39,6 @@ const TopDonors = () => {
   return (
     <section className="relative overflow-hidden mt-20 lg:mt-30">
       <Container>
-        {/* --- Header --- */}
         <SectionHeader
           icon={Trophy}
           badge="Hall of Fame"

@@ -50,7 +50,6 @@ const UserMenu = ({ user, handleLogOut, isHome, isScrolled }) => {
                 {user?.displayName?.charAt(0) || <User className="w-5 h-5" />}
               </AvatarFallback>
             </Avatar>
-            {/* Online Indicator */}
             <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm animate-pulse" />
           </div>
         </Button>
@@ -61,7 +60,6 @@ const UserMenu = ({ user, handleLogOut, isHome, isScrolled }) => {
         align="end"
         forceMount
       >
-        {/* User Header - Uses Global Gradient Class */}
         <div className="p-4 bg-brand-gradient">
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 border-2 border-white/30">
@@ -87,7 +85,6 @@ const UserMenu = ({ user, handleLogOut, isHome, isScrolled }) => {
           </div>
         </div>
 
-        {/* Menu Items */}
         <div className="p-2 space-y-1">
           <MenuLink
             to="/dashboard"

@@ -52,7 +52,6 @@ const Footer = () => {
       <div className="pt-16 relative z-10">
         <Container>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-            {/* 1. Brand & Socials */}
             <div className="space-y-3">
               <Link to="/" className="inline-block">
                 <BloodLineLogo />
@@ -79,7 +78,6 @@ const Footer = () => {
                       {social.icon}
                     </a>
 
-                    {/* Tooltip */}
                     <span
                       className={`pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md ${social.color} px-2 py-1 text-[10px] text-white opacity-0 shadow-lg transition-all duration-300 group-hover:-top-12 group-hover:opacity-100`}
                     >
@@ -90,7 +88,6 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* 2. Platform Links */}
             <div className="space-y-4 md:mx-auto">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
                 Platform
@@ -115,7 +112,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* 3. Public Resources */}
             <div className="space-y-4 md:mx-auto">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
                 Public Resources
@@ -145,7 +141,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* 4. Newsletter */}
             <div className="space-y-4">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
                 Stay Updated

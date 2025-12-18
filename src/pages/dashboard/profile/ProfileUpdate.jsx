@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useForm, useWatch, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router";
 import {
@@ -20,19 +20,13 @@ import Loading from "@/components/shared/Loading";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { uploadImage } from "../../../utils/uploadImage";
-
 import LocationSelector from "@/components/form/LocationSelector";
-
+import FormSelect from "@/components/form/FormSelect";
+import Container from "@/components/shared/container/Container";
+import { BLOOD_GROUPS } from "@/data/Data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -49,7 +43,14 @@ const ProfileUpdate = () => {
   const [isUserLoading, setIsUserLoading] = useState(true);
 
   // Initialize form first to make reset available
-  const { register, handleSubmit, reset, control, watch, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm();
   const imageFile = watch("imageFile");
 
   // 1. Fetch User Data
@@ -61,7 +62,6 @@ const ProfileUpdate = () => {
         .then((res) => {
           setUserData(res.data);
           const data = res.data;
-          // Pre-fill form fields
           reset({
             name: data.name,
             email: data.email,
@@ -152,8 +152,8 @@ const ProfileUpdate = () => {
   if (isUserLoading) return <Loading />;
 
   return (
-    <div className="p-6 bg-gradient-to-b from-white to-red-50 dark:from-zinc-950 dark:to-red-950/10 min-h-screen">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <Container className="p-6 min-h-screen">
+      <div className="max-w-4xl mx-auto space-y-8 mt-4">
         {/* Header */}
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-800">
@@ -164,7 +164,7 @@ const ProfileUpdate = () => {
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">
             Update Your{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-red-600 to-rose-600">
               Profile Information
             </span>
           </h1>
@@ -175,13 +175,12 @@ const ProfileUpdate = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column: Profile Preview */}
-          <Card className="border-red-100 dark:border-red-900 shadow-lg">
+          <Card className="border-red-100 dark:border-red-900 shadow-lg h-fit">
             <CardContent className="p-6">
               <div className="space-y-6">
                 <div className="relative">
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-gradient-to-r from-purple-600 to-violet-600 text-white">
+                    <Badge className="bg-linear-to-r from-purple-600 to-violet-600 text-white">
                       <Shield className="w-3 h-3 mr-1" />
                       Preview
                     </Badge>
@@ -194,7 +193,7 @@ const ProfileUpdate = () => {
                           alt="Preview"
                           className="object-cover"
                         />
-                        <AvatarFallback className="text-4xl font-bold bg-gradient-to-r from-red-600 to-rose-600 text-white">
+                        <AvatarFallback className="text-4xl font-bold bg-linear-to-r from-red-600 to-rose-600 text-white">
                           {userData.name?.charAt(0) ||
                             user?.displayName?.charAt(0)}
                         </AvatarFallback>
@@ -277,7 +276,6 @@ const ProfileUpdate = () => {
             </CardContent>
           </Card>
 
-          {/* Right Column: Update Form */}
           <Card className="lg:col-span-2 border-red-100 dark:border-red-900 shadow-lg">
             <CardHeader>
               <CardTitle className="text-xl flex items-center gap-2">
@@ -287,7 +285,6 @@ const ProfileUpdate = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(handleUpdate)} className="space-y-6">
-                {/* Profile Image Upload */}
                 <div className="space-y-4">
                   <Label className="text-sm font-medium">Profile Picture</Label>
                   <div className="flex flex-col md:flex-row gap-6 items-start">
@@ -362,7 +359,7 @@ const ProfileUpdate = () => {
                   </div>
                 </div>
 
-                {/* Email (Read Only) */}
+                {/* Email */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium flex items-center gap-2">
                     <Mail className="w-4 h-4" />
@@ -397,51 +394,22 @@ const ProfileUpdate = () => {
                 </div>
 
                 {/* Blood Group */}
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium flex items-center gap-2">
-                    <Droplets className="w-4 h-4" />
-                    Blood Group
-                  </Label>
-                  <Controller
-                    name="bloodGroup"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger className="h-12">
-                          <SelectValue placeholder="Select Blood Group" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="A+">A+ (Most Common)</SelectItem>
-                          <SelectItem value="A-">A-</SelectItem>
-                          <SelectItem value="B+">B+</SelectItem>
-                          <SelectItem value="B-">B-</SelectItem>
-                          <SelectItem value="AB+">
-                            AB+ (Universal Recipient)
-                          </SelectItem>
-                          <SelectItem value="AB-">AB-</SelectItem>
-                          <SelectItem value="O+">O+</SelectItem>
-                          <SelectItem value="O-">
-                            O- (Universal Donor)
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    )}
-                  />
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    This helps match you with compatible blood requests
-                  </p>
-                </div>
+                <FormSelect
+                  name="bloodGroup"
+                  label="Blood Group"
+                  icon={Droplets}
+                  placeholder="Select Blood Group"
+                  control={control}
+                  rules={{ required: true }}
+                  options={BLOOD_GROUPS}
+                />
 
                 {/* Action Buttons */}
                 <div className="pt-6 border-t border-zinc-200 dark:border-zinc-800">
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button
                       type="submit"
-                      className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white h-12"
+                      className="flex-1 bg-linear-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white h-12"
                       disabled={isUpdating}
                     >
                       {isUpdating ? (
@@ -474,7 +442,7 @@ const ProfileUpdate = () => {
           </Card>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

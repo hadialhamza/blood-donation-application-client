@@ -24,7 +24,6 @@ import Container from "@/components/shared/container/Container";
 const ContactUs = () => {
   return (
     <section className="relative min-h-screen mt-20 lg:mt-30">
-      {/* --- Top Banner Section --- */}
       <div className="bg-red-600 dark:bg-red-900/80 pt-20 pb-32 relative overflow-hidden">
         <Container>
           <div className="text-center relative z-10">
@@ -43,15 +42,11 @@ const ContactUs = () => {
         </Container>
       </div>
 
-      {/* --- Main Content --- */}
       <Container>
         <div className="-mt-20 lg:-mt-15 relative z-20 pb-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* LEFT COLUMN: */}
             <div className="lg:col-span-5 space-y-8">
-              {/* Quick Contact Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-8">
-                {/* Emergency Card */}
                 <Card className="shadow-md bg-white/95 dark:bg-zinc-800/90  border-l-8 border-l-red-500 py-0">
                   <CardContent className="h-full p-6 flex items-center space-x-4">
                     <div className="p-3 bg-red-200 dark:bg-red-900/70 rounded-full text-red-600">
@@ -71,7 +66,6 @@ const ContactUs = () => {
                   </CardContent>
                 </Card>
 
-                {/* General Info Card */}
                 <Card className="shadow-md bg-white/95 dark:bg-zinc-800/90  border-l-8 border-l-blue-500 py-0">
                   <CardContent className="p-6 space-y-6">
                     <div className="flex items-center space-x-4">
@@ -104,7 +98,6 @@ const ContactUs = () => {
                 </Card>
               </div>
 
-              {/* Compact FAQ Section */}
               <div className="bg-white dark:bg-zinc-800/90  rounded-2xl shadow-md p-6 border border-zinc-100 dark:border-zinc-800 border-l-8 border-l-green-500">
                 <h3 className="text-lg font-bold flex items-center gap-2 mb-4 text-zinc-900 dark:text-white">
                   <HelpCircle className="w-5 h-5 text-zinc-500" />
@@ -148,7 +141,6 @@ const ContactUs = () => {
               </div>
             </div>
 
-            {/* form section */}
             <div className="lg:col-span-7">
               <Card className="lg:h-full border-none shadow-md bg-white dark:bg-zinc-800/90  overflow-hidden relative">
                 <div className="absolute top-0 left-0 w-2 h-full bg-linear-to-b from-red-500 via-orange-500 to-yellow-500"></div>

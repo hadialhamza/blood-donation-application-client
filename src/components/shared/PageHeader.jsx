@@ -14,21 +14,17 @@ const PageHeader = ({ title, subtitle, icon: Icon }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-4xl mx-auto mb-6 space-y-6">
-      {/* Back Button */}
+    <div className="max-w-5xl mx-auto mb-6 space-y-6">
       <Button
         variant="ghost"
-        className="pl-0 hover:bg-transparent hover:text-red-600 transition-colors"
+        className="hover:bg-transparent hover:text-red-600 transition-colors"
         onClick={() => navigate(-1)}
       >
         <ArrowLeft className="w-4 h-4 mr-2" /> Back
       </Button>
-
-      {/* Header Card */}
-      <Card className="border-none shadow-2xl bg-white dark:bg-zinc-900 overflow-hidden">
-        <div className="bg-amber-500 h-2 w-full"></div>{" "}
-        {/* Uses your Amber/Red style */}
-        <CardHeader className="pt-8 px-8">
+      <Card className="max-w-5xl mx-auto border-none shadow-md bg-white dark:bg-zinc-900 overflow-hidden py-0 gap-3">
+        <div className="bg-amber-500 h-8 w-full"></div>{" "}
+        <CardHeader>
           <div className="flex items-center gap-3 mb-2">
             {Icon && (
               <div className="p-3 bg-amber-100 dark:bg-amber-900/20 rounded-xl text-amber-600">

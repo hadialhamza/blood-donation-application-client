@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import Loading from "@/components/shared/Loading";
 import BloodLineLogo from "@/components/shared/logo/BloodLineLogo";
 
+//eslint-disable-next-line
 const NavItem = ({ to, icon: Icon, children }) => (
   <NavLink
     to={to}
@@ -74,6 +75,12 @@ const SidebarContent = ({ role }) => (
           <NavItem to="/dashboard/all-blood-donation-request" icon={FaList}>
             Donation Requests
           </NavItem>
+          <NavItem to="/dashboard/my-donation-requests" icon={FaList}>
+            My Donation Requests
+          </NavItem>
+          <NavItem to="/dashboard/create-donation-request" icon={FaTint}>
+            Create Donation Request
+          </NavItem>
           <NavItem to="/dashboard/content-management" icon={FaEdit}>
             Content Management
           </NavItem>
@@ -87,6 +94,12 @@ const SidebarContent = ({ role }) => (
           </NavItem>
           <NavItem to="/dashboard/all-blood-donation-request" icon={FaList}>
             All Blood Donation Requests
+          </NavItem>
+          <NavItem to="/dashboard/my-donation-requests" icon={FaList}>
+            My Donation Requests
+          </NavItem>
+          <NavItem to="/dashboard/create-donation-request" icon={FaTint}>
+            Create Donation Request
           </NavItem>
           <NavItem to="/dashboard/content-management" icon={FaEdit}>
             Content Management
@@ -116,7 +129,7 @@ const DashboardLayout = () => {
   return (
     <GlobalBackground>
       <div className="flex min-h-screen">
-        <aside className="hidden lg:block w-64 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-r border-gray-200 dark:border-gray-800 px-4 py-6 fixed h-full overflow-y-auto z-20">
+        <aside className="hidden lg:block w-64 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-r border-gray-200 dark:border-gray-800 px-4 py-6 fixed h-full overflow-y-auto z-50">
           <SidebarContent role={role} />
         </aside>
 

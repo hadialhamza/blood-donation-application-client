@@ -4,9 +4,7 @@ import { Heart, Droplets, Users, Activity } from "lucide-react";
 const Loading = () => {
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-linear-to-br from-white via-red-50 to-rose-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 z-50">
-      {/* Main Content */}
       <div className="relative z-10 text-center space-y-8 p-8">
-        {/* Logo Animation */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <div className="relative">
             <div className="absolute inset-0 bg-linear-to-r from-red-500 to-rose-500 rounded-full blur-xl opacity-50 animate-pulse"></div>
@@ -37,7 +35,6 @@ const Loading = () => {
           </div>
         </div>
 
-        {/* Loading Indicator */}
         <div className="space-y-6">
           <div className="relative">
             <div className="w-64 h-3 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden mx-auto">
@@ -62,7 +59,6 @@ const Loading = () => {
           </div>
         </div>
 
-        {/* Stats Animation */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mt-12">
           {[
             {
@@ -110,7 +106,6 @@ const Loading = () => {
           ))}
         </div>
 
-        {/* Loading Tips */}
         <div className="max-w-md mx-auto mt-8 p-4 bg-linear-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
           <p className="text-sm text-blue-700 dark:text-blue-300 text-center">
             <span className="font-semibold">Did you know?</span> A single blood
@@ -119,15 +114,12 @@ const Loading = () => {
         </div>
       </div>
 
-      {/* Copyright */}
       <div className="absolute bottom-8 left-0 right-0 text-center">
         <p className="text-gray-500 dark:text-gray-400 text-sm">
           © {new Date().getFullYear()} BloodLine. All rights reserved.
         </p>
       </div>
 
-      {/* CSS Animations */}
-      {/* CSS Animations */}
       <style>{`
         @keyframes float {
           0%,

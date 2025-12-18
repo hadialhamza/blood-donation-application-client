@@ -9,9 +9,8 @@ import ImpactCard from "@/components/cards/ImpactCard";
 
 const TrustedPartners = () => {
   return (
-    <Container>
-      <div className="mt-20 lg:mt-30 relative">
-        {/* Section Title */}
+    <div className="mt-20 lg:mt-30 relative">
+      <Container>
         <SectionHeader
           icon={Handshake}
           badge="Trusted Partners"
@@ -19,30 +18,28 @@ const TrustedPartners = () => {
           highlight="Medical Institutions"
           description="Collaborating with hospitals and healthcare organizations nationwide to ensure blood reaches those in need"
         />
+      </Container>
 
-        {/* Marquee Container */}
-        <div className="relative w-full overflow-hidden py-2">
-          {/* Left Shadow */}
-          <div className="absolute top-0 left-0 w-32 h-full bg-linear-to-r from-[#ffeded] via-[#ffeded]/80 to-transparent dark:from-black dark:via-black/80 dark:to-transparent z-10 pointer-events-none" />
+      <div className="relative w-full overflow-hidden py-2">
+        <div className="absolute top-0 left-0 w-32 h-full bg-linear-to-r from-[#fff5f5] via-[#fff5f5]/80 to-transparent dark:from-[#020617] dark:via-[#020617]/80 dark:to-transparent z-10 pointer-events-none" />
 
-          {/* Right Shadow */}
-          <div className="absolute top-0 right-0 w-32 h-full bg-linear-to-l from-[#fff2f2] via-[#fff2f2]/80 to-transparent dark:from-black dark:via-black/80 dark:to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-32 h-full bg-linear-to-l from-[#fff5f5] via-[#fff5f5]/80 to-transparent dark:from-[#020617] dark:via-[#020617]/80 dark:to-transparent z-10 pointer-events-none" />
 
-          <Marquee
-            gradient={false}
-            speed={50}
-            pauseOnHover={true}
-            className="py-4"
-          >
-            <div className="flex items-center gap-8 p-8">
-              {partners.map((partner, index) => (
-                <PartnerCard key={index} partner={partner} />
-              ))}
-            </div>
-          </Marquee>
-        </div>
+        <Marquee
+          gradient={false}
+          speed={50}
+          pauseOnHover={true}
+          className="py-4"
+        >
+          <div className="flex items-center gap-8 p-8">
+            {partners.map((partner, index) => (
+              <PartnerCard key={index} partner={partner} />
+            ))}
+          </div>
+        </Marquee>
+      </div>
 
-        {/* Additional Partner Stats */}
+      <Container>
         <div className="mt-6 mb-12 text-center">
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-8 py-4 rounded-2xl my-3">
             <div className="text-center">
@@ -72,9 +69,7 @@ const TrustedPartners = () => {
           </div>
         </div>
 
-        {/* Trust cards */}
         <div className="flex flex-col md:flex-row items-stretch gap-12 max-w-4xl mx-auto">
-          {/* Card 1 */}
           <ImpactCard
             icon={ShieldCheck}
             title="Community Trust"
@@ -84,7 +79,6 @@ const TrustedPartners = () => {
             buttonText="Learn about verification"
           />
 
-          {/* Card 2 */}
           <ImpactCard
             icon={HeartHandshake}
             title="Community Impact"
@@ -94,8 +88,8 @@ const TrustedPartners = () => {
             buttonText="Read Success Stories"
           />
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

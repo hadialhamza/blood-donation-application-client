@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import JoditEditor from "jodit-react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
@@ -18,7 +19,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -29,7 +29,14 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const AddBlog = () => {
+  const editor = useRef(null);
   const [content, setContent] = useState(""); // For Rich Text
+
+  const config = {
+    readonly: false,
+    placeholder: "Start writing your amazing story here...",
+    minHeight: 400,
+  };
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
@@ -63,7 +70,6 @@ const AddBlog = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 p-4 md:p-8">
-      {/* Top Navigation / Breadcrumb area */}
       <div className="max-w-4xl mx-auto mb-6">
         <Button
           variant="ghost"
@@ -114,7 +120,6 @@ const AddBlog = () => {
               />
             </div>
 
-            {/* 2. Thumbnail Input (Styled) */}
             <div className="space-y-3">
               <Label
                 htmlFor="thumbnail"
@@ -138,7 +143,6 @@ const AddBlog = () => {
               </p>
             </div>
 
-            {/* 3. Content Textarea */}
             <div className="space-y-3">
               <Label
                 htmlFor="content"
@@ -146,19 +150,21 @@ const AddBlog = () => {
               >
                 <FileText className="w-4 h-4 text-zinc-500" /> Article Content
               </Label>
-              <Textarea
-                id="content"
-                className="min-h-[300px] resize-y p-4 text-base leading-relaxed border-zinc-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/50 focus-visible:ring-red-500 font-sans"
-                placeholder="Start writing your amazing story here..."
-                onChange={(e) => setContent(e.target.value)}
-                required
-              />
+              <div className="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700">
+                <JoditEditor
+                  ref={editor}
+                  value={content}
+                  config={config}
+                  tabIndex={1}
+                  onBlur={(newContent) => setContent(newContent)}
+                  onChange={() => {}}
+                />
+              </div>
               <p className="text-xs text-muted-foreground text-right">
-                HTML formatting is supported.
+                Rich text editing enabled.
               </p>
             </div>
 
-            {/* Submit Action */}
             <div className="pt-4 flex items-center justify-end">
               <Button
                 className="w-full md:w-auto min-w-[200px] bg-red-600 hover:bg-red-700 text-white font-bold h-12 rounded-xl shadow-lg hover:shadow-xl transition-all"
