@@ -108,7 +108,7 @@ const UserMenu = ({ user, handleLogOut, isHome, isScrolled }) => {
             sub="Donation history"
           />
           <MenuLink
-            to="/dashboard/funding"
+            to="/funding"
             icon={DollarSign}
             colorClass="from-emerald-500 to-green-500"
             label="Funding"
