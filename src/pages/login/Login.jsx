@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Loader2 } from "lucide-react";
+
+import { Loader2, Shield, User } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { MdBloodtype } from "react-icons/md";
@@ -10,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import BloodLineLogo from "@/components/shared/logo/BloodLineLogo";
+import { getAuthErrorMessage } from "../../utils/errorUtils";
+import GoogleLogin from "@/components/shared/social/GoogleLogin";
 
 const Login = () => {
   const { signIn, loading, setLoading } = useAuth();
@@ -43,8 +46,8 @@ const Login = () => {
       toast.success("Login Successful");
       navigate(from, { replace: true });
     } catch (err) {
-      console.log(err);
-      toast.error(err.message || "Login Failed");
+      console.error(err);
+      toast.error(getAuthErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -57,22 +60,53 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl shadow-xl rounded-2xl overflow-hidden w-full max-w-6xl flex flex-col md:flex-row border border-slate-100 dark:border-gray-800">
-        <div className="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
           <div className="max-w-md mx-auto w-full">
-            <div className="mb-8 text-center md:text-left">
+            <div className="mb-6 text-center md:text-left">
               <BloodLineLogo />
             </div>
-            <div className="mb-8 text-center md:text-left">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+
+            <div className="mb-6 text-center md:text-left">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                 Welcome Back! 👋
               </h1>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Please enter your details to sign in.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="space-y-2">
+            {/* --- Demo Credentials Box --- */}
+            <div className="mb-6 p-3 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-200 dark:border-zinc-800">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider text-center mb-2">
+                Quick Demo Access
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("admin")}
+                  className="flex items-center justify-center py-2 px-3 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-red-500/50 hover:bg-red-500/5 transition-all group gap-2"
+                >
+                  <Shield className="w-4 h-4 text-red-600 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                    Admin
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("user")}
+                  className="flex items-center justify-center py-2 px-3 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-500/5 transition-all group gap-2"
+                >
+                  <User className="w-4 h-4 text-emerald-500 group-hover:scale-110 transition-transform" />
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                    User
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-sm font-medium">
                   Email Address
                 </Label>
@@ -80,7 +114,7 @@ const Login = () => {
                   id="email"
                   type="email"
                   placeholder="name@example.com"
-                  className="h-11 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 focus:ring-2 focus:ring-red-500 transition-all"
+                  className="h-10 text-sm bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 focus:ring-2 focus:ring-red-500 transition-all"
                   {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
@@ -90,7 +124,7 @@ const Login = () => {
                 )}
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="flex justify-between items-center">
                   <Label htmlFor="password" className="text-sm font-medium">
                     Password
@@ -107,7 +141,7 @@ const Login = () => {
                     id="password"
                     type={isPasswordVisible ? "text" : "password"}
                     placeholder="••••••••"
-                    className="h-11 bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 pr-10 focus:ring-2 focus:ring-red-500 transition-all"
+                    className="h-10 text-sm bg-slate-50 dark:bg-gray-800 border-slate-200 dark:border-gray-700 pr-10 focus:ring-2 focus:ring-red-500 transition-all"
                     {...register("password", {
                       required: "Password is required",
                     })}
@@ -117,7 +151,11 @@ const Login = () => {
                     onClick={togglePasswordVisibility}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                   >
-                    {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                    {isPasswordVisible ? (
+                      <FaEyeSlash size={16} />
+                    ) : (
+                      <FaEye size={16} />
+                    )}
                   </button>
                 </div>
                 {errors.password && (
@@ -129,34 +167,21 @@ const Login = () => {
 
               <Button
                 type="submit"
-                className="w-full h-11 bg-red-600 hover:bg-red-700 text-white font-semibold transition-all shadow-md hover:shadow-lg"
+                className="w-full h-10 bg-red-600 hover:bg-red-700 text-white font-semibold transition-all shadow-md hover:shadow-lg text-sm"
                 disabled={loading}
               >
                 {loading ? (
-                  <Loader2 className="animate-spin text-xl" />
+                  <Loader2 className="animate-spin" size={18} />
                 ) : (
                   "Sign In"
                 )}
               </Button>
-              <div className="flex gap-4 mb-4">
-                <Button
-                  type="button"
-                  onClick={() => handleDemoLogin("admin")}
-                  className="flex-1 bg-zinc-800 hover:bg-zinc-900 text-white"
-                >
-                  Demo Admin
-                </Button>
-                <Button
-                  type="button"
-                  onClick={() => handleDemoLogin("user")}
-                  className="flex-1 bg-red-100 hover:bg-red-200 text-red-600 border border-red-200"
-                >
-                  Demo User
-                </Button>
+              <div className="mt-4">
+                <GoogleLogin />
               </div>
             </form>
 
-            <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+            <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{" "}
               <Link
                 to="/register"

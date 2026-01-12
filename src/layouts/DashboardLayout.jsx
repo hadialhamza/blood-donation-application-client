@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, ScrollRestoration } from "react-router";
 import {
   FaHome,
   FaUser,
@@ -128,6 +128,7 @@ const DashboardLayout = () => {
 
   return (
     <GlobalBackground>
+      <ScrollRestoration />
       <div className="flex min-h-screen">
         <aside className="hidden lg:block w-64 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-r border-gray-200 dark:border-gray-800 px-4 py-6 fixed h-full overflow-y-auto z-50">
           <SidebarContent role={role} />

@@ -17,7 +17,7 @@ import {
   Loader2,
   Droplets,
 } from "lucide-react";
-import Loading from "@/components/shared/Loading";
+import FormSkeleton from "@/components/skeletons/FormSkeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,7 +93,7 @@ const UpdateDonationRequest = () => {
   };
 
   if (!requestData) {
-    return <Loading />;
+    return <FormSkeleton />;
   }
 
   return (

@@ -16,7 +16,7 @@ import {
   CheckCircle,
   Loader2,
 } from "lucide-react";
-import Loading from "@/components/shared/Loading";
+import FormSkeleton from "@/components/skeletons/FormSkeleton";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { uploadImage } from "../../../utils/uploadImage";
@@ -149,7 +149,7 @@ const ProfileUpdate = () => {
     }
   };
 
-  if (isUserLoading) return <Loading />;
+  if (isUserLoading) return <FormSkeleton />;
 
   return (
     <Container className="p-6 min-h-screen">

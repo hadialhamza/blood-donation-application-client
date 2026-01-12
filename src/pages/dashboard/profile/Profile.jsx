@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import Loading from "../../../components/shared/Loading";
+import ProfileSkeleton from "@/components/skeletons/ProfileSkeleton";
 import Container from "@/components/shared/container/Container";
 import ProfileHero from "./ProfileHero";
 import ProfileStats from "./ProfileStats";
@@ -33,7 +33,7 @@ const Profile = () => {
   });
 
   if (isUserLoading || isStatsLoading) {
-    return <Loading />;
+    return <ProfileSkeleton />;
   }
 
   return (
@@ -44,11 +44,11 @@ const Profile = () => {
           <div className="lg:col-span-4">
             <ProfileStats userStats={userStats} />
           </div>
-          <div className="lg:col-span-4 flex items-center gap-6">
-            <div className="w-1/4 h-full">
+          <div className="lg:col-span-4 flex flex-col lg:flex-row items-stretch gap-6">
+            <div className="w-full lg:w-1/4 h-full">
               <ProfileAccountVerification dbUser={dbUser} />
             </div>
-            <div className="w-3/4">
+            <div className="w-full lg:w-3/4">
               <ProfileImpact userStats={userStats} />
             </div>
           </div>

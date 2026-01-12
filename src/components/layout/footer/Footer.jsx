@@ -95,7 +95,7 @@ const Footer = () => {
               <ul className="space-y-3 text-sm text-muted-foreground">
                 {[
                   { name: "Find Donors", path: "/search" },
-                  { name: "Blood Requests", path: "/donation-requests" },
+                  { name: "Blood Requests", path: "/public-donation-requests" },
                   { name: "Health Blog", path: "/blog" },
                   { name: "Donate Fund", path: "/funding" },
                 ].map((link) => (
@@ -114,28 +114,24 @@ const Footer = () => {
 
             <div className="space-y-4 md:mx-auto">
               <h4 className="font-bold text-sm tracking-wider uppercase text-slate-900 dark:text-slate-100">
-                Public Resources
+                Company
               </h4>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 {[
-                  {
-                    name: "WHO Health API",
-                    path: "https://www.who.int/data/gho",
-                  },
-                  { name: "IFRC Blood Data", path: "https://www.ifrc.org/" },
-                  { name: "HealthData.gov", path: "https://healthdata.gov/" },
-                  { name: "Open Disease Data", path: "https://disease.sh/" },
+                  { name: "About Us", path: "/about" },
+                  { name: "Contact Us", path: "/contact" },
+                  { name: "Our Blog", path: "/blog" },
+                  { name: "Help / Support", path: "/support" },
+                  { name: "Privacy / Terms", path: "/privacy" },
                 ].map((link) => (
                   <li key={link.name}>
-                    <a
-                      href={link.path}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      to={link.path}
                       className="hover:text-red-600 transition-all duration-300 hover:translate-x-1 flex items-center gap-2 group"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700 group-hover:bg-red-500 transition-colors"></span>
                       {link.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

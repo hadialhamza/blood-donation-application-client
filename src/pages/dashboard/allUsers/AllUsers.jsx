@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { Users } from "lucide-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { Badge } from "@/components/ui/badge";
-import Loading from "@/components/shared/Loading";
+import GridCardSkeleton from "@/components/skeletons/GridCardSkeleton";
 import UserStats from "./UserStats";
 import UserFilters from "./UserFilters";
 import UserCard from "./UserCard";
@@ -164,7 +164,7 @@ const AllUsers = () => {
     });
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <GridCardSkeleton />;
 
   return (
     <div className="page-container space-y-10">

@@ -12,7 +12,7 @@ import {
   Archive,
   Search,
 } from "lucide-react";
-import Loading from "@/components/shared/Loading";
+import GridCardSkeleton from "@/components/skeletons/GridCardSkeleton";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 import { Button } from "@/components/ui/button";
@@ -93,7 +93,7 @@ const ContentManagement = () => {
     });
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <GridCardSkeleton />;
 
   return (
     <div className="p-4 md:p-8 min-h-screen bg-slate-50 dark:bg-zinc-950">

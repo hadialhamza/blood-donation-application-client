@@ -38,7 +38,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import Loading from "@/components/shared/Loading";
+import DashboardHomeSkeleton from "@/components/skeletons/DashboardHomeSkeleton";
 
 const DashboardHome = () => {
   const { user } = useAuth();
@@ -125,7 +125,7 @@ const DashboardHome = () => {
     (role === "donor" && isRequestsLoading) ||
     ((role === "admin" || role === "volunteer") && isStatsLoading)
   ) {
-    return <Loading />;
+    return <DashboardHomeSkeleton />;
   }
 
   const userStats = {

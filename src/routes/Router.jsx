@@ -23,6 +23,11 @@ import ContentManagement from "../pages/dashboard/contentManagement/ContentManag
 import AddBlog from "../pages/dashboard/contentManagement/AddBlog";
 import ProfileUpdate from "../pages/dashboard/profile/ProfileUpdate";
 
+import About from "../pages/about/About";
+import Contact from "../pages/contact/Contact";
+import Support from "../pages/support/Support";
+import Privacy from "../pages/legal/Privacy";
+
 import PageTitle from "../components/shared/PageTitle";
 import NotFoundPage from "@/components/shared/NotFound";
 
@@ -98,7 +103,38 @@ export const router = createBrowserRouter([
           </PageTitle>
         ),
       },
-
+      {
+        path: "about",
+        element: (
+          <PageTitle title="About Us">
+            <About />
+          </PageTitle>
+        ),
+      },
+      {
+        path: "contact",
+        element: (
+          <PageTitle title="Contact Us">
+            <Contact />
+          </PageTitle>
+        ),
+      },
+      {
+        path: "support",
+        element: (
+          <PageTitle title="Help & Support">
+            <Support />
+          </PageTitle>
+        ),
+      },
+      {
+        path: "privacy",
+        element: (
+          <PageTitle title="Privacy & Terms">
+            <Privacy />
+          </PageTitle>
+        ),
+      },
     ],
   },
 

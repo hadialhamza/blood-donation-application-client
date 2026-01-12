@@ -110,29 +110,29 @@ const PublicDonationRequests = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {requests.map((req) => {
               const styles = getBloodGroupStyles(req.bloodGroup);
 
               return (
                 <GlassCard
                   key={req._id}
-                  className="group relative rounded-3xl transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl flex flex-col h-full overflow-hidden shadow-lg"
-                  glassClassName={`bg-white/30 dark:bg-black/40 ${styles.border}`}
+                  className="group relative rounded-3xl transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm flex flex-col h-full overflow-hidden shadow-sm"
+                  glassClassName={`bg-white/30 dark:bg-black/40 ${styles.border} transition-shadow`}
                   blurIntensity="md"
                 >
                   <div
                     className={`absolute inset-0 bg-linear-to-br ${styles.tint} opacity-40 pointer-events-none`}
                   ></div>
 
-                  <CardContent className="pt-8 px-8 pb-4 grow relative z-10">
-                    <div className="flex justify-between items-start mb-8">
+                  <CardContent className="pt-6 px-5 pb-3 grow relative z-10">
+                    <div className="flex justify-between items-start mb-4">
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                           <User className="w-3.5 h-3.5" /> Recipient
                         </div>
                         <h3
-                          className="text-xl font-bold text-zinc-900 dark:text-white line-clamp-1 leading-tight"
+                          className="text-lg font-bold text-zinc-900 dark:text-white line-clamp-1 leading-tight"
                           title={req.recipientName}
                         >
                           {req.recipientName}
@@ -140,10 +140,10 @@ const PublicDonationRequests = () => {
                       </div>
 
                       <div
-                        className={`grow-shrink-0 w-14 h-14 rounded-2xl flex flex-col items-center justify-center font-black shadow-sm border border-white/20 ${styles.badgeBg} ${styles.textColor}`}
+                        className={`grow-shrink-0 w-12 h-12 rounded-2xl flex flex-col items-center justify-center font-black shadow-sm border border-white/20 ${styles.badgeBg} ${styles.textColor}`}
                       >
                         <Droplet className="w-4 h-4 fill-current mb-0.5" />
-                        <span className="text-lg leading-none">
+                        <span className="text-base leading-none">
                           {req.bloodGroup}
                         </span>
                       </div>
@@ -181,17 +181,16 @@ const PublicDonationRequests = () => {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="px-8 pb-8 pt-4 relative z-10">
+                  <CardFooter className="px-5 pb-6 pt-3 relative z-10">
                     <Link
                       to={`/dashboard/donation-request-details/${req._id}`}
                       className="w-full"
                     >
                       <Button
-                        className={`w-full h-12 rounded-xl font-bold transition-all duration-300 active:scale-95
+                        className={`w-full h-10 rounded-xl font-bold
                          ${styles.badgeBg} ${styles.textColor}
                          border border-transparent
-                         ${styles.btnHover} hover:text-white dark:hover:text-white
-                         group-hover:shadow-lg`}
+                         ${styles.btnHover} hover:text-white dark:hover:text-white`}
                       >
                         View Full Details{" "}
                         <ArrowRight className="w-4 h-4 ml-2" />

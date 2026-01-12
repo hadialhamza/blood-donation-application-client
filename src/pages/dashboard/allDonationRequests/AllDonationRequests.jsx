@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useRole from "../../../hooks/useRole";
 import { AlertCircle } from "lucide-react";
-import Loading from "@/components/shared/Loading";
+import ListCardSkeleton from "@/components/skeletons/ListCardSkeleton";
 import DashboardPagination from "@/components/shared/DashboardPagination";
 import RequestStats from "./RequestStats";
 import RequestFilters from "./RequestFilters";
@@ -33,7 +33,7 @@ const AllDonationRequests = () => {
   });
 
   if (isLoading) {
-    return <Loading />;
+    return <ListCardSkeleton />;
   }
 
   const handleStatusChange = async (id, newStatus) => {

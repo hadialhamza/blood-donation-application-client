@@ -15,7 +15,7 @@ import {
   AlertCircle,
   HeartHandshake,
 } from "lucide-react";
-import Loading from "@/components/shared/Loading";
+import DetailsSkeleton from "@/components/skeletons/DetailsSkeleton";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -79,7 +79,7 @@ const DonationRequestDetails = () => {
     }
   };
 
-  if (!request) return <Loading />;
+  if (!request) return <DetailsSkeleton />;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 p-4 md:p-8 relative overflow-hidden">

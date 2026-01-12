@@ -3,7 +3,13 @@ import useLocations from "@/hooks/useLocations";
 import { Controller, useWatch } from "react-hook-form";
 import { Map, MapPin } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const LocationSelector = ({ control, errors, className }) => {
   const { districts, allUpazilas } = useLocations();
@@ -19,7 +25,7 @@ const LocationSelector = ({ control, errors, className }) => {
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${className || ""}`}>
       {/* District Select */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <Label className="text-sm font-medium flex items-center gap-2">
           <Map className="w-4 h-4 text-red-600" />
           District
@@ -30,15 +36,17 @@ const LocationSelector = ({ control, errors, className }) => {
           rules={{ required: "District is required" }}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value || ""}>
-              <SelectTrigger className="w-full h-11 border-red-200 dark:border-red-800 focus:ring-red-500 bg-white dark:bg-zinc-900">
+              <SelectTrigger className="w-full h-10 text-sm border-red-200 dark:border-red-800 focus:ring-red-500 bg-white dark:bg-zinc-900">
                 <SelectValue placeholder="Select District" />
               </SelectTrigger>
               <SelectContent>
-                {districts?.sort((a, b) => a.name.localeCompare(b.name)).map((d) => (
-                  <SelectItem key={d.id} value={d.name}>
-                    {d.name}
-                  </SelectItem>
-                ))}
+                {districts
+                  ?.sort((a, b) => a.name.localeCompare(b.name))
+                  .map((d) => (
+                    <SelectItem key={d.id} value={d.name}>
+                      {d.name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           )}
@@ -51,7 +59,7 @@ const LocationSelector = ({ control, errors, className }) => {
       </div>
 
       {/* Upazila Select */}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <Label className="text-sm font-medium flex items-center gap-2">
           <MapPin className="w-4 h-4 text-red-600" />
           Upazila
@@ -66,15 +74,17 @@ const LocationSelector = ({ control, errors, className }) => {
               value={field.value || ""}
               disabled={!selectedDistrict}
             >
-              <SelectTrigger className="w-full h-11 border-red-200 dark:border-red-800 focus:ring-red-500 bg-white dark:bg-zinc-900">
+              <SelectTrigger className="w-full h-10 text-sm border-red-200 dark:border-red-800 focus:ring-red-500 bg-white dark:bg-zinc-900">
                 <SelectValue placeholder="Select Upazila" />
               </SelectTrigger>
               <SelectContent>
-                {filteredUpazilas.sort((a, b) => a.name.localeCompare(b.name)).map((u) => (
-                  <SelectItem key={u.id} value={u.name}>
-                    {u.name}
-                  </SelectItem>
-                ))}
+                {filteredUpazilas
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((u) => (
+                    <SelectItem key={u.id} value={u.name}>
+                      {u.name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           )}
