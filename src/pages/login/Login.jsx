@@ -21,8 +21,19 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
+
+  const handleDemoLogin = (role) => {
+    if (role === "admin") {
+      setValue("email", "admin@bloodline.com");
+      setValue("password", "123456");
+    } else if (role === "user") {
+      setValue("email", "user@bloodline.com");
+      setValue("password", "Abc@123");
+    }
+  };
 
   const onSubmit = async (data) => {
     const { email, password } = data;
@@ -127,6 +138,22 @@ const Login = () => {
                   "Sign In"
                 )}
               </Button>
+              <div className="flex gap-4 mb-4">
+                <Button
+                  type="button"
+                  onClick={() => handleDemoLogin("admin")}
+                  className="flex-1 bg-zinc-800 hover:bg-zinc-900 text-white"
+                >
+                  Demo Admin
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => handleDemoLogin("user")}
+                  className="flex-1 bg-red-100 hover:bg-red-200 text-red-600 border border-red-200"
+                >
+                  Demo User
+                </Button>
+              </div>
             </form>
 
             <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">

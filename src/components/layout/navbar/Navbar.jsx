@@ -136,10 +136,10 @@ const Navbar = () => {
                 size="icon"
                 onClick={toggleTheme}
                 className={cn(
-                  "rounded-full transition-colors border border-border",
+                  "rounded-full transition-colors border border-white/20",
                   isHome && !isScrolled
                     ? "text-white hover:bg-white/20 hover:text-white"
-                    : "text-foreground border border-black/70 hover:bg-accent hover:text-accent-foreground"
+                    : "text-foreground border border-black/20 hover:bg-accent hover:text-accent-foreground"
                 )}
               >
                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />

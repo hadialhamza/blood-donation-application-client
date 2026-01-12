@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import JoditEditor from "jodit-react";
+import React, { useState, useRef, lazy, Suspense } from "react";
+const JoditEditor = lazy(() => import("jodit-react"));
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
@@ -14,7 +14,7 @@ import {
   Save,
   ArrowLeft,
   Loader2,
-} from "lucide-react"; // Icons
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +30,7 @@ import { Separator } from "@/components/ui/separator";
 
 const AddBlog = () => {
   const editor = useRef(null);
-  const [content, setContent] = useState(""); // For Rich Text
+  const [content, setContent] = useState("");
 
   const config = {
     readonly: false,
@@ -151,14 +151,22 @@ const AddBlog = () => {
                 <FileText className="w-4 h-4 text-zinc-500" /> Article Content
               </Label>
               <div className="rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700">
-                <JoditEditor
-                  ref={editor}
-                  value={content}
-                  config={config}
-                  tabIndex={1}
-                  onBlur={(newContent) => setContent(newContent)}
-                  onChange={() => {}}
-                />
+                <Suspense
+                  fallback={
+                    <div className="h-[400px] flex items-center justify-center bg-slate-50 dark:bg-zinc-800/50">
+                      <Loader2 className="animate-spin w-8 h-8 text-red-600" />
+                    </div>
+                  }
+                >
+                  <JoditEditor
+                    ref={editor}
+                    value={content}
+                    config={config}
+                    tabIndex={1}
+                    onBlur={(newContent) => setContent(newContent)}
+                    onChange={() => {}}
+                  />
+                </Suspense>
               </div>
               <p className="text-xs text-muted-foreground text-right">
                 Rich text editing enabled.
