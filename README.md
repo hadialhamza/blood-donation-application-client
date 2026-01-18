@@ -7,7 +7,7 @@
 - **🌐 Live Website:** [https://bloodline-savelives.vercel.app/](https://bloodline-savelives.vercel.app)
 - **⚙️ Server API:** [https://server-bloodline.vercel.app/](https://server-bloodline.vercel.app)
 - **📂 Client Repository:** [GitHub - Client](https://github.com/hadialhamza/blood-donation-application-client)
-- **📂 Server Repository:** [GitHub - Server](https://github.com/hadialhamza/blood-donation-application-server) _(Note: Ensure this links to your actual server repo if different)_
+- **📂 Server Repository:** [GitHub - Server](https://github.com/hadialhamza/blood-donation-application-server)
 
 ---
 
