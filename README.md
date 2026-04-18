@@ -1,8 +1,8 @@
+# 🩸 BloodLine - A Life Saving Connection
+
 <div align="center">
   <img src="https://res.cloudinary.com/djmfhatti/image/upload/v1776264547/731shots_so_s4s2y4.png" alt="BloodLine Project Image" width="800" />
 </div>
-
-# 🩸 BloodLine - A Life Saving Connection
 
 **BloodLine** is a comprehensive, full-stack MERN (MongoDB, Express, React, Node.js) application designed to bridge the gap between blood donors and those in urgent need. It features a modern, glassmorphic UI, real-time donor searching, role-based dashboards, and a secure funding system.
 
